@@ -68,6 +68,16 @@ button:focus-visible,a:focus-visible { outline:2px solid var(--blue); outline-of
 .speaker-human { color:var(--human); }
 .speaker-both { color:var(--blue); }
 .intertitle { padding:27px 18px 33px; text-align:center; font-size:12px; color:var(--muted); letter-spacing:.3em; }
+.film, .scene, .intertitle, .story-lede { --in:1; --out:1; --sx:0px; --sy:22px; --lx:0px; --ly:-14px; --grow:1; }
+html.story-motion .film-frame,
+html.story-motion .story .scene-frame,
+html.story-motion .intertitle,
+html.story-motion .story-lede {
+  opacity:calc(var(--in) * var(--out));
+  transform:translate3d(calc(var(--sx) * (1 - var(--in)) + var(--lx) * (1 - var(--out))), calc(var(--sy) * (1 - var(--in)) + var(--ly) * (1 - var(--out))), 0) scale(calc(var(--grow) + (1 - var(--grow)) * var(--in)));
+  transform-origin:center center;
+}
+html.story-motion .intertitle { letter-spacing:calc(.2em + (1 - var(--in)) * .14em); }
 .scene--comparison .scene-photo { transform:none; }
 .scene--comparison { margin-bottom:24px; }
 .comparison-stack { display:none; }

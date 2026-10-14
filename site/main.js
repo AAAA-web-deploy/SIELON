@@ -355,6 +355,66 @@
       entries.forEach(entry => { if (entry.isIntersecting) { active.add(entry.target); entry.target.classList.add('is-visible'); } else active.delete(entry.target); }); requestPaint();
     }, { rootMargin: '120px 0px' });
     scenes.forEach(scene => observer.observe(scene));
+    const beats = Array.from(document.querySelectorAll('.film, .story .scene, .intertitle, .story-lede'));
+    const arrivals = {
+      lede: { sy: '18px', grow: '0.992', ly: '-8px' },
+      intertitle: { sy: '12px', ly: '-8px' },
+      interview: { sy: '28px', grow: '0.986', ly: '-14px' },
+      comparison: { sx: '-28px', sy: '0px', lx: '14px', ly: '-10px' },
+      meeting: { sy: '20px', grow: '0.99', ly: '-16px' },
+      'reaction-01': { sx: '-26px', sy: '8px', lx: '-8px', ly: '-12px' },
+      'reaction-02': { sx: '26px', sy: '8px', lx: '8px', ly: '-12px' },
+      breakfast: { sy: '22px', grow: '0.988', ly: '-12px' },
+      gaming: { sy: '26px', grow: '0.988', ly: '-12px' },
+      ideas: { sx: '18px', sy: '10px', ly: '-14px' },
+      reveal: { sy: '12px', grow: '0.994', ly: '-8px' },
+      handshake: { sy: '20px', ly: '-12px' },
+      dance: { sy: '16px', grow: '0.986', ly: '-10px' },
+      'reaction-03': { sx: '24px', sy: '6px', lx: '8px', ly: '-12px' },
+      workshop: { sy: '16px', ly: '-6px' }
+    };
+    const beatKey = el => {
+      const kind = Array.from(el.classList).find(name => name.startsWith('film--') || name.startsWith('scene--'));
+      if (kind) return kind.slice(kind.indexOf('--') + 2);
+      if (el.classList.contains('intertitle')) return 'intertitle';
+      if (el.classList.contains('story-lede')) return 'lede';
+      return '';
+    };
+    beats.forEach(el => {
+      const profile = arrivals[beatKey(el)];
+      if (!profile) return;
+      Object.entries(profile).forEach(([key, value]) => el.style.setProperty('--' + key, value));
+    });
+    const ease = t => t * t * (3 - 2 * t);
+    let beatScheduled = false;
+    const paintBeats = () => {
+      beatScheduled = false;
+      const allow = !reduce.matches;
+      document.documentElement.classList.toggle('story-motion', allow);
+      if (!allow) return;
+      const view = window.innerHeight || 1;
+      const header = headerHeight();
+      beats.forEach(el => {
+        if (!el.getClientRects().length) {
+          el.style.setProperty('--in', '1');
+          el.style.setProperty('--out', '1');
+          return;
+        }
+        const rect = el.getBoundingClientRect();
+        const key = beatKey(el);
+        const enterSpan = view * (key === 'reveal' ? 0.62 : key === 'intertitle' ? 0.28 : 0.46);
+        const leaveSpan = view * (key === 'workshop' || key === 'reveal' ? 0.42 : 0.34);
+        const enter = ease(Math.max(0, Math.min(1, (view - rect.top) / enterSpan)));
+        const leave = ease(Math.max(0, Math.min(1, (rect.bottom - header) / leaveSpan)));
+        el.style.setProperty('--in', enter.toFixed(4));
+        el.style.setProperty('--out', leave.toFixed(4));
+      });
+    };
+    const requestBeats = () => { if (!beatScheduled) { beatScheduled = true; requestAnimationFrame(paintBeats); } };
+    addEventListener('scroll', requestBeats, { passive: true });
+    addEventListener('resize', requestBeats);
+    reduce.addEventListener('change', requestBeats);
+    paintBeats();
     if (closing) {
       const closingObserver = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) closing.classList.add('is-visible'); }); }, { threshold: .05 });
       closingObserver.observe(closing);

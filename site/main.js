@@ -62,6 +62,36 @@
     if (document.documentElement.classList.contains('intro-open')) start();
     else finish();
   }
+  const reveal = document.querySelector('[data-reveal]');
+  if (reveal) {
+    const smooth = t => t * t * (3 - 2 * t);
+    const unit = value => Math.max(0, Math.min(1, value));
+    const paintReveal = raw => {
+      const p = unit(raw);
+      reveal.style.setProperty('--p', p.toFixed(4));
+      reveal.style.setProperty('--reveal', smooth(unit((p - 0.04) / 0.74)).toFixed(4));
+      reveal.style.setProperty('--mix', smooth(unit((p - 0.2) / 0.36)).toFixed(4));
+      reveal.classList.toggle('is-settled', p >= 0.92);
+      reveal.classList.toggle('is-ending', p >= 0.84);
+    };
+    const measureReveal = () => {
+      if (reduce.matches) {
+        reveal.classList.remove('is-live');
+        paintReveal(1);
+        return;
+      }
+      reveal.classList.add('is-live');
+      const header = document.querySelector('.site-header')?.getBoundingClientRect().height || 0;
+      document.documentElement.style.setProperty('--header-h', header + 'px');
+      const rect = reveal.getBoundingClientRect();
+      const travel = Math.max(1, reveal.offsetHeight - (window.innerHeight - header));
+      paintReveal((header - rect.top) / travel);
+    };
+    addEventListener('scroll', measureReveal, { passive: true });
+    addEventListener('resize', measureReveal);
+    reduce.addEventListener('change', measureReveal);
+    measureReveal();
+  }
   const inlineToken = window.matchMedia('(max-width: 767px), (pointer: coarse)');
   const address = typeof cfg.contractAddress === 'string' && /^0x[a-fA-F0-9]{40}$/.test(cfg.contractAddress) ? cfg.contractAddress : null;
   const text = (selector, value) => document.querySelectorAll(selector).forEach(el => { el.textContent = value; });

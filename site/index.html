@@ -22,9 +22,9 @@
   <title>SuperIntelligence Elon — $SIELON</title>
   <link rel="icon" type="image/png" href="assets/logo-64.png">
   <link rel="preload" as="image" type="image/webp" href="assets/hero-1440.webp" imagesrcset="assets/hero-720.webp 720w, assets/hero-1440.webp 1440w" imagesizes="100vw">
-  <link rel="stylesheet" href="styles.css?v=loader-v1">
+  <link rel="stylesheet" href="styles.css?v=reveal-v1">
   <script src="site-config.js" defer></script>
-  <script src="main.js?v=loader-v1" defer></script>
+  <script src="main.js?v=reveal-v1" defer></script>
   <script type="module" src="field-loader.js"></script>
   <script>
     document.documentElement.classList.replace('no-js', 'js');
@@ -39,7 +39,7 @@
     }, 6000);
   </script>
 </head>
-<body data-home-build="loader-v1">
+<body data-home-build="reveal-v1">
   <div class="loader" id="loader" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
     <div class="loader__inner">
       <img class="loader__mark" src="assets/logo-128.png" width="64" height="64" alt="" decoding="async">
@@ -66,26 +66,37 @@
     </div>
   </header>
   <main id="top" data-intro-lock>
-    <div class="opening desktop-only" data-field-stage>
+    <div class="opening" data-field-stage data-reveal>
       <div class="opening-sticky">
-        <picture class="opening-plate">
+        <picture class="reveal-plate">
           <source type="image/webp" srcset="assets/home-v2/workshop-background-v2-960.webp 960w, assets/home-v2/workshop-background-v2-1672.webp 1672w" sizes="100vw">
-          <img src="assets/home-v2/workshop-background-v2-1672.jpg" width="1672" height="941" alt="" decoding="async" loading="lazy">
+          <img src="assets/home-v2/workshop-background-v2-1672.jpg" width="1672" height="941" alt="" decoding="async">
         </picture>
-        <div data-particle-host></div>
-        <picture class="opening-fallback">
-          <source type="image/webp" srcset="assets/home-v2/paired-fallback-v2-960.webp 960w, assets/home-v2/paired-fallback-v2-1672.webp 1672w" sizes="100vw">
-          <img src="assets/home-v2/paired-fallback-v2-1672.jpg" width="1672" height="941" alt="Fictional Elon and his identical SI double share an amused glance in a warmly lit workshop." decoding="async" loading="lazy">
-        </picture>
-        <div class="opening-ui">
-          <div class="opening-copy">
-            <h1 id="opening-title"><span class="title-small">SUPERINTELLIGENCE</span><span class="title-elon">ELON</span></h1>
-            <p class="ticker">$SIELON</p>
-            <p class="phase-cue" data-phase-cue>One face</p>
-            <p class="sr-only">Fictional portrait of Elon and SI-Elon, the same face shown together. On a capable desktop the portrait is a particle sculpture that can separate into the human and the robot double, then return.</p>
-          </div>
+        <div class="reveal-cast" aria-hidden="true">
+          <picture class="reveal-human">
+            <source type="image/webp" srcset="assets/home-v2/human-portrait-v2-640.webp 640w, assets/home-v2/human-portrait-v2-1024.webp 1024w" sizes="46vw">
+            <img src="assets/home-v2/human-portrait-v2.png" width="1024" height="1536" alt="" decoding="async">
+          </picture>
+          <picture class="reveal-si">
+            <source type="image/webp" srcset="assets/home-v2/si-portrait-v2-640.webp 640w, assets/home-v2/si-portrait-v2-1024.webp 1024w" sizes="46vw">
+            <img src="assets/home-v2/si-portrait-v2.png" width="1024" height="1536" alt="" decoding="async">
+          </picture>
+        </div>
+        <div class="reveal-shade" aria-hidden="true"></div>
+        <div class="reveal-thread" aria-hidden="true">
+          <span class="reveal-thread__line"><i></i></span>
+          <span class="reveal-thread__label">Scroll</span>
+        </div>
+        <div class="opening-finale">
+          <h1 id="opening-title">
+            <a class="desktop-only" href="story.html"><span class="title-small">SUPERINTELLIGENCE</span><span class="title-elon">ELON</span></a>
+            <a class="phone-only" href="#story"><span class="title-small">SUPERINTELLIGENCE</span><span class="title-elon">ELON</span></a>
+          </h1>
+          <p class="ticker">$SIELON</p>
+          <p class="sr-only">Fictional portrait of Elon in the workshop. Scrolling brings his identical SI double into the same frame.</p>
           <div class="opening-controls">
-            <a class="button button-primary" href="story.html">Start the Story <span aria-hidden="true">→</span></a>
+            <a class="button button-primary desktop-only" href="story.html">Start the Story <span aria-hidden="true">→</span></a>
+            <a class="button button-primary phone-only" href="#story">Start the Story <span aria-hidden="true">→</span></a>
             <a class="button" data-hero-social="telegram" hidden>Telegram</a>
             <a class="button" data-hero-social="x" hidden>X</a>
             <a class="button" data-trading="dexScreener" hidden>Chart</a>
@@ -93,33 +104,12 @@
             <a class="button button-primary" data-trading="buy" hidden>Trade $SIELON</a>
             <button class="button" type="button" data-copy-contract data-copy-label="ca" disabled>CA pending</button>
             <button class="button" type="button" data-open-token>Token</button>
-            <button class="button hold-button" type="button" data-field-hold hidden><span data-hold-label>Hold to reveal the double</span><span class="hold-hint">Release to return.</span></button>
-            <span class="scroll-cue">SCROLL</span>
             <p class="copy-feedback" data-copy-feedback role="status" aria-live="polite"></p>
           </div>
         </div>
       </div>
     </div>
     <div class="phone-only">
-    <section class="hero" aria-labelledby="main-title">
-      <div class="hero-stage">
-        <picture class="hero-art">
-          <source type="image/webp" srcset="assets/hero-720.webp 720w, assets/hero-1440.webp 1440w" sizes="100vw">
-          <img src="assets/hero-1440.jpg" width="1440" height="1080" alt="Fictional photograph of Elon and his identical SI-Elon double shaking hands in a workshop" fetchpriority="high" loading="eager" decoding="async">
-        </picture>
-        <div class="hero-shade" aria-hidden="true"></div>
-        <div class="hero-copy">
-          <h1 id="main-title"><span class="title-small">SUPERINTELLIGENCE</span><span class="title-elon">ELON</span></h1>
-          <p class="ticker">$SIELON</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#story">Start the Story <span aria-hidden="true">→</span></a>
-            <a class="button" data-hero-social="telegram" hidden>Telegram</a>
-            <a class="button" data-hero-social="x" hidden>X</a>
-          </div>
-          <span class="scroll-cue">SCROLL TO BEGIN</span>
-        </div>
-      </div>
-    </section>
     <section class="story" id="story" aria-label="The fictional SuperIntelligence Elon story">
       <article class="scene scene--interview" id="interview" data-key="false" aria-labelledby="heading-interview">
 <h2 class="sr-only" id="heading-interview">The interview ends</h2>

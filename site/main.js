@@ -29,6 +29,13 @@
       document.documentElement.classList.remove('intro-open');
       document.body.classList.remove('is-loading');
       document.querySelectorAll('[data-intro-lock]').forEach(node => { node.inert = false; });
+      if (!location.hash) {
+        const root = document.documentElement;
+        const previous = root.style.scrollBehavior;
+        root.style.scrollBehavior = 'auto';
+        window.scrollTo(0, 0);
+        root.style.scrollBehavior = previous;
+      }
       leaveTimer = setTimeout(() => { loader.hidden = true; }, 500);
     };
     const tick = now => {
@@ -87,6 +94,34 @@
       const travel = Math.max(1, reveal.offsetHeight - (window.innerHeight - header));
       paintReveal((header - rect.top) / travel);
     };
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    let holdTop = !location.hash;
+    const pinOpening = () => {
+      if (!holdTop || location.hash) return;
+      const root = document.documentElement;
+      const previous = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      root.style.scrollBehavior = previous;
+    };
+    const releaseTop = () => {
+      if (document.documentElement.classList.contains('intro-open')) return;
+      holdTop = false;
+    };
+    addEventListener('wheel', releaseTop, { passive: true });
+    addEventListener('touchstart', releaseTop, { passive: true });
+    addEventListener('keydown', event => {
+      if (event.key === 'ArrowDown' || event.key === 'PageDown' || event.key === ' ') releaseTop();
+    });
+    const until = performance.now() + 4000;
+    const fightRestore = now => {
+      if (!holdTop || now > until) return;
+      if (window.scrollY !== 0) pinOpening();
+      requestAnimationFrame(fightRestore);
+    };
+    pinOpening();
+    requestAnimationFrame(fightRestore);
+    addEventListener('pageshow', pinOpening);
     addEventListener('scroll', measureReveal, { passive: true });
     addEventListener('resize', measureReveal);
     reduce.addEventListener('change', measureReveal);

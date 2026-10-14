@@ -29,7 +29,8 @@ const engine=await import('../site/quantum-field.js');check(typeof engine.create
 for(const page of ['index.html','story.html']){
  const html=fs.readFileSync(path.join(root,'site',page),'utf8');
  check(html.includes('comparison-stack'),page+' mobile comparison baseline missing.');
- check(html.includes('Download meme'),page+' community controls missing.');
+ check(html.includes('Download image'),page+' community image controls missing.');
+ check(!/meme/i.test(html.replace(/class="[^"]*meme[^"]*"/g,'').replace(/data-meme-[a-z-]+/g,'')),page+' public meme wording remains.');
  check(!html.includes('vendor/three.min.js'),page+' must not download Three.js up front.');
  check(html.includes('Fictional story. No affiliation with Elon Musk.'),page+' fiction footer missing.');
  for(const item of html.matchAll(/(?:src|href)="([^"#]+)"/g)){

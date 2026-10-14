@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../site');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', process.env.SIELON_ROOT || 'site');
 const port = Number(process.env.SIELON_PORT || 8000);
 const mime = { '.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.json':'application/json', '.webp':'image/webp', '.png':'image/png', '.jpg':'image/jpeg', '.svg':'image/svg+xml' };
 http.createServer((request, response) => {

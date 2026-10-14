@@ -4,6 +4,64 @@
   const motion = cfg.motion || {};
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const desktop = window.matchMedia('(min-width: 768px) and (pointer: fine)');
+  const loader = document.getElementById('loader');
+  if (loader && !window.__sielonIntroStarted) {
+    window.__sielonIntroStarted = true;
+    const holdFor = 2.2;
+    let state = 'preparing';
+    let frame = 0;
+    let began = 0;
+    let leaveTimer = 0;
+    const fill = loader.querySelector('[data-loader-fill]');
+    const pct = loader.querySelector('[data-loader-pct]');
+    const finish = () => {
+      if (state === 'finished') return;
+      state = 'finished';
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      if (leaveTimer) clearTimeout(leaveTimer);
+      leaveTimer = 0;
+      if (window.__sielonIntroGuard) { clearTimeout(window.__sielonIntroGuard); window.__sielonIntroGuard = 0; }
+      if (fill) fill.style.width = '100%';
+      if (pct) pct.textContent = '100%';
+      loader.setAttribute('aria-valuenow', '100');
+      loader.classList.add('is-done');
+      document.documentElement.classList.remove('intro-open');
+      document.body.classList.remove('is-loading');
+      document.querySelectorAll('[data-intro-lock]').forEach(node => { node.inert = false; });
+      leaveTimer = setTimeout(() => { loader.hidden = true; }, 500);
+    };
+    const tick = now => {
+      if (state !== 'playing') return;
+      frame = 0;
+      const elapsed = Math.max(0, (now - began) / 1000);
+      const progress = Math.max(0, Math.min(1, elapsed / holdFor));
+      const value = Math.round(progress * 100);
+      if (fill) fill.style.width = (progress * 100) + '%';
+      if (pct) pct.textContent = value + '%';
+      loader.setAttribute('aria-valuenow', String(value));
+      if (elapsed >= holdFor) { finish(); return; }
+      frame = requestAnimationFrame(tick);
+    };
+    const start = () => {
+      if (state !== 'preparing') return;
+      state = 'playing';
+      loader.hidden = false;
+      document.body.classList.add('is-loading');
+      document.querySelectorAll('[data-intro-lock]').forEach(node => { node.inert = true; });
+      began = performance.now();
+      frame = requestAnimationFrame(tick);
+    };
+    loader.querySelector('.loader__skip')?.addEventListener('click', finish);
+    document.addEventListener('keydown', event => {
+      if (state !== 'playing' || event.key !== 'Escape') return;
+      event.preventDefault();
+      finish();
+    });
+    addEventListener('pageshow', event => { if (event.persisted) finish(); });
+    if (document.documentElement.classList.contains('intro-open')) start();
+    else finish();
+  }
   const inlineToken = window.matchMedia('(max-width: 767px), (pointer: coarse)');
   const address = typeof cfg.contractAddress === 'string' && /^0x[a-fA-F0-9]{40}$/.test(cfg.contractAddress) ? cfg.contractAddress : null;
   const text = (selector, value) => document.querySelectorAll(selector).forEach(el => { el.textContent = value; });
@@ -250,7 +308,7 @@
     context.font = noteSize + 'px Arial, Helvetica, sans-serif';
     context.fillText('Fictional story. No affiliation with Elon Musk.', 600, y);
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.92));
-    if (!blob) throw new Error('Meme export failed');
+    if (!blob) throw new Error('Image export failed');
     return blob;
   };
   document.querySelectorAll('[data-meme-download]').forEach(button => {

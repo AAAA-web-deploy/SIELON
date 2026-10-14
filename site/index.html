@@ -1,36 +1,57 @@
 <!doctype html>
-<html lang="en">
+<html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#050a11">
-  <meta name="description" content="SuperIntelligence Elon ($SIELON): a fictional cinematic story about Elon meeting his robot double. Same face. A future built together.">
+  <meta name="description" content="SuperIntelligence Elon ($SIELON). A fictional cinematic story about Elon and his identical SI double.">
   <link rel="canonical" href="https://sielon.world/">
   <meta property="og:title" content="SuperIntelligence Elon — $SIELON">
-  <meta property="og:description" content="Same face. A future built together. An independent Ethereum meme story.">
+  <meta property="og:description" content="A fictional cinematic story about Elon and his identical SI double.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://sielon.world/">
   <meta property="og:image" content="https://sielon.world/assets/brand-banner.jpg">
   <meta property="og:image:width" content="1500">
   <meta property="og:image:height" content="500">
-  <meta property="og:image:alt" content="SuperIntelligence Elon branding banner with the title, $SIELON ticker, and tagline Same face. A future built together.">
+  <meta property="og:image:alt" content="SuperIntelligence Elon branding banner with the project title and $SIELON ticker.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SuperIntelligence Elon — $SIELON">
-  <meta name="twitter:description" content="Same face. A future built together. An independent Ethereum meme story.">
+  <meta name="twitter:description" content="A fictional cinematic story about Elon and his identical SI double.">
   <meta name="twitter:image" content="https://sielon.world/assets/brand-banner.jpg">
-  <meta name="twitter:image:alt" content="SuperIntelligence Elon branding banner with the title, $SIELON ticker, and tagline Same face. A future built together.">
+  <meta name="twitter:image:alt" content="SuperIntelligence Elon branding banner with the project title and $SIELON ticker.">
   <title>SuperIntelligence Elon — $SIELON</title>
   <link rel="icon" type="image/png" href="assets/logo-64.png">
   <link rel="preload" as="image" type="image/webp" href="assets/hero-1440.webp" imagesrcset="assets/hero-720.webp 720w, assets/hero-1440.webp 1440w" imagesizes="100vw">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=loader-v1">
   <script src="site-config.js" defer></script>
-  <script src="main.js" defer></script>
+  <script src="main.js?v=loader-v1" defer></script>
   <script type="module" src="field-loader.js"></script>
+  <script>
+    document.documentElement.classList.replace('no-js', 'js');
+    document.documentElement.classList.add('intro-open');
+    window.__sielonIntroGuard = window.setTimeout(function () {
+      document.documentElement.classList.remove('intro-open');
+      var loader = document.getElementById('loader');
+      if (loader) loader.hidden = true;
+      if (document.body) document.body.classList.remove('is-loading');
+      var locked = document.querySelectorAll('[data-intro-lock]');
+      for (var i = 0; i < locked.length; i++) locked[i].inert = false;
+    }, 6000);
+  </script>
 </head>
-<body>
-  <a class="skip-link skip-link--mobile" href="#story">Skip to the story</a>
-  <a class="skip-link skip-link--desktop" href="story.html">Skip to the story</a>
-  <header class="site-header">
+<body data-home-build="loader-v1">
+  <div class="loader" id="loader" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
+    <div class="loader__inner">
+      <img class="loader__mark" src="assets/logo-128.png" width="64" height="64" alt="" decoding="async">
+      <p class="loader__word">$SIELON</p>
+      <span class="loader__line" aria-hidden="true"><i class="loader__fill" data-loader-fill></i></span>
+      <p class="loader__hint">Opening the story <span class="loader__pct" data-loader-pct aria-hidden="true">0%</span></p>
+    </div>
+    <button class="loader__skip" type="button">Skip</button>
+  </div>
+  <a class="skip-link skip-link--mobile" href="#story" data-intro-lock>Skip to the story</a>
+  <a class="skip-link skip-link--desktop" href="story.html" data-intro-lock>Skip to the story</a>
+  <header class="site-header" data-intro-lock>
     <div class="header-inner">
       <a class="brand" href="#top" aria-label="SuperIntelligence Elon, back to opening">
         <img src="assets/logo-128.png" width="38" height="38" alt="" decoding="async">
@@ -44,22 +65,23 @@
       </nav>
     </div>
   </header>
-  <main id="top">
+  <main id="top" data-intro-lock>
     <div class="opening desktop-only" data-field-stage>
       <div class="opening-sticky">
-        <p class="back-word" aria-hidden="true">ELON</p>
+        <picture class="opening-plate">
+          <source type="image/webp" srcset="assets/home-v2/workshop-background-v2-960.webp 960w, assets/home-v2/workshop-background-v2-1672.webp 1672w" sizes="100vw">
+          <img src="assets/home-v2/workshop-background-v2-1672.jpg" width="1672" height="941" alt="" decoding="async" loading="lazy">
+        </picture>
         <div data-particle-host></div>
         <picture class="opening-fallback">
-          <source type="image/webp" srcset="assets/hero-720.webp 720w, assets/hero-1440.webp 1440w" sizes="100vw">
-          <img src="assets/hero-1440.jpg" width="1440" height="1080" alt="Fictional photograph of Elon and his identical SI-Elon double shaking hands in a workshop" decoding="async">
+          <source type="image/webp" srcset="assets/home-v2/paired-fallback-v2-960.webp 960w, assets/home-v2/paired-fallback-v2-1672.webp 1672w" sizes="100vw">
+          <img src="assets/home-v2/paired-fallback-v2-1672.jpg" width="1672" height="941" alt="Fictional Elon and his identical SI double share an amused glance in a warmly lit workshop." decoding="async" loading="lazy">
         </picture>
         <div class="opening-ui">
           <div class="opening-copy">
             <h1 id="opening-title"><span class="title-small">SUPERINTELLIGENCE</span><span class="title-elon">ELON</span></h1>
             <p class="ticker">$SIELON</p>
-            <p class="token-purpose">An Ethereum meme token inspired by a fictional Elon–SI partnership.</p>
-            <p class="fiction-context">A fictional story inspired by a real interview.</p>
-            <p class="tagline">Same face. A future built together.</p>
+            <p class="phase-cue" data-phase-cue>One face</p>
             <p class="sr-only">Fictional portrait of Elon and SI-Elon, the same face shown together. On a capable desktop the portrait is a particle sculpture that can separate into the human and the robot double, then return.</p>
           </div>
           <div class="opening-controls">
@@ -71,7 +93,7 @@
             <a class="button button-primary" data-trading="buy" hidden>Trade $SIELON</a>
             <button class="button" type="button" data-copy-contract data-copy-label="ca" disabled>CA pending</button>
             <button class="button" type="button" data-open-token>Token</button>
-            <button class="button hold-button" type="button" data-field-hold hidden>Hold to split<span class="hold-hint">Hold, or press Space. Release to return.</span></button>
+            <button class="button hold-button" type="button" data-field-hold hidden><span data-hold-label>Hold to reveal the double</span><span class="hold-hint">Release to return.</span></button>
             <span class="scroll-cue">SCROLL</span>
             <p class="copy-feedback" data-copy-feedback role="status" aria-live="polite"></p>
           </div>
@@ -89,9 +111,6 @@
         <div class="hero-copy">
           <h1 id="main-title"><span class="title-small">SUPERINTELLIGENCE</span><span class="title-elon">ELON</span></h1>
           <p class="ticker">$SIELON</p>
-          <p class="tagline">Same face. A future built together.</p>
-          <p class="token-purpose">An Ethereum meme token inspired by a fictional Elon–SI partnership.</p>
-          <p class="fiction-context">A fictional story inspired by a real interview.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#story">Start the Story <span aria-hidden="true">→</span></a>
             <a class="button" data-hero-social="telegram" hidden>Telegram</a>
@@ -263,14 +282,11 @@
     </section>
     <div class="story-fade" aria-hidden="true"></div>
     </div>
-    <section class="closing" id="community" aria-labelledby="closing-title">
-      <div class="closing-title">
-        <h2 id="closing-title"><span class="title-small">SUPERINTELLIGENCE</span><span class="title-elon">ELON</span></h2>
-        <p class="ticker">$SIELON</p>
-        <p class="tagline">Same face. A future built together.</p>
-      </div>
-      <p class="project-purpose">An independent Ethereum meme project inspired by this fictional partnership.</p>
-      <p class="community-line">Join the community. Share memes. Help shape the next chapter.</p>
+    <section class="closing closing--compact" id="community" aria-labelledby="closing-title">
+      <p class="project-signature">SuperIntelligence Elon <span>$SIELON</span></p>
+      <h2 id="closing-title">Share a scene.</h2>
+      <p class="project-purpose">An independent Ethereum project inspired by this fictional partnership.</p>
+      <p class="community-line">Join the community. Help shape the next chapter.</p>
       <div class="community-actions">
         <a class="button button-primary" data-social="telegram" aria-disabled="true">Telegram — coming soon</a>
         <a class="button" data-social="x" aria-disabled="true">X — coming soon</a>
@@ -285,7 +301,7 @@
           <figcaption>
             <p class="meme-caption">“SI will create our story too. Hopefully, it fixes my dancing.”</p>
             <div class="meme-actions">
-              <button type="button" class="button" data-meme-download data-meme-src="assets/story-09-dance-1440.jpg" data-meme-file="sielon-dance.jpg">Download meme</button>
+              <button type="button" class="button" data-meme-download data-meme-src="assets/story-09-dance-1440.jpg" data-meme-file="sielon-dance-scene.jpg">Download image</button>
               <button type="button" class="button" data-meme-copy>Copy caption</button>
             </div>
             <p class="copy-feedback" data-meme-status role="status" aria-live="polite"></p>
@@ -299,7 +315,7 @@
           <figcaption>
             <p class="meme-caption">“I’m Robot-Elon. SuperIntelligence created me.”</p>
             <div class="meme-actions">
-              <button type="button" class="button" data-meme-download data-meme-src="assets/story-07-reveal-1440.jpg" data-meme-file="sielon-reveal.jpg">Download meme</button>
+              <button type="button" class="button" data-meme-download data-meme-src="assets/story-07-reveal-1440.jpg" data-meme-file="sielon-wrist-scene.jpg">Download image</button>
               <button type="button" class="button" data-meme-copy>Copy caption</button>
             </div>
             <p class="copy-feedback" data-meme-status role="status" aria-live="polite"></p>
@@ -325,7 +341,7 @@
       <p class="copy-feedback" data-copy-feedback role="status" aria-live="polite"></p>
     </section>
   </main>
-  <footer class="site-footer">Fictional story. No affiliation with Elon Musk.</footer>
+  <footer class="site-footer" data-intro-lock>Fictional story. No affiliation with Elon Musk.</footer>
   <dialog class="token-dialog" id="token-dialog" aria-labelledby="dialog-title">
     <div class="dialog-top"><h2 id="dialog-title">Token details</h2><button type="button" class="dialog-close" data-close-token>Close</button></div>
     <dl class="token-facts" data-optional-facts>

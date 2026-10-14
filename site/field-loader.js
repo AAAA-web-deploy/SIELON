@@ -4,6 +4,36 @@ const reduce=matchMedia('(prefers-reduced-motion:reduce)');
 const records=new Map();let epoch=0;
 const eligible=()=>capable.matches&&!reduce.matches;
 function release(record){record.engine?.setSplit(false);record.engine?.leave();}
+function holdMode(amount,wrist){
+ if(wrist)return amount<.58?'gather':'off';
+ if(amount<.24)return 'reveal';
+ if(amount<.58)return 'gather';
+ return 'off';
+}
+function phaseName(amount){
+ if(amount<.22)return 'One face';
+ if(amount<.64)return 'Look closer';
+ return 'Two together';
+}
+function syncHold(record){
+ const amount=Number(record.stage.style.getPropertyValue('--field-p'))||0;
+ const mode=holdMode(amount,record.stage.dataset.fieldMode==='wrist');
+ const label=mode==='gather'?'Hold to gather':'Hold to reveal the double';
+ const ready=record.stage.classList.contains('has-field');
+ for(const button of record.stage.querySelectorAll('[data-field-hold]')){
+  const show=ready&&mode!=='off';
+  if(!show){
+   if(document.activeElement===button)button.blur();
+   record.engine?.setSplit(false);
+  }
+  button.hidden=!show;
+  button.disabled=!show;
+  const name=button.querySelector('[data-hold-label]');
+  if(show&&name&&name.textContent!==label)name.textContent=label;
+ }
+ const cue=record.stage.querySelector('[data-phase-cue]');
+ if(cue&&cue.textContent!==phaseName(amount))cue.textContent=phaseName(amount);
+}
 function headerHeight(){return document.querySelector('.site-header')?.getBoundingClientRect().height||0;}
 function progress(record){
  if(!record.engine)return;
@@ -15,6 +45,7 @@ function progress(record){
  record.engine.setProgress(amount);
  record.stage.style.setProperty('--field-p',amount.toFixed(4));
  record.stage.classList.toggle('is-settled',amount>=.94);
+ syncHold(record);
 }
 function paintCanvas(record){
  const canvas=record.host.querySelector('canvas');
@@ -31,10 +62,19 @@ async function mount(stage){
  const turn=epoch;
  try{
   const [{createSielonField},sources]=await Promise.all([import('./quantum-field.js'),fetch(new URL('./particle-sources.json',import.meta.url)).then(response=>{if(!response.ok)throw new Error('Portrait source configuration missing');return response.json();})]);
+  if(matchMedia('(max-width: 1023px)').matches){
+   sources.human.url='assets/home-v2/human-portrait-v2-640.webp';
+   sources.si.url='assets/home-v2/si-portrait-v2-640.webp';
+  }
   if(turn!==epoch||!eligible()||abort.signal.aborted){records.delete(stage);return;}
   const engine=await createSielonField(host,{sources,onAvailability:available=>{
    stage.classList.toggle('has-field',available);
-   stage.querySelectorAll('[data-field-hold]').forEach(button=>{button.hidden=!available;button.disabled=!available;});
+   const current=records.get(stage);
+   if(!available||!current?.engine){
+    stage.querySelectorAll('[data-field-hold]').forEach(button=>{button.hidden=!available;button.disabled=!available;});
+    return;
+   }
+   syncHold(current);
   }});
   if(turn!==epoch||!eligible()||abort.signal.aborted){engine.destroy();records.delete(stage);stage.classList.remove('has-field');return;}
   record.engine=engine;
@@ -42,6 +82,7 @@ async function mount(stage){
   engine.setPaused(!!document.querySelector('dialog[open]'));
   paintCanvas(record);
   progress(record);
+  syncHold(record);
   const signal=abort.signal;
   stage.addEventListener('pointermove',event=>{
    if(event.pointerType==='touch'||event.target.closest('a,button,input,textarea'))return;
@@ -50,6 +91,7 @@ async function mount(stage){
    engine.move((event.clientX-rect.left)/rect.width*2-1,(event.clientY-rect.top)/rect.height*2-1);
   },{passive:true,signal});
   stage.addEventListener('pointerleave',()=>release(record),{signal});
+  addEventListener('blur',()=>release(record),{signal});
   for(const button of stage.querySelectorAll('[data-field-hold]')){
    button.addEventListener('pointerdown',event=>{if(event.button!==0)return;try{button.setPointerCapture(event.pointerId);}catch{/* already released */}engine.setSplit(true);},{signal});
    for(const type of ['pointerup','pointercancel','lostpointercapture','blur'])button.addEventListener(type,()=>release(record),{signal});

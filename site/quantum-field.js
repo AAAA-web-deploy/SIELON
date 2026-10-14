@@ -165,6 +165,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
  const wristLift=BODY*.42;
  for(const sample of wrist.samples){sample[0]*=wristScale;sample[1]=sample[1]*wristScale+wristLift;sample[2]*=.6;}
  const spread=(human.halfW+si.halfW)*.46;
+ const apart=(human.halfW+si.halfW)*1.22;
  const focusY=eyeTarget*.62;
  const positions=[new Float32Array(count*3),new Float32Array(count*3),new Float32Array(count*3)];
  const colors=[new Float32Array(count*3),new Float32Array(count*3),new Float32Array(count*3)];
@@ -217,12 +218,15 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
   const top=Math.max(human.top,si.top);
   const span=human.halfW+si.halfW+spread*2;
   if(assemble){
-   const solo=(visibleH*(narrow?0.82:0.9))/Math.max(human.top,.001);
-   const pair=Math.min((visibleH*(narrow?0.7:0.78))/top,(visibleW*.9)/Math.max(span,.001));
+   const pairWidth=human.halfW+apart+si.halfW;
+   const solo=(visibleH*(narrow?0.82:0.88))/Math.max(human.top,.001);
+   const room=visibleW*(narrow?0.62:0.54);
+   const pair=Math.min((visibleH*(narrow?0.7:0.78))/top,room/Math.max(pairWidth,.001));
    const scale=solo+(pair-solo)*emerge;
    group.scale.setScalar(scale);
    group.position.y=-visibleH*.5+visibleH*.03;
-   group.position.x=visibleW*.12*emerge-scale*spread*.5*emerge;
+   const pairCenter=visibleW*(narrow?0.12:0.18)*emerge;
+   group.position.x=pairCenter-scale*apart*.5*emerge;
    group.position.z=0;
    return;
   }
@@ -267,7 +271,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
   const targetZ=10-glide*1.05;
   camera.position.z=dt>0?camera.position.z+(targetZ-camera.position.z)*blend:targetZ;
   fit(emerge);
-  uniforms.uAssemble.value=assemble?1:0;uniforms.uWrist.value=wristMix;uniforms.uPair.value=assemble?emerge:state.pair;uniforms.uSplit.value=split;uniforms.uCollapse.value=collapse;uniforms.uTime.value=time;
+  uniforms.uAssemble.value=assemble?1:0;uniforms.uSpread.value=assemble?apart:spread;uniforms.uWrist.value=wristMix;uniforms.uPair.value=assemble?emerge:state.pair;uniforms.uSplit.value=split;uniforms.uCollapse.value=collapse;uniforms.uTime.value=time;
   ndc.set(pointer.x,-pointer.y);ray.setFromCamera(ndc,camera);
   if(ray.ray.intersectPlane(plane,impact))group.worldToLocal(impact);
   uniforms.uImpact.value.set(impact.x,impact.y);
@@ -289,7 +293,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
   }
   portraits.forEach(({mesh,k,source})=>{
    if(assemble){
-    mesh.position.x=source.originX+(k?spread:0);
+    mesh.position.x=source.originX+(k?apart:0);
     mesh.position.y=source.originY;
     mesh.position.z=k?0.28:0.2;
     mesh.material.opacity=k?smooth(.68,.96,emerge):1;

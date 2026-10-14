@@ -4,7 +4,7 @@ import {clamp,smooth,timeline,seedRandom,springStep} from './quantum-math.js';
 
 const BODY=6.6;
 const vertex=`
-uniform float uWrist,uPair,uSplit,uCollapse,uTime,uPixelRatio,uSpread,uFocusY;
+uniform float uWrist,uPair,uSplit,uCollapse,uTime,uPixelRatio,uSpread,uFocusY,uAssemble;
 uniform vec2 uImpact;
 attribute vec3 aHuman,aSI,aWrist,aHumanColor,aSIColor,aWristColor,aOffset;
 attribute float aSide,aSeed;
@@ -18,6 +18,21 @@ void main(){
  vColor=mix(mix(aHumanColor,aSIColor,step(0.,aSide)*pair),aWristColor,uWrist);
  float transit=sin(uWrist*3.14159265)*(1.-uCollapse);
  p+=vec3(sin(aSeed*22.)*.16,cos(aSeed*17.)*.1,sin(aSeed*31.)*.18)*transit;
+ float flight=0.;
+ if(uAssemble>.5){
+  float emerge=clamp(uPair,0.,1.);
+  flight=emerge*emerge*(3.-2.*emerge);
+  vec3 origin=aHuman;
+  origin.x*=.48;
+  origin.y=mix(aHuman.y,uFocusY,.22);
+  vec3 dest=aSI;
+  dest.x+=uSpread;
+  dest.z+=.28;
+  float mid=sin(flight*3.14159265);
+  p=mix(origin,dest,flight);
+  p+=vec3(sin(aSeed*22.+uTime*2.6),cos(aSeed*17.-uTime*2.1),sin(aSeed*31.))*mid*.62;
+  vColor=mix(vec3(.98,.76,.36),aSIColor,smoothstep(.58,.94,flight));
+ }
  p+=aOffset;
  float turn=uCollapse*uCollapse*2.2;
  p.xy=mat2(cos(turn),-sin(turn),sin(turn),cos(turn))*(p.xy-vec2(0.,uFocusY));
@@ -27,9 +42,11 @@ void main(){
  float dist=distance(p.xy,uImpact);
  float edge=smoothstep(.55,3.4,dist);
  vAlpha=(1.-uCollapse*.96)*(1.-edge*uCollapse*.65);
+ if(uAssemble>.5)vAlpha=smoothstep(.03,.16,flight)*mix(1.,.42,smoothstep(.86,1.,flight));
  vec4 mv=modelViewMatrix*vec4(p,1.);
  float sizeCut=1.-uCollapse*edge*.5;
- gl_PointSize=clamp(2.4*uPixelRatio*9./max(1.,-mv.z)*sizeCut,1.,6.5);
+ float sizeBoost=uAssemble>.5?1.+sin(flight*3.14159265)*1.55:1.;
+ gl_PointSize=clamp(2.4*uPixelRatio*9./max(1.,-mv.z)*sizeCut*sizeBoost,1.,9.);
  gl_Position=projectionMatrix*mv;
 }`;
 const fragment=`
@@ -127,7 +144,7 @@ function pickSample(source,random,face){
  return choice;
 }
 
-export async function createSielonField(host,{sources,pointCount=18000,onAvailability=()=>{}}={}){
+export async function createSielonField(host,{sources,pointCount=18000,onAvailability=()=>{},assemble=false}={}){
  let renderer;
  try{renderer=new THREE.WebGLRenderer({alpha:true,antialias:false,powerPreference:'high-performance',premultipliedAlpha:true});}catch(error){onAvailability(false);throw error;}
  renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setClearColor(0x000000,0);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.autoClear=true;
@@ -165,7 +182,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
  Object.entries(attributes).forEach(([name,array])=>geometry.setAttribute(name,new THREE.BufferAttribute(array,3)));
  const displacement=new THREE.BufferAttribute(offsets,3).setUsage(THREE.DynamicDrawUsage);geometry.setAttribute('aOffset',displacement);
  geometry.setAttribute('aSide',new THREE.BufferAttribute(sides,1));geometry.setAttribute('aSeed',new THREE.BufferAttribute(seeds,1));
- const uniforms={uWrist:{value:0},uPair:{value:0},uSplit:{value:0},uCollapse:{value:0},uTime:{value:0},uPixelRatio:{value:renderer.getPixelRatio()},uSpread:{value:spread},uFocusY:{value:focusY},uImpact:{value:new THREE.Vector2()}};
+ const uniforms={uWrist:{value:0},uPair:{value:0},uSplit:{value:0},uCollapse:{value:0},uTime:{value:0},uPixelRatio:{value:renderer.getPixelRatio()},uSpread:{value:spread},uFocusY:{value:focusY},uAssemble:{value:assemble?1:0},uImpact:{value:new THREE.Vector2()}};
  const material=new THREE.ShaderMaterial({uniforms,vertexShader:vertex,fragmentShader:fragment,transparent:true,depthWrite:false});
  const cloud=new THREE.Points(geometry,material);cloud.frustumCulled=false;group.add(cloud);
  const portraits=[human,si].map((source,k)=>{
@@ -187,17 +204,28 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
  const focusQuad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),focusMat);focusScene.add(focusQuad);
  let focusTarget=null,focusEnabled=true,drawCount=count;
  host.append(canvas);
- let progress=0,held=0,holdTarget=0,pointer={x:0,y:0},pointerLast={x:0,y:0},pointerEnergy=0,paused=false,reduced=false,visible=true,lost=false,destroyed=false,raf=0,last=0,time=0,slow=0;
+ let progress=0,held=0,holdTarget=0,pointer={x:0,y:0},pointerLast={x:0,y:0},pointerEnergy=0,paused=false,reduced=false,visible=true,lost=false,destroyed=false,raf=0,last=0,time=0,slow=0,viewW=10;
  const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,0,1),0),impact=new THREE.Vector3(),ndc=new THREE.Vector2();
- function fit(){
+ function fit(emerge=0){
   const z=Math.max(camera.position.z,.1);
   const visibleH=2*Math.tan(THREE.MathUtils.degToRad(17.5))*z;
   const visibleW=visibleH*Math.max(camera.aspect,.2);
+  viewW=visibleW;
   const narrow=visibleW<visibleH*1.38;
   const gutter=narrow?0.2:0.32;
   const regionW=visibleW*(1-gutter-.04);
   const top=Math.max(human.top,si.top);
   const span=human.halfW+si.halfW+spread*2;
+  if(assemble){
+   const solo=(visibleH*(narrow?0.82:0.9))/Math.max(human.top,.001);
+   const pair=Math.min((visibleH*(narrow?0.7:0.78))/top,(visibleW*.9)/Math.max(span,.001));
+   const scale=solo+(pair-solo)*emerge;
+   group.scale.setScalar(scale);
+   group.position.y=-visibleH*.5+visibleH*.03;
+   group.position.x=visibleW*.12*emerge-scale*spread*.5*emerge;
+   group.position.z=0;
+   return;
+  }
   const scale=Math.min((visibleH*(narrow?0.68:0.76))/top,regionW*.98/span);
   group.scale.setScalar(scale);
   group.position.y=-visibleH*.5+visibleH*.025;
@@ -232,13 +260,14 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
  function draw(dt){
   if(destroyed||lost)return;
   const state=timeline(progress);const blend=dt>0?1-Math.exp(-dt/.12):1;held+=(holdTarget-held)*blend;
-  const split=progress<.24?held:0;const collapse=Math.max(state.collapse,progress>=.24&&progress<.58?held:0);const formed=Math.max(state.pair,split);
-  const wristMix=wristMixFor(state,collapse);
-  const glide=reduced?0:smooth(.08,.4,progress)*(1-smooth(.58,.94,progress));
+  const emerge=assemble?smooth(.05,.78,progress):0;
+  const split=assemble?0:(progress<.24?held:0);const collapse=assemble?0:Math.max(state.collapse,progress>=.24&&progress<.58?held:0);const formed=assemble?emerge:Math.max(state.pair,split);
+  const wristMix=assemble?0:wristMixFor(state,collapse);
+  const glide=assemble||reduced?0:smooth(.08,.4,progress)*(1-smooth(.58,.94,progress));
   const targetZ=10-glide*1.05;
   camera.position.z=dt>0?camera.position.z+(targetZ-camera.position.z)*blend:targetZ;
-  fit();
-  uniforms.uWrist.value=wristMix;uniforms.uPair.value=state.pair;uniforms.uSplit.value=split;uniforms.uCollapse.value=collapse;uniforms.uTime.value=time;
+  fit(emerge);
+  uniforms.uAssemble.value=assemble?1:0;uniforms.uWrist.value=wristMix;uniforms.uPair.value=assemble?emerge:state.pair;uniforms.uSplit.value=split;uniforms.uCollapse.value=collapse;uniforms.uTime.value=time;
   ndc.set(pointer.x,-pointer.y);ray.setFromCamera(ndc,camera);
   if(ray.ray.intersectPlane(plane,impact))group.worldToLocal(impact);
   uniforms.uImpact.value.set(impact.x,impact.y);
@@ -259,6 +288,13 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
    group.rotation.y+=(yaw-group.rotation.y)*turn;group.rotation.x+=(pitch-group.rotation.x)*turn;
   }
   portraits.forEach(({mesh,k,source})=>{
+   if(assemble){
+    mesh.position.x=source.originX+(k?spread:0);
+    mesh.position.y=source.originY;
+    mesh.position.z=k?0.28:0.2;
+    mesh.material.opacity=k?smooth(.68,.96,emerge):1;
+    return;
+   }
    mesh.position.x=source.originX+(k?1:-1)*formed*spread;
    mesh.position.y=source.originY;
    mesh.position.z=.2+(k?0.28:-0.16)*formed;
@@ -267,7 +303,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
    mesh.material.opacity=Math.max(0,photo*presence*(1-pointerEnergy*.18));
   });
   core.material.opacity=collapse*.95;core.scale.setScalar(.55+collapse*1.35);
-  dust.material.opacity=(reduced?0.04:0.07)*(1-collapse);
+  dust.material.opacity=assemble?(reduced?0.08:0.08+Math.sin(emerge*Math.PI)*.22):(reduced?0.04:0.07)*(1-collapse);
   const useFocus=focusEnabled&&collapse>.18&&!reduced;
   if(useFocus){
    ensureTarget();

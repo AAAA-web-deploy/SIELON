@@ -4,7 +4,7 @@ import {clamp,smooth,timeline,seedRandom,springStep} from './quantum-math.js';
 
 const BODY=6.6;
 const vertex=`
-uniform float uWrist,uPair,uSplit,uCollapse,uTime,uPixelRatio,uSpread,uFocusY,uAssemble;
+uniform float uWrist,uPair,uSplit,uCollapse,uTime,uPixelRatio,uSpread,uFocusY,uAssemble,uDepart;
 uniform vec2 uImpact;
 attribute vec3 aHuman,aSI,aWrist,aHumanColor,aSIColor,aWristColor,aOffset;
 attribute float aSide,aSeed;
@@ -21,6 +21,7 @@ void main(){
  float flight=0.;
  if(uAssemble>.5){
   float emerge=clamp(uPair,0.,1.);
+  float depart=clamp(uDepart,0.,1.);
   flight=emerge*emerge*(3.-2.*emerge);
   vec3 origin=aHuman;
   origin.x*=.48;
@@ -32,6 +33,16 @@ void main(){
   p=mix(origin,dest,flight);
   p+=vec3(sin(aSeed*22.+uTime*2.6),cos(aSeed*17.-uTime*2.1),sin(aSeed*31.))*mid*.62;
   vColor=mix(vec3(.98,.76,.36),aSIColor,smoothstep(.58,.94,flight));
+  if(depart>.001){
+   float scatter=depart*depart*(3.-2.*depart);
+   vec3 home=aSide>0.?dest:aHuman;
+   home.z=aSide>0.?.28:.16;
+   vec3 spray=vec3(sin(aSeed*40.7)*1.2+aSide*.9,cos(aSeed*23.1)*.95+scatter*1.45,sin(aSeed*17.4)*.8);
+   p=home+spray*scatter*3.4;
+   p+=vec3(sin(aSeed*12.+uTime*3.1),cos(aSeed*9.-uTime*2.2),sin(aSeed*15.))*scatter*.55;
+   vColor=mix(aSide>0.?aSIColor:aHumanColor,vec3(.99,.78,.34),smoothstep(.04,.3,scatter));
+   vAlpha=smoothstep(.02,.14,scatter)*(1.-smoothstep(.62,1.,scatter));
+  }
  }
  p+=aOffset;
  float turn=uCollapse*uCollapse*2.2;
@@ -42,11 +53,14 @@ void main(){
  float dist=distance(p.xy,uImpact);
  float edge=smoothstep(.55,3.4,dist);
  vAlpha=(1.-uCollapse*.96)*(1.-edge*uCollapse*.65);
- if(uAssemble>.5)vAlpha=smoothstep(.03,.16,flight)*(1.-smoothstep(.82,1.,flight));
+ if(uAssemble>.5){
+  if(uDepart>.001){float scatter=clamp(uDepart,0.,1.);scatter=scatter*scatter*(3.-2.*scatter);vAlpha=smoothstep(.02,.14,scatter)*(1.-smoothstep(.62,1.,scatter));}
+  else vAlpha=smoothstep(.03,.16,flight)*(1.-smoothstep(.82,1.,flight));
+ }
  vec4 mv=modelViewMatrix*vec4(p,1.);
  float sizeCut=1.-uCollapse*edge*.5;
- float sizeBoost=uAssemble>.5?1.+sin(flight*3.14159265)*1.55:1.;
- gl_PointSize=clamp(2.4*uPixelRatio*9./max(1.,-mv.z)*sizeCut*sizeBoost,1.,9.);
+ float sizeBoost=uAssemble>.5?(uDepart>.001?1.+sin(clamp(uDepart,0.,1.)*3.14159265)*2.4:1.+sin(flight*3.14159265)*1.55):1.;
+ gl_PointSize=clamp(2.4*uPixelRatio*9./max(1.,-mv.z)*sizeCut*sizeBoost,1.,uDepart>.001?18.:9.);
  gl_Position=projectionMatrix*mv;
 }`;
 const fragment=`
@@ -218,7 +232,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
  Object.entries(attributes).forEach(([name,array])=>geometry.setAttribute(name,new THREE.BufferAttribute(array,3)));
  const displacement=new THREE.BufferAttribute(offsets,3).setUsage(THREE.DynamicDrawUsage);geometry.setAttribute('aOffset',displacement);
  geometry.setAttribute('aSide',new THREE.BufferAttribute(sides,1));geometry.setAttribute('aSeed',new THREE.BufferAttribute(seeds,1));
- const uniforms={uWrist:{value:0},uPair:{value:0},uSplit:{value:0},uCollapse:{value:0},uTime:{value:0},uPixelRatio:{value:renderer.getPixelRatio()},uSpread:{value:spread},uFocusY:{value:focusY},uAssemble:{value:assemble?1:0},uImpact:{value:new THREE.Vector2()}};
+ const uniforms={uWrist:{value:0},uPair:{value:0},uSplit:{value:0},uCollapse:{value:0},uTime:{value:0},uPixelRatio:{value:renderer.getPixelRatio()},uSpread:{value:spread},uFocusY:{value:focusY},uAssemble:{value:assemble?1:0},uDepart:{value:0},uImpact:{value:new THREE.Vector2()}};
  const material=new THREE.ShaderMaterial({uniforms,vertexShader:vertex,fragmentShader:fragment,transparent:true,depthWrite:false});
  const cloud=new THREE.Points(geometry,material);cloud.frustumCulled=false;group.add(cloud);
  const portraits=[human,si].map((source,k)=>{
@@ -263,7 +277,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
  const focusQuad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),focusMat);focusScene.add(focusQuad);
  let focusTarget=null,focusEnabled=true,drawCount=count;
  host.append(canvas);
- let progress=0,held=0,holdTarget=0,pointer={x:0,y:0},pointerLast={x:0,y:0},pointerEnergy=0,metalGlow=0,paused=false,reduced=false,visible=true,lost=false,destroyed=false,raf=0,last=0,time=0,slow=0,viewW=10;
+ let progress=0,departAmt=0,held=0,holdTarget=0,pointer={x:0,y:0},pointerLast={x:0,y:0},pointerEnergy=0,metalGlow=0,paused=false,reduced=false,visible=true,lost=false,destroyed=false,raf=0,last=0,time=0,slow=0,viewW=10;
  const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,0,1),0),impact=new THREE.Vector3(),ndc=new THREE.Vector2();
  function fit(emerge=0){
   const z=Math.max(camera.position.z,.1);
@@ -323,13 +337,14 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
   if(destroyed||lost)return;
   const state=timeline(progress);const blend=dt>0?1-Math.exp(-dt/.12):1;held+=(holdTarget-held)*blend;
   const emerge=assemble?smooth(.05,.78,progress):0;
+  const depart=assemble?clamp(departAmt):0;
   const split=assemble?0:(progress<.24?held:0);const collapse=assemble?0:Math.max(state.collapse,progress>=.24&&progress<.58?held:0);const formed=assemble?emerge:Math.max(state.pair,split);
   const wristMix=assemble?0:wristMixFor(state,collapse);
   const glide=assemble||reduced?0:smooth(.08,.4,progress)*(1-smooth(.58,.94,progress));
   const targetZ=10-glide*1.05;
   camera.position.z=dt>0?camera.position.z+(targetZ-camera.position.z)*blend:targetZ;
   fit(emerge);
-  uniforms.uAssemble.value=assemble?1:0;uniforms.uSpread.value=assemble?apart:spread;uniforms.uWrist.value=wristMix;uniforms.uPair.value=assemble?emerge:state.pair;uniforms.uSplit.value=split;uniforms.uCollapse.value=collapse;uniforms.uTime.value=time;
+  uniforms.uAssemble.value=assemble?1:0;uniforms.uDepart.value=depart;uniforms.uSpread.value=assemble?apart:spread;uniforms.uWrist.value=wristMix;uniforms.uPair.value=assemble?emerge:state.pair;uniforms.uSplit.value=split;uniforms.uCollapse.value=collapse;uniforms.uTime.value=time;
   ndc.set(pointer.x,-pointer.y);ray.setFromCamera(ndc,camera);
   if(ray.ray.intersectPlane(plane,impact))group.worldToLocal(impact);
   uniforms.uImpact.value.set(impact.x,impact.y);
@@ -374,7 +389,8 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
     mesh.position.x=source.originX+(k?apart:0);
     mesh.position.y=source.originY;
     mesh.position.z=k?0.28:0.2;
-    mesh.material.opacity=k?smooth(.68,.96,emerge):1;
+    const bodyFade=1-smooth(0,.42,depart);
+    mesh.material.opacity=(k?smooth(.68,.96,emerge):1)*bodyFade;
     return;
    }
    mesh.position.x=source.originX+(k?1:-1)*formed*spread;
@@ -385,7 +401,10 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
    mesh.material.opacity=Math.max(0,photo*presence*(1-pointerEnergy*.18));
   });
   core.material.opacity=collapse*.95;core.scale.setScalar(.55+collapse*1.35);
-  dust.material.opacity=assemble?(reduced?0.08:0.08+Math.sin(emerge*Math.PI)*.22):(reduced?0.04:0.07)*(1-collapse);
+  const formationDust=reduced?0.08:0.08+Math.sin(emerge*Math.PI)*.22;
+  const scatterDust=Math.sin(Math.min(depart,1)*Math.PI)*.42;
+  dust.material.opacity=assemble?(depart>.001?scatterDust:formationDust):(reduced?0.04:0.07)*(1-collapse);
+  if(depart>.001)metal.material.opacity=0;
   if(reduced)metal.material.opacity=0;
   const useFocus=focusEnabled&&collapse>.18&&!reduced;
   if(useFocus){
@@ -429,6 +448,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
  resize();host.classList.add('field-ready');onAvailability(true);start();
  const api={
   setProgress(p){progress=clamp(p);if(paused||reduced)draw(0);else start();},
+  setDepart(value){departAmt=clamp(value);if(paused||reduced)draw(0);else start();},
   move(x,y){const next={x:clamp(x,-1,1),y:clamp(y,-1,1)};pointerEnergy=clamp(pointerEnergy+Math.hypot(next.x-pointerLast.x,next.y-pointerLast.y)*3);pointer=next;pointerLast=next;start();},
   leave(){pointer={x:0,y:0};pointerLast=pointer;pointerEnergy=0;holdTarget=0;},
   setSplit(value){holdTarget=value?1:0;if(reduced||paused){held=holdTarget;draw(0);}else start();},

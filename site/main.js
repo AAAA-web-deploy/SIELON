@@ -73,18 +73,55 @@
   if (reveal) {
     const smooth = t => t * t * (3 - 2 * t);
     const unit = value => Math.max(0, Math.min(1, value));
-    const paintReveal = raw => {
-      const p = unit(raw);
+    const line = "Elon's Encounter with SI-Elon";
+    const typed = reveal.querySelector('[data-encounter-typed]');
+    const motes = reveal.querySelector('[data-depart-motes]');
+    if (motes && !motes.childElementCount) {
+      for (let i = 0; i < 72; i++) {
+        const dot = document.createElement('i');
+        const angle = (i / 72) * Math.PI * 2 + (i % 5) * 0.2;
+        const reach = 16 + (i * 37 % 42);
+        dot.style.setProperty('--x', (12 + (i * 53 % 76)) + '%');
+        dot.style.setProperty('--y', (8 + (i * 29 % 78)) + '%');
+        dot.style.setProperty('--dx', (Math.cos(angle) * reach) + 'vw');
+        dot.style.setProperty('--dy', (Math.sin(angle) * reach * 0.72 - 10) + 'vh');
+        dot.style.setProperty('--a', (0.4 + (i % 5) * 0.12).toFixed(2));
+        motes.append(dot);
+      }
+    }
+    let shown = -1;
+    const writeLine = count => {
+      if (!typed || shown === count) return;
+      shown = count;
+      typed.textContent = line.slice(0, count);
+    };
+    const mapOpening = (scrolled, travel, width, height, header) => {
+      const oldTravel = Math.max(1, (width >= 768 ? 3.2 : 2.8) * height - (height - header));
+      const scene = unit(scrolled / oldTravel);
+      const after = unit((scrolled - oldTravel) / Math.max(1, travel - oldTravel));
+      const fade = (a, b, x) => smooth(unit((x - a) / (b - a)));
+      return { scene, depart: fade(0.08, 0.52, after), veil: fade(0.40, 0.68, after), type: unit((after - 0.62) / 0.22) };
+    };
+    const paintReveal = (scene, depart = 0, veil = 0, type = 0) => {
+      const p = unit(scene);
       reveal.style.setProperty('--p', p.toFixed(4));
       reveal.style.setProperty('--reveal', smooth(unit((p - 0.04) / 0.74)).toFixed(4));
       reveal.style.setProperty('--mix', smooth(unit((p - 0.2) / 0.36)).toFixed(4));
+      reveal.style.setProperty('--depart', unit(depart).toFixed(4));
+      reveal.style.setProperty('--veil', unit(veil).toFixed(4));
+      reveal.style.setProperty('--type', unit(type).toFixed(4));
       reveal.classList.toggle('is-settled', p >= 0.92);
-      reveal.classList.toggle('is-ending', p >= 0.84);
+      reveal.classList.toggle('is-ending', p >= 0.84 && depart < 0.04);
+      reveal.classList.toggle('is-departing', depart > 0.02);
+      reveal.classList.toggle('is-card', veil > 0.55);
+      reveal.classList.toggle('is-typed', type >= 0.999);
+      writeLine(Math.round(unit(type) * line.length));
     };
     const measureReveal = () => {
       if (reduce.matches) {
         reveal.classList.remove('is-live');
-        paintReveal(1);
+        paintReveal(1, 0, 0, 1);
+        document.documentElement.classList.remove('is-encounter');
         return;
       }
       reveal.classList.add('is-live');
@@ -92,7 +129,11 @@
       document.documentElement.style.setProperty('--header-h', header + 'px');
       const rect = reveal.getBoundingClientRect();
       const travel = Math.max(1, reveal.offsetHeight - (window.innerHeight - header));
-      paintReveal((header - rect.top) / travel);
+      const scrolled = header - rect.top;
+      const phase = mapOpening(scrolled, travel, window.innerWidth, window.innerHeight, header);
+      paintReveal(phase.scene, phase.depart, phase.veil, phase.type);
+      const stillPinned = rect.bottom > header + 24;
+      document.documentElement.classList.toggle('is-encounter', phase.veil > 0.92 && stillPinned);
     };
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     let holdTop = !location.hash;

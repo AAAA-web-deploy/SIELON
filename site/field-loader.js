@@ -35,16 +35,27 @@ function syncHold(record){
  if(cue&&cue.textContent!==phaseName(amount))cue.textContent=phaseName(amount);
 }
 function headerHeight(){return document.querySelector('.site-header')?.getBoundingClientRect().height||0;}
+function unit(value){return Math.max(0,Math.min(1,value));}
+function smoothStep(t){return t*t*(3-2*t);}
+function mapOpening(scrolled,travel,width,height,header){
+ const oldTravel=Math.max(1,(width>=768?3.2:2.8)*height-(height-header));
+ const scene=unit(scrolled/oldTravel);
+ const after=unit((scrolled-oldTravel)/Math.max(1,travel-oldTravel));
+ const fade=(a,b,x)=>smoothStep(unit((x-a)/(b-a)));
+ return {scene,depart:fade(0.08,0.52,after)};
+}
 function progress(record){
  if(!record.engine)return;
- if(record.stage.dataset.fieldMode==='wrist'){record.engine.setProgress(.42);return;}
+ if(record.stage.dataset.fieldMode==='wrist'){record.engine.setProgress(.42);record.engine.setDepart?.(0);return;}
  const header=headerHeight();
  const rect=record.stage.getBoundingClientRect();
  const travel=Math.max(1,record.stage.offsetHeight-(innerHeight-header));
- const amount=Math.max(0,Math.min(1,(header-rect.top)/travel));
- record.engine.setProgress(amount);
- record.stage.style.setProperty('--field-p',amount.toFixed(4));
- record.stage.classList.toggle('is-settled',amount>=.94);
+ const scrolled=header-rect.top;
+ const phase=record.stage.hasAttribute('data-reveal')?mapOpening(scrolled,travel,innerWidth,innerHeight,header):{scene:unit(scrolled/travel),depart:0};
+ record.engine.setProgress(phase.scene);
+ record.engine.setDepart?.(phase.depart);
+ record.stage.style.setProperty('--field-p',phase.scene.toFixed(4));
+ record.stage.classList.toggle('is-settled',phase.scene>=.94&&phase.depart<.04);
  syncHold(record);
 }
 function paintCanvas(record){
@@ -61,7 +72,7 @@ async function mount(stage){
  const record={stage,host,engine:null,abort};records.set(stage,record);
  const turn=epoch;
  try{
-  const [{createSielonField},sources]=await Promise.all([import('./quantum-field.js?v=hem-v4'),fetch(new URL('./particle-sources.json',import.meta.url)).then(response=>{if(!response.ok)throw new Error('Portrait source configuration missing');return response.json();})]);
+  const [{createSielonField},sources]=await Promise.all([import('./quantum-field.js?v=encounter-v1'),fetch(new URL('./particle-sources.json',import.meta.url)).then(response=>{if(!response.ok)throw new Error('Portrait source configuration missing');return response.json();})]);
   if(matchMedia('(max-width: 1023px)').matches){
    sources.human.url='assets/home-v2/human-portrait-v2-640.webp';
    sources.si.url='assets/home-v2/si-portrait-v2-640.webp';

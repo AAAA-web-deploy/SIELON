@@ -200,6 +200,7 @@ html.js .opening { --p:0; --reveal:0; --mix:0; }
 .reveal-cast { z-index:1; pointer-events:none; }
 .reveal-human,.reveal-si { position:absolute; bottom:-4%; display:block; height:92%; }
 .reveal-human img,.reveal-si img { max-width:none; width:auto; height:100%; display:block; }
+.reveal-si img { -webkit-mask-image:linear-gradient(#000 90%, transparent 100%); mask-image:linear-gradient(#000 90%, transparent 100%); }
 .reveal-human { z-index:1; left:calc(48% - var(--reveal) * 18%); height:calc(104% - var(--reveal) * 18%); transform:translateX(-50%); }
 .reveal-si { z-index:2; left:calc(76% + (1 - var(--reveal)) * 6%); height:86%; opacity:var(--mix); transform:translateX(-50%); }
 .opening.has-field .reveal-cast { visibility:hidden; }

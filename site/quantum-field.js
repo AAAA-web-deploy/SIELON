@@ -42,7 +42,7 @@ void main(){
  float dist=distance(p.xy,uImpact);
  float edge=smoothstep(.55,3.4,dist);
  vAlpha=(1.-uCollapse*.96)*(1.-edge*uCollapse*.65);
- if(uAssemble>.5)vAlpha=smoothstep(.03,.16,flight)*mix(1.,.42,smoothstep(.86,1.,flight));
+ if(uAssemble>.5)vAlpha=smoothstep(.03,.16,flight)*(1.-smoothstep(.82,1.,flight));
  vec4 mv=modelViewMatrix*vec4(p,1.);
  float sizeCut=1.-uCollapse*edge*.5;
  float sizeBoost=uAssemble>.5?1.+sin(flight*3.14159265)*1.55:1.;
@@ -80,6 +80,39 @@ async function decodeImage(spec){
  }
  return image;
 }
+function bottomIsHard(data,w,h){
+ const y0=Math.floor(h*.985);
+ let opaque=0,seen=0;
+ const step=Math.max(1,Math.floor(w/80));
+ for(let y=y0;y<h;y+=2)for(let x=0;x<w;x+=step){
+  const a=data[(y*w+x)*4+3];
+  if(a<12)continue;
+  seen++;
+  if(a>200)opaque++;
+ }
+ return seen>8&&opaque/seen>.5;
+}
+function fadeBottomRows(data,w,h){
+ const start=h*.90,end=h*.995;
+ for(let y=Math.floor(start);y<h;y++){
+  const keep=1-smooth(start,end,y+.5);
+  if(keep>.995)continue;
+  const row=y*w*4;
+  for(let x=0;x<w;x++)data[row+x*4+3]*=keep;
+ }
+}
+function softenPlate(image){
+ const plate=document.createElement('canvas');
+ plate.width=image.naturalWidth||image.width;
+ plate.height=image.naturalHeight||image.height;
+ const ctx=plate.getContext('2d',{willReadFrequently:true});
+ ctx.drawImage(image,0,0);
+ const plateData=ctx.getImageData(0,0,plate.width,plate.height);
+ if(!bottomIsHard(plateData.data,plate.width,plate.height))return image;
+ fadeBottomRows(plateData.data,plate.width,plate.height);
+ ctx.putImageData(plateData,0,0);
+ return plate;
+}
 function measure(data,w,h){
  let minX=w,minY=h,maxX=0,maxY=0;
  const rowL=new Int32Array(h),rowR=new Int32Array(h);
@@ -113,6 +146,7 @@ async function sourceCanvas(spec){
    data.data[(row*canvas.width+col)*4+3]*=1-smooth(.82,1,radius);
   }
  }
+ if(spec.mask!=='soft-ellipse'&&bottomIsHard(data.data,canvas.width,canvas.height))fadeBottomRows(data.data,canvas.width,canvas.height);
  const box=measure(data.data,canvas.width,canvas.height);
  const bh=Math.max(1,box.maxY-box.minY);
  const scale=BODY/bh;
@@ -129,7 +163,8 @@ async function sourceCanvas(spec){
  }
  if(!samples.length)throw new Error('Portrait texture has no visible samples.');
  const center=toLocal(canvas.width*.5,canvas.height*.5);
- return {image,samples,eyeY,halfW:(box.maxX-box.minX)*.5*scale,top:(box.maxY-box.minY)*scale,planeW:canvas.width*scale,planeH:canvas.height*scale,originX:center[0],originY:center[1]};
+ const plate=spec.mask==='soft-ellipse'?image:softenPlate(image);
+ return {image:plate,samples,eyeY,halfW:(box.maxX-box.minX)*.5*scale,top:(box.maxY-box.minY)*scale,planeW:canvas.width*scale,planeH:canvas.height*scale,originX:center[0],originY:center[1]};
 }
 
 function pickSample(source,random,face){
@@ -196,6 +231,29 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
  for(let i=0;i<dustPos.length;i+=3){dustPos[i]=(random()-.5)*16;dustPos[i+1]=(random()-.35)*9;dustPos[i+2]=-2.2-random()*5;}
  dustGeo.setAttribute('position',new THREE.BufferAttribute(dustPos,3));
  const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:'#e6c7a2',size:.018,transparent:true,opacity:.07,depthWrite:false}));scene.add(dust);
+ const metalCount=640;
+ const metalGeo=new THREE.BufferGeometry();
+ const metalPos=new Float32Array(metalCount*3),metalHome=new Float32Array(metalCount*3),metalVel=new Float32Array(metalCount*3);
+ for(let i=0;i<metalCount;i++){
+  const angle=random()*Math.PI*2;
+  const radius=Math.pow(random(),.55)*human.halfW*1.05;
+  const ix=i*3;
+  metalHome[ix]=Math.cos(angle)*radius*.62;
+  metalHome[ix+1]=.35+random()*human.top*.86;
+  metalHome[ix+2]=(random()-.32)*.85;
+  metalPos[ix]=metalHome[ix];metalPos[ix+1]=metalHome[ix+1];metalPos[ix+2]=metalHome[ix+2];
+ }
+ metalGeo.setAttribute('position',new THREE.BufferAttribute(metalPos,3));
+ const speck=document.createElement('canvas');speck.width=32;speck.height=32;
+ const speckCtx=speck.getContext('2d');
+ const speckGlow=speckCtx.createRadialGradient(16,16,0,16,16,16);
+ speckGlow.addColorStop(0,'rgba(255,255,255,1)');
+ speckGlow.addColorStop(.28,'rgba(214,228,236,.8)');
+ speckGlow.addColorStop(1,'rgba(214,228,236,0)');
+ speckCtx.fillStyle=speckGlow;speckCtx.fillRect(0,0,32,32);
+ const speckMap=new THREE.CanvasTexture(speck);
+ const metal=new THREE.Points(metalGeo,new THREE.PointsMaterial({map:speckMap,color:'#d5e4ee',size:.04,transparent:true,opacity:0,depthWrite:false}));
+ metal.frustumCulled=false;metal.renderOrder=4;group.add(metal);
  const focusScene=new THREE.Scene();
  const focusCam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
  const focusMat=new THREE.ShaderMaterial({
@@ -205,7 +263,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
  const focusQuad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),focusMat);focusScene.add(focusQuad);
  let focusTarget=null,focusEnabled=true,drawCount=count;
  host.append(canvas);
- let progress=0,held=0,holdTarget=0,pointer={x:0,y:0},pointerLast={x:0,y:0},pointerEnergy=0,paused=false,reduced=false,visible=true,lost=false,destroyed=false,raf=0,last=0,time=0,slow=0,viewW=10;
+ let progress=0,held=0,holdTarget=0,pointer={x:0,y:0},pointerLast={x:0,y:0},pointerEnergy=0,metalGlow=0,paused=false,reduced=false,visible=true,lost=false,destroyed=false,raf=0,last=0,time=0,slow=0,viewW=10;
  const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,0,1),0),impact=new THREE.Vector3(),ndc=new THREE.Vector2();
  function fit(emerge=0){
   const z=Math.max(camera.position.z,.1);
@@ -286,7 +344,27 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
     if(distance<1.1&&pointerEnergy>.01){const force=(1-distance/1.1)*pointerEnergy*18/Math.sqrt(distance+.02);fx=(x-y*.16)*force;fy=(y+x*.16)*force;fz=Math.sin(seeds[i]*21)*force*.12;}
     springStep(offsets,velocities,index,fx,dt);springStep(offsets,velocities,index+1,fy,dt);springStep(offsets,velocities,index+2,fz,dt);
    }
-   displacement.needsUpdate=true;pointerEnergy*=Math.exp(-dt*7);
+   displacement.needsUpdate=true;
+   metalGlow=Math.max(metalGlow*Math.exp(-dt*1.15),Math.min(1,pointerEnergy*2.2));
+   pointerEnergy*=Math.exp(-dt*7);
+   const pull=1-Math.exp(-dt*2.4);
+   for(let i=0;i<metalCount;i++){
+    const ix=i*3;
+    const dx=metalPos[ix]-impact.x,dy=metalPos[ix+1]-impact.y,dist=dx*dx+dy*dy;
+    if(metalGlow>.04&&dist<4.2){
+     const push=(1-dist/4.2)*metalGlow*dt*9,inv=1/Math.sqrt(dist+.05);
+     metalVel[ix]+=dx*inv*push;metalVel[ix+1]+=dy*inv*push;metalVel[ix+2]+=(seeds[i]-.5)*push*.6;
+    }
+    metalVel[ix]+=(metalHome[ix]+Math.sin(time*1.4+i)*.04-metalPos[ix])*pull;
+    metalVel[ix+1]+=(metalHome[ix+1]+Math.cos(time*1.1+i)*.05-metalPos[ix+1])*pull;
+    metalVel[ix+2]+=(metalHome[ix+2]-metalPos[ix+2])*pull;
+    const damp=Math.exp(-dt*1.6);
+    metalVel[ix]*=damp;metalVel[ix+1]*=damp;metalVel[ix+2]*=damp;
+    metalPos[ix]+=metalVel[ix];metalPos[ix+1]+=metalVel[ix+1];metalPos[ix+2]+=metalVel[ix+2];
+   }
+   metalGeo.attributes.position.needsUpdate=true;
+   metal.material.opacity=.012+metalGlow*.55;
+   metal.material.size=.022+metalGlow*.028;
    const yaw=clamp(pointer.x*.055,-.056,.056),pitch=clamp(-pointer.y*.028,-.028,.028);
    const turn=1-Math.exp(-dt*6);
    group.rotation.y+=(yaw-group.rotation.y)*turn;group.rotation.x+=(pitch-group.rotation.x)*turn;
@@ -308,6 +386,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
   });
   core.material.opacity=collapse*.95;core.scale.setScalar(.55+collapse*1.35);
   dust.material.opacity=assemble?(reduced?0.08:0.08+Math.sin(emerge*Math.PI)*.22):(reduced?0.04:0.07)*(1-collapse);
+  if(reduced)metal.material.opacity=0;
   const useFocus=focusEnabled&&collapse>.18&&!reduced;
   if(useFocus){
    ensureTarget();
@@ -355,7 +434,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
   setSplit(value){holdTarget=value?1:0;if(reduced||paused){held=holdTarget;draw(0);}else start();},
   setPaused(value){paused=!!value;if(paused){stop();held=0;holdTarget=0;slow=0;draw(0);}else start();},
   setReducedMotion(value){reduced=!!value;if(reduced){stop();offsets.fill(0);velocities.fill(0);displacement.needsUpdate=true;group.rotation.set(0,0,0);held=0;holdTarget=0;camera.position.z=10;slow=0;draw(0);}else start();},
-  destroy(){destroyed=true;stop();resizeObserver.disconnect();intersection.disconnect();document.removeEventListener('visibilitychange',visibility);canvas.removeEventListener('webglcontextlost',contextLost);canvas.removeEventListener('webglcontextrestored',contextRestored);geometry.dispose();material.dispose();portraits.forEach(({mesh,texture})=>{mesh.geometry.dispose();mesh.material.dispose();texture.dispose();});core.geometry.dispose();core.material.dispose();dust.geometry.dispose();dust.material.dispose();focusQuad.geometry.dispose();focusMat.dispose();focusTarget?.dispose();renderer.dispose();canvas.remove();host.classList.remove('field-ready');}
+  destroy(){destroyed=true;stop();resizeObserver.disconnect();intersection.disconnect();document.removeEventListener('visibilitychange',visibility);canvas.removeEventListener('webglcontextlost',contextLost);canvas.removeEventListener('webglcontextrestored',contextRestored);geometry.dispose();material.dispose();portraits.forEach(({mesh,texture})=>{mesh.geometry.dispose();mesh.material.dispose();texture.dispose();});core.geometry.dispose();core.material.dispose();dust.geometry.dispose();dust.material.dispose();metal.geometry.dispose();metal.material.map.dispose();metal.material.dispose();focusQuad.geometry.dispose();focusMat.dispose();focusTarget?.dispose();renderer.dispose();canvas.remove();host.classList.remove('field-ready');}
  };
  return api;
 }

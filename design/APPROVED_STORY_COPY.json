@@ -1,0 +1,184 @@
+{
+  "brand": "SuperIntelligence Elon",
+  "ticker": "$SIELON",
+  "tagline": "Same face. A future built together.",
+  "heroContext": "A fictional story inspired by a real interview.",
+  "heroButton": "Start the Story",
+  "intertitle": "A FEW DAYS LATER",
+  "purpose": "An independent Ethereum meme project inspired by this fictional partnership.",
+  "community": "Join the community. Share memes. Help shape the next chapter.",
+  "footer": "Fictional story. No affiliation with Elon Musk.",
+  "scenes": [
+    {
+      "id": "interview",
+      "asset": "story-01-interview",
+      "heading": "The interview ends",
+      "key": false,
+      "alt": "Elon sits after the interview while a crew member turns off the studio light and a camera stops recording.",
+      "narration": "The interview ends. The cameras switch off.",
+      "dialogue": []
+    },
+    {
+      "id": "comparison",
+      "asset": "story-02-comparison",
+      "heading": "The lookalike videos",
+      "key": false,
+      "alt": "A visual comparison: Elon watches an Elon Ma lookalike video on his phone, then looks up at a man whose face matches his almost exactly, only a few feet away.",
+      "narration": "",
+      "dialogue": [],
+      "textFree": true
+    },
+    {
+      "id": "meeting",
+      "asset": "story-03-meeting",
+      "heading": "Backstage, before the event",
+      "key": true,
+      "alt": "Backstage, a surprised Elon faces an almost identical double wearing an SI shirt and Ethereum pendant.",
+      "narration": "",
+      "dialogue": [
+        {
+          "speaker": "ELON",
+          "text": "Okay… that’s strange."
+        },
+        {
+          "speaker": "THE MAN",
+          "text": "The security team said the same thing."
+        }
+      ]
+    },
+    {
+      "id": "breakfast",
+      "asset": "story-04-breakfast",
+      "heading": "Same breakfast",
+      "key": false,
+      "alt": "Both Elons hold matching white coffee mugs above identical breakfasts of steak and eggs.",
+      "narration": "Asked what they want for breakfast, both answer together.",
+      "dialogue": [
+        {
+          "speaker": "ELON + THE MAN",
+          "text": "Steak, eggs, and coffee."
+        },
+        {
+          "speaker": "ELON",
+          "text": "Same breakfast?"
+        },
+        {
+          "speaker": "THE MAN",
+          "text": "And usually no lunch."
+        }
+      ]
+    },
+    {
+      "id": "gaming",
+      "asset": "story-05-gaming",
+      "heading": "A familiar way to clear the mind",
+      "key": false,
+      "alt": "Elon and his double smile at each other while holding game controllers in a backstage lounge.",
+      "narration": "",
+      "dialogue": [
+        {
+          "speaker": "ELON",
+          "text": "What do you do to clear your head?"
+        },
+        {
+          "speaker": "THE MAN",
+          "text": "Play a game. Diablo, for example."
+        },
+        {
+          "speaker": "ELON",
+          "text": "That calms your mind?"
+        },
+        {
+          "speaker": "THE MAN",
+          "text": "Exactly."
+        }
+      ]
+    },
+    {
+      "id": "ideas",
+      "asset": "story-06-ideas",
+      "heading": "The conversation clicks",
+      "key": false,
+      "alt": "The two Elons exchange ideas beside a small rocket model, with a robot prototype in the workshop behind them.",
+      "narration": "Rockets, robots, the future. He understands—and brings ideas of his own.",
+      "dialogue": [
+        {
+          "speaker": "ELON",
+          "text": "You’ve clearly watched my interviews."
+        },
+        {
+          "speaker": "THE MAN",
+          "text": "There’s a little more to it."
+        }
+      ]
+    },
+    {
+      "id": "reveal",
+      "asset": "story-07-reveal",
+      "heading": "The answer",
+      "key": true,
+      "alt": "The double opens a small panel on his wrist to reveal a delicate metal frame; Elon reacts in astonishment.",
+      "narration": "A knock at the door. “We’re ready for you.”",
+      "dialogue": [
+        {
+          "speaker": "ELON",
+          "text": "Where do you live? Where do you work?"
+        },
+        {
+          "speaker": "THE MAN",
+          "text": "I’m Robot-Elon. SuperIntelligence created me."
+        }
+      ]
+    },
+    {
+      "id": "handshake",
+      "asset": "story-08-handshake",
+      "heading": "A future built together",
+      "key": false,
+      "alt": "Elon and SI-Elon shake hands warmly, with the robot double’s mechanical wrist visible beside their clasped hands.",
+      "narration": "",
+      "dialogue": [
+        {
+          "speaker": "ELON",
+          "text": "And you came here to meet me?"
+        },
+        {
+          "speaker": "SI-ELON",
+          "text": "I’d like to work with you."
+        },
+        {
+          "speaker": "ELON",
+          "text": "Then let’s work together."
+        }
+      ]
+    },
+    {
+      "id": "dance",
+      "asset": "story-09-dance",
+      "heading": "Two Elons. One stage.",
+      "key": false,
+      "alt": "The two Elons laugh and attempt a small awkward dance onstage while audience members hold up their phones.",
+      "narration": "Two Elons walk onto the stage. The audience reaches for their phones. SI-Elon tries a small dance move. Elon laughs and joins him.",
+      "dialogue": []
+    },
+    {
+      "id": "workshop",
+      "asset": "story-10-workshop",
+      "heading": "The next chapter",
+      "key": false,
+      "alt": "Elon and SI-Elon walk into the workshop together, exchanging a smile as SI-Elon delivers the closing joke.",
+      "narration": "Later, they enter the workshop together.",
+      "dialogue": [
+        {
+          "speaker": "ELON",
+          "text": "What’s next?"
+        },
+        {
+          "speaker": "SI-ELON",
+          "text": "SI will create our story too. Hopefully, it fixes my dancing."
+        }
+      ]
+    }
+  ],
+  "heroPurpose": "An Ethereum meme token inspired by a fictional Elon–SI partnership."
+}

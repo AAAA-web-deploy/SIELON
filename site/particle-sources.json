@@ -1,0 +1,35 @@
+{
+  "human": {
+    "url": "assets/hero-1440.webp",
+    "crop": [
+      0.15,
+      0.01,
+      0.38,
+      0.57
+    ],
+    "mask": "soft-ellipse",
+    "fallback": "assets/hero-1440.jpg"
+  },
+  "si": {
+    "url": "assets/quantum/si-portrait-1024.webp",
+    "fallback": "assets/quantum/si-portrait-1024.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "mask": "alpha"
+  },
+  "wrist": {
+    "url": "assets/story-07-reveal-1440.webp",
+    "crop": [
+      0.37,
+      0.37,
+      0.3,
+      0.26
+    ],
+    "mask": "soft-ellipse",
+    "fallback": "assets/story-07-reveal-1440.jpg"
+  }
+}

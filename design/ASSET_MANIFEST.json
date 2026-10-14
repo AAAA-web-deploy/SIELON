@@ -1,0 +1,394 @@
+[
+  {
+    "file": "site/assets/brand-banner.jpg",
+    "width": 1500,
+    "height": 500,
+    "mode": "RGB",
+    "bytes": 99052,
+    "sha256": "c3e0aac4505c61879b52b7efe6898580bf723024ce3c66e5fa9e08554baebc17"
+  },
+  {
+    "file": "site/assets/hero-1440.jpg",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 169620,
+    "sha256": "a5d8ccb532f4bc1513636ac7701f8271bb3f37b170caedca9ffdd50bc3890fa4"
+  },
+  {
+    "file": "site/assets/hero-1440.webp",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 102208,
+    "sha256": "817b835c1f3776fc4d3482fbf04fe7797e74bfaa1b51a528abe331697f0edf59"
+  },
+  {
+    "file": "site/assets/hero-720.webp",
+    "width": 720,
+    "height": 540,
+    "mode": "RGB",
+    "bytes": 43340,
+    "sha256": "2863a39cd8349a73b0b9a8fbcac4c83e24dfdb8312a4651049ce050783c8785a"
+  },
+  {
+    "file": "site/assets/logo-128.png",
+    "width": 128,
+    "height": 128,
+    "mode": "RGBA",
+    "bytes": 32173,
+    "sha256": "65e370740db2ecc163233a0ca4d31c7e27eee469dea04261eb36ff3e6fcdff51"
+  },
+  {
+    "file": "site/assets/logo-256.png",
+    "width": 256,
+    "height": 256,
+    "mode": "RGBA",
+    "bytes": 113042,
+    "sha256": "42d8ea79bebb919214f0d054d8f40fc80fc02fe2c6f32609dbe68261dfd995bb"
+  },
+  {
+    "file": "site/assets/logo-64.png",
+    "width": 64,
+    "height": 64,
+    "mode": "RGBA",
+    "bytes": 9451,
+    "sha256": "a16f0b0e11d1bfaec3f68a6c9fa8fe85226b2fc5c2a0e73e1b0681db758dedab"
+  },
+  {
+    "file": "site/assets/new/reaction-01-confident-1440.jpg",
+    "width": 1440,
+    "height": 810,
+    "mode": "RGB",
+    "bytes": 186110,
+    "sha256": "38880de3ea87803468e983174aa53ce323749d85fd6acb86eeb525a8d7eefaf0"
+  },
+  {
+    "file": "site/assets/new/reaction-01-confident-1440.webp",
+    "width": 1440,
+    "height": 810,
+    "mode": "RGB",
+    "bytes": 103696,
+    "sha256": "ffcddd15c816d9ac77e2f732e96cc36a228099c78e459b089d59e3a1069361e1"
+  },
+  {
+    "file": "site/assets/new/reaction-01-confident-720.webp",
+    "width": 720,
+    "height": 405,
+    "mode": "RGB",
+    "bytes": 39696,
+    "sha256": "a355ce9e9aafac2c5d0af25b7860e0c7b6caad66aed2d47531d237e32ec15d95"
+  },
+  {
+    "file": "site/assets/new/reaction-02-double-take-1440.jpg",
+    "width": 1440,
+    "height": 810,
+    "mode": "RGB",
+    "bytes": 182791,
+    "sha256": "c183aa71286f6bfd6aa6f27221770638f7b27dad9252ea8f5b18c8c31b46d240"
+  },
+  {
+    "file": "site/assets/new/reaction-02-double-take-1440.webp",
+    "width": 1440,
+    "height": 810,
+    "mode": "RGB",
+    "bytes": 102990,
+    "sha256": "8bc3df84bccb8697b6cf32f45adb30e8a509fb94fa432e6686a5a79c1168eafd"
+  },
+  {
+    "file": "site/assets/new/reaction-02-double-take-720.webp",
+    "width": 720,
+    "height": 405,
+    "mode": "RGB",
+    "bytes": 39792,
+    "sha256": "3427dd52a67dbdaf6f68d7293e0f9ff61fa1dbb2d3882cf01d02fe6d84930af8"
+  },
+  {
+    "file": "site/assets/new/reaction-03-stage-surprise-1440.jpg",
+    "width": 1440,
+    "height": 810,
+    "mode": "RGB",
+    "bytes": 204533,
+    "sha256": "c3483888119749860c130f6a155e99a0228d0ef7d3871472ca9f6e1929e02fc2"
+  },
+  {
+    "file": "site/assets/new/reaction-03-stage-surprise-1440.webp",
+    "width": 1440,
+    "height": 810,
+    "mode": "RGB",
+    "bytes": 117948,
+    "sha256": "c2b8e0644a81d7243c5988d31ec6f5651f6d9520ab266e3b8007d021fbd65bb1"
+  },
+  {
+    "file": "site/assets/new/reaction-03-stage-surprise-720.webp",
+    "width": 720,
+    "height": 405,
+    "mode": "RGB",
+    "bytes": 46850,
+    "sha256": "5ba7083c4af4ae4798be835db5980439c5b8101658d58d5eab41bf644dff692c"
+  },
+  {
+    "file": "site/assets/quantum/si-portrait-1024.png",
+    "width": 1024,
+    "height": 1280,
+    "mode": "RGBA",
+    "bytes": 1176799,
+    "sha256": "85e38d4f1c3ffd7c5a9029f957430d27ff4061f12c43886331b209d393e3a76c"
+  },
+  {
+    "file": "site/assets/quantum/si-portrait-1024.webp",
+    "width": 1024,
+    "height": 1280,
+    "mode": "RGBA",
+    "bytes": 149556,
+    "sha256": "ebb104189b99aca3b69c289f83e0ea5a58280a350b98ced1038791984049bcd4"
+  },
+  {
+    "file": "site/assets/quantum/si-portrait-512.webp",
+    "width": 512,
+    "height": 640,
+    "mode": "RGBA",
+    "bytes": 47618,
+    "sha256": "51593356cc48d8e2c7646cc2dabb6da09575e15cbc0085c5223cb8b9b0cf9f9c"
+  },
+  {
+    "file": "site/assets/story-01-interview-1440.jpg",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 142615,
+    "sha256": "e3135d9d32e56c1733ae7fe47bdc3e8834c74c4c81a37cdbc69044a9d7e03417"
+  },
+  {
+    "file": "site/assets/story-01-interview-1440.webp",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 83316,
+    "sha256": "cc63167d8a98ca10170096998c2794865f640eaaaad81f7f39371d4c57fe15c6"
+  },
+  {
+    "file": "site/assets/story-01-interview-720.webp",
+    "width": 720,
+    "height": 540,
+    "mode": "RGB",
+    "bytes": 34948,
+    "sha256": "305f52fb4974f11c0cc743b0573e40c6d42af5994a34abe9f57603b4ab93caf5"
+  },
+  {
+    "file": "site/assets/story-02-comparison-1440.jpg",
+    "width": 1440,
+    "height": 600,
+    "mode": "RGB",
+    "bytes": 106686,
+    "sha256": "bf35ed067cda7ccd13f9de595eb749702017f58fc2d6bfe1f8a12dd3570c85ec"
+  },
+  {
+    "file": "site/assets/story-02-comparison-1440.webp",
+    "width": 1440,
+    "height": 600,
+    "mode": "RGB",
+    "bytes": 69446,
+    "sha256": "0d1aade592ca1df57a1a9c9957a356fef8b3ad5dd691ba9d81fe62bb06dba4fe"
+  },
+  {
+    "file": "site/assets/story-02-comparison-720.webp",
+    "width": 720,
+    "height": 300,
+    "mode": "RGB",
+    "bytes": 28500,
+    "sha256": "94edff6dafbe88a0934bfa17e205277e3806247f58965060b27da0f26daee87c"
+  },
+  {
+    "file": "site/assets/story-03-meeting-1440.jpg",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 170673,
+    "sha256": "6877f7706386c773b68f6d102443553ddaa94040524949f7f52bb1d5f37431bf"
+  },
+  {
+    "file": "site/assets/story-03-meeting-1440.webp",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 103202,
+    "sha256": "4db0b83239ba3fc333380e9c9f8d831cc51407bef0c87fd01dcdba267902fc69"
+  },
+  {
+    "file": "site/assets/story-03-meeting-720.webp",
+    "width": 720,
+    "height": 540,
+    "mode": "RGB",
+    "bytes": 42916,
+    "sha256": "f3400197e44a445b541e101c62dc9db44b9d2f29776824849b66424c2f575efd"
+  },
+  {
+    "file": "site/assets/story-04-breakfast-1440.jpg",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 184813,
+    "sha256": "b14e613c6264fdc98ddb6945f9ccb63e6491a5e251d307f8517890adcd8c82d5"
+  },
+  {
+    "file": "site/assets/story-04-breakfast-1440.webp",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 117466,
+    "sha256": "e357aeea5814664ffeac191c8290eec21c769205e9313179cea000645fceaebf"
+  },
+  {
+    "file": "site/assets/story-04-breakfast-720.webp",
+    "width": 720,
+    "height": 540,
+    "mode": "RGB",
+    "bytes": 48522,
+    "sha256": "2c2fe3547ea5b97a6f60b11e4250000a23a4a81de4db015f5a371e3f2b3a7473"
+  },
+  {
+    "file": "site/assets/story-05-gaming-1440.jpg",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 165528,
+    "sha256": "2f7e10a957cc078d51dda63f20c395849a420b2d66aa10e926bfa772dfe293ee"
+  },
+  {
+    "file": "site/assets/story-05-gaming-1440.webp",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 102700,
+    "sha256": "a1ce3b513e5c21d4909ed0c49268985ef441a90d6ebbd173e1e0bb8337c498f7"
+  },
+  {
+    "file": "site/assets/story-05-gaming-720.webp",
+    "width": 720,
+    "height": 540,
+    "mode": "RGB",
+    "bytes": 42470,
+    "sha256": "d894810fc4d49a77bce565e95f1af986acfaebd86c30c427511b6333d23381ad"
+  },
+  {
+    "file": "site/assets/story-06-ideas-1440.jpg",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 179525,
+    "sha256": "5aa325f9c95775763e73f848d20e275af73194efa8fbe26955b65cbb9d18d35b"
+  },
+  {
+    "file": "site/assets/story-06-ideas-1440.webp",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 113096,
+    "sha256": "7489bd25055752f423f40599f732fb9c34e4fd9f026db30bcf0c0a3fa20912b0"
+  },
+  {
+    "file": "site/assets/story-06-ideas-720.webp",
+    "width": 720,
+    "height": 540,
+    "mode": "RGB",
+    "bytes": 47466,
+    "sha256": "fff911c233a00bf1a6621adb0612e075e21868ea0e1e1067184c0a37c59cb5e0"
+  },
+  {
+    "file": "site/assets/story-07-reveal-1440.jpg",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 170733,
+    "sha256": "7113d3ec84b18ee20eb6af60f1f43528ab6bdda15ca719148a069fec67fc083c"
+  },
+  {
+    "file": "site/assets/story-07-reveal-1440.webp",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 107094,
+    "sha256": "dd2317957b5dd38bc67b554e65bcbcc602c26ad9f9e42057ce3e9ba5985579b4"
+  },
+  {
+    "file": "site/assets/story-07-reveal-720.webp",
+    "width": 720,
+    "height": 540,
+    "mode": "RGB",
+    "bytes": 42240,
+    "sha256": "953a06828bee1acd0cfe3bedb91267ae991b2ba93710f3b1d8fce1845030e07b"
+  },
+  {
+    "file": "site/assets/story-08-handshake-1440.jpg",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 177002,
+    "sha256": "fb3469d7f4e55d0bd887fd9ec91badfb566b400f0561d027acf56bd72e05067c"
+  },
+  {
+    "file": "site/assets/story-08-handshake-1440.webp",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 107314,
+    "sha256": "69f1d1ab753c1509b5cd74017f527fce705a54996b46c35d44dd1890a31dc503"
+  },
+  {
+    "file": "site/assets/story-08-handshake-720.webp",
+    "width": 720,
+    "height": 540,
+    "mode": "RGB",
+    "bytes": 45342,
+    "sha256": "f32732a162af349bd615ddf0da39d74907cd6c00c53bc1780ee08bcb1d5e62ce"
+  },
+  {
+    "file": "site/assets/story-09-dance-1440.jpg",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 148347,
+    "sha256": "8608673372b3c9ccb6725fa03135a8a2afc18785a6fe45e5e0df37b3adfa3574"
+  },
+  {
+    "file": "site/assets/story-09-dance-1440.webp",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 85226,
+    "sha256": "e77dc31e8bee8f2082adc8b8edc3ca952280bee52285351be28a2779869857df"
+  },
+  {
+    "file": "site/assets/story-09-dance-720.webp",
+    "width": 720,
+    "height": 540,
+    "mode": "RGB",
+    "bytes": 34826,
+    "sha256": "5adee0fb7aaf9248cdc2c6777ad921910082bbdf079d5ee849e42145c1b1c714"
+  },
+  {
+    "file": "site/assets/story-10-workshop-1440.jpg",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 187204,
+    "sha256": "3b7a5751bf051e7230bbb65f3c54656d14a6aa603eefc007dcff77064a684584"
+  },
+  {
+    "file": "site/assets/story-10-workshop-1440.webp",
+    "width": 1440,
+    "height": 1080,
+    "mode": "RGB",
+    "bytes": 115396,
+    "sha256": "f584a8be836bb38992b2cb304edb229b0f2de21188d3db3ff8687b34250a4ae2"
+  },
+  {
+    "file": "site/assets/story-10-workshop-720.webp",
+    "width": 720,
+    "height": 540,
+    "mode": "RGB",
+    "bytes": 49706,
+    "sha256": "4cfb51b02f9b941f8e6c028d9555030972eacd632de56d1fad1e13d9bf08d67b"
+  }
+]

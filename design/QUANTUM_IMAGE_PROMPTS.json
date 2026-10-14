@@ -1,0 +1,6 @@
+[
+  {
+    "key": "si-portrait-cutout",
+    "prompt": "Use case: background-extraction. Edit the provided approved fictional cinematic photo to produce one isolated transparent-background portrait asset of ONLY the RIGHT man, fictional SI-Elon wearing the BLACK SI shirt and silver geometric Ethereum pendant. Keep his exact face, hair, age, familiar smile, skin texture, lighting and slight left-facing head direction. Include his complete head, both shoulders and upper torso, ending at mid-chest ABOVE the handshake and hands but LOW ENOUGH to show the small SI letters and the pendant in full. Remove the workshop and the other man completely. Clean accurate hair and shoulder alpha edges, full head and shoulders with generous transparent margins, centered portrait 4:5 composition. Preserve photorealism and warm amber edge light. No face square or other markings, no robotic face, no added letters except the existing SI on shirt, no caption, no extra objects, no circle or frame. The background must be genuinely transparent, not black or checkerboard baked into pixels. This is a foreground texture for an image-sampled 3D particle sculpture, not a 3D model."
+  }
+]

@@ -1,0 +1,22 @@
+/* Mechanics only; Cursor supplies cinematic placement within desktop-scoped rules. */
+@media (min-width:768px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  [data-film-depth] { perspective:1200px; }
+  [data-film-depth="teaser"] { perspective:1100px; --caption-depth:24px; }
+  [data-film-depth="reaction"] { perspective:1150px; --caption-depth:18px; }
+  [data-film-depth="paired"] { --caption-depth:18px; }
+  [data-film-depth="reveal"] { --caption-depth:18px; }
+  [data-film-depth="closing"] { --caption-depth:28px; }
+  .depth-rotor {
+    position:relative;
+    transform-style:preserve-3d;
+    transform:rotateX(var(--depth-rx,0deg)) rotateY(var(--depth-ry,0deg)) translateZ(var(--depth-z,0px));
+  }
+  .depth-rotor > figure { margin:0; transform-style:preserve-3d; }
+  .depth-caption { transform:translateZ(var(--caption-depth,18px)); }
+  .depth-sheen {
+    position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(circle at var(--shine-x,50%) var(--shine-y,50%),rgba(230,241,255,.07),transparent 48%);
+    opacity:0;
+  }
+  [data-depth-active] .depth-sheen { opacity:1; }
+}

@@ -1,0 +1,10 @@
+{
+  "library": "three",
+  "version": "0.186.1",
+  "source": "https://registry.npmjs.org/three/-/three-0.186.1.tgz",
+  "license": "MIT",
+  "file": "site/vendor/three.min.js",
+  "bytes": 742188,
+  "gzipBytes": 188613,
+  "sha256": "fba62dfd6f0cdf58c9647d9cfe6e83cec5cf98eb24a7677ad116f4c0fca33902"
+}

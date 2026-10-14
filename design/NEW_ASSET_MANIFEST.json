@@ -1,0 +1,134 @@
+[
+  {
+    "id": "reaction-01-confident",
+    "original": "originals/reactions/reaction-01-confident.png",
+    "originalWidth": 1672,
+    "originalHeight": 941,
+    "variants": [
+      {
+        "file": "site/assets/new/reaction-01-confident-720.webp",
+        "width": 720,
+        "height": 405,
+        "bytes": 39696,
+        "sha256": "a355ce9e9aafac2c5d0af25b7860e0c7b6caad66aed2d47531d237e32ec15d95"
+      },
+      {
+        "file": "site/assets/new/reaction-01-confident-1440.webp",
+        "width": 1440,
+        "height": 810,
+        "bytes": 103696,
+        "sha256": "ffcddd15c816d9ac77e2f732e96cc36a228099c78e459b089d59e3a1069361e1"
+      }
+    ],
+    "fallback": {
+      "file": "site/assets/new/reaction-01-confident-1440.jpg",
+      "width": 1440,
+      "height": 810,
+      "bytes": 186110,
+      "sha256": "38880de3ea87803468e983174aa53ce323749d85fd6acb86eeb525a8d7eefaf0"
+    },
+    "display": "desktop-only",
+    "insertAfter": "meeting",
+    "alt": "Two fictional crew members point confidently to different men while the identical Elon and SI-Elon exchange amused glances.",
+    "caption": {
+      "dialogue": [
+        {
+          "speaker": "PRODUCER",
+          "text": "I've worked with Elon for years. That's him."
+        },
+        {
+          "speaker": "SECURITY",
+          "text": "Then who's this?"
+        }
+      ]
+    },
+    "crop": "Full image, width responsive, height auto; no crop over faces or gestures."
+  },
+  {
+    "id": "reaction-02-double-take",
+    "original": "originals/reactions/reaction-02-double-take.png",
+    "originalWidth": 1672,
+    "originalHeight": 941,
+    "variants": [
+      {
+        "file": "site/assets/new/reaction-02-double-take-720.webp",
+        "width": 720,
+        "height": 405,
+        "bytes": 39792,
+        "sha256": "3427dd52a67dbdaf6f68d7293e0f9ff61fa1dbb2d3882cf01d02fe6d84930af8"
+      },
+      {
+        "file": "site/assets/new/reaction-02-double-take-1440.webp",
+        "width": 1440,
+        "height": 810,
+        "bytes": 102990,
+        "sha256": "8bc3df84bccb8697b6cf32f45adb30e8a509fb94fa432e6686a5a79c1168eafd"
+      }
+    ],
+    "fallback": {
+      "file": "site/assets/new/reaction-02-double-take-1440.jpg",
+      "width": 1440,
+      "height": 810,
+      "bytes": 182791,
+      "sha256": "c183aa71286f6bfd6aa6f27221770638f7b27dad9252ea8f5b18c8c31b46d240"
+    },
+    "display": "desktop-only",
+    "insertAfter": "reaction-01-confident",
+    "alt": "A headset-wearing producer hesitates over her notebook and a guard holds his forehead as they compare the two near-identical faces at close range.",
+    "caption": {
+      "dialogue": [
+        {
+          "speaker": "PRODUCER",
+          "text": "Same face. Same smile…"
+        },
+        {
+          "speaker": "SECURITY",
+          "text": "I was certain five seconds ago."
+        }
+      ]
+    },
+    "crop": "Full image, width responsive, height auto; no crop over faces or gestures.",
+    "correction": "Notebook visibly supported by the producer’s left hand; right hand holds the pencil naturally."
+  },
+  {
+    "id": "reaction-03-stage-surprise",
+    "original": "originals/reactions/reaction-03-stage-surprise.png",
+    "originalWidth": 1672,
+    "originalHeight": 941,
+    "variants": [
+      {
+        "file": "site/assets/new/reaction-03-stage-surprise-720.webp",
+        "width": 720,
+        "height": 405,
+        "bytes": 46850,
+        "sha256": "5ba7083c4af4ae4798be835db5980439c5b8101658d58d5eab41bf644dff692c"
+      },
+      {
+        "file": "site/assets/new/reaction-03-stage-surprise-1440.webp",
+        "width": 1440,
+        "height": 810,
+        "bytes": 117948,
+        "sha256": "c2b8e0644a81d7243c5988d31ec6f5651f6d9520ab266e3b8007d021fbd65bb1"
+      }
+    ],
+    "fallback": {
+      "file": "site/assets/new/reaction-03-stage-surprise-1440.jpg",
+      "width": 1440,
+      "height": 810,
+      "bytes": 204533,
+      "sha256": "c3483888119749860c130f6a155e99a0228d0ef7d3871472ca9f6e1929e02fc2"
+    },
+    "display": "desktop-only",
+    "insertAfter": "dance",
+    "alt": "An astonished fictional engineer lowers his eyeglasses beside event staff while the two identical Elons stand together by the stage.",
+    "caption": {
+      "dialogue": [
+        {
+          "speaker": "ENGINEER",
+          "text": "I know Elon. Apparently, I know two now."
+        }
+      ]
+    },
+    "crop": "Full image, width responsive, height auto; no crop over faces or gestures."
+  }
+]

@@ -1,0 +1,241 @@
+{
+  "desktopPages": [
+    "index.html",
+    "story.html"
+  ],
+  "mobile": "Current ten-scene Home layout; new reactions excluded. Same mobile sequence also on direct story.html.",
+  "scenes": [
+    {
+      "id": "interview",
+      "asset": "story-01-interview",
+      "display": "desktop-and-mobile",
+      "caption": {
+        "narration": "The interview ends. The cameras switch off.",
+        "dialogue": []
+      },
+      "alt": "Elon sits after the interview while a crew member turns off the studio light and a camera stops recording."
+    },
+    {
+      "id": "comparison",
+      "asset": "story-02-comparison",
+      "display": "desktop-and-mobile",
+      "caption": {
+        "narration": "",
+        "dialogue": []
+      },
+      "alt": "A visual comparison: Elon watches an Elon Ma lookalike video on his phone, then looks up at a man whose face matches his almost exactly, only a few feet away."
+    },
+    {
+      "id": "meeting",
+      "asset": "story-03-meeting",
+      "display": "desktop-and-mobile",
+      "caption": {
+        "narration": "",
+        "dialogue": [
+          {
+            "speaker": "ELON",
+            "text": "Okay… that’s strange."
+          },
+          {
+            "speaker": "THE MAN",
+            "text": "The security team said the same thing."
+          }
+        ]
+      },
+      "alt": "Backstage, a surprised Elon faces an almost identical double wearing an SI shirt and Ethereum pendant."
+    },
+    {
+      "id": "reaction-01-confident",
+      "asset": "reaction-01-confident",
+      "display": "desktop-only",
+      "caption": {
+        "narration": "",
+        "dialogue": [
+          {
+            "speaker": "PRODUCER",
+            "text": "I've worked with Elon for years. That's him."
+          },
+          {
+            "speaker": "SECURITY",
+            "text": "Then who's this?"
+          }
+        ]
+      },
+      "alt": "Two fictional crew members point confidently to different men while the identical Elon and SI-Elon exchange amused glances."
+    },
+    {
+      "id": "reaction-02-double-take",
+      "asset": "reaction-02-double-take",
+      "display": "desktop-only",
+      "caption": {
+        "narration": "",
+        "dialogue": [
+          {
+            "speaker": "PRODUCER",
+            "text": "Same face. Same smile…"
+          },
+          {
+            "speaker": "SECURITY",
+            "text": "I was certain five seconds ago."
+          }
+        ]
+      },
+      "alt": "A headset-wearing producer hesitates over her notebook and a guard holds his forehead as they compare the two near-identical faces at close range."
+    },
+    {
+      "id": "breakfast",
+      "asset": "story-04-breakfast",
+      "display": "desktop-and-mobile",
+      "caption": {
+        "narration": "Asked what they want for breakfast, both answer together.",
+        "dialogue": [
+          {
+            "speaker": "ELON + THE MAN",
+            "text": "Steak, eggs, and coffee."
+          },
+          {
+            "speaker": "ELON",
+            "text": "Same breakfast?"
+          },
+          {
+            "speaker": "THE MAN",
+            "text": "And usually no lunch."
+          }
+        ]
+      },
+      "alt": "Both Elons hold matching white coffee mugs above identical breakfasts of steak and eggs."
+    },
+    {
+      "id": "gaming",
+      "asset": "story-05-gaming",
+      "display": "desktop-and-mobile",
+      "caption": {
+        "narration": "",
+        "dialogue": [
+          {
+            "speaker": "ELON",
+            "text": "What do you do to clear your head?"
+          },
+          {
+            "speaker": "THE MAN",
+            "text": "Play a game. Diablo, for example."
+          },
+          {
+            "speaker": "ELON",
+            "text": "That calms your mind?"
+          },
+          {
+            "speaker": "THE MAN",
+            "text": "Exactly."
+          }
+        ]
+      },
+      "alt": "Elon and his double smile at each other while holding game controllers in a backstage lounge."
+    },
+    {
+      "id": "ideas",
+      "asset": "story-06-ideas",
+      "display": "desktop-and-mobile",
+      "caption": {
+        "narration": "Rockets, robots, the future. He understands—and brings ideas of his own.",
+        "dialogue": [
+          {
+            "speaker": "ELON",
+            "text": "You’ve clearly watched my interviews."
+          },
+          {
+            "speaker": "THE MAN",
+            "text": "There’s a little more to it."
+          }
+        ]
+      },
+      "alt": "The two Elons exchange ideas beside a small rocket model, with a robot prototype in the workshop behind them."
+    },
+    {
+      "id": "reveal",
+      "asset": "story-07-reveal",
+      "display": "desktop-and-mobile",
+      "caption": {
+        "narration": "A knock at the door. “We’re ready for you.”",
+        "dialogue": [
+          {
+            "speaker": "ELON",
+            "text": "Where do you live? Where do you work?"
+          },
+          {
+            "speaker": "THE MAN",
+            "text": "I’m Robot-Elon. SuperIntelligence created me."
+          }
+        ]
+      },
+      "alt": "The double opens a small panel on his wrist to reveal a delicate metal frame; Elon reacts in astonishment."
+    },
+    {
+      "id": "handshake",
+      "asset": "story-08-handshake",
+      "display": "desktop-and-mobile",
+      "caption": {
+        "narration": "",
+        "dialogue": [
+          {
+            "speaker": "ELON",
+            "text": "And you came here to meet me?"
+          },
+          {
+            "speaker": "SI-ELON",
+            "text": "I’d like to work with you."
+          },
+          {
+            "speaker": "ELON",
+            "text": "Then let’s work together."
+          }
+        ]
+      },
+      "alt": "Elon and SI-Elon shake hands warmly, with the robot double’s mechanical wrist visible beside their clasped hands."
+    },
+    {
+      "id": "dance",
+      "asset": "story-09-dance",
+      "display": "desktop-and-mobile",
+      "caption": {
+        "narration": "Two Elons walk onto the stage. The audience reaches for their phones. SI-Elon tries a small dance move. Elon laughs and joins him.",
+        "dialogue": []
+      },
+      "alt": "The two Elons laugh and attempt a small awkward dance onstage while audience members hold up their phones."
+    },
+    {
+      "id": "reaction-03-stage-surprise",
+      "asset": "reaction-03-stage-surprise",
+      "display": "desktop-only",
+      "caption": {
+        "narration": "",
+        "dialogue": [
+          {
+            "speaker": "ENGINEER",
+            "text": "I know Elon. Apparently, I know two now."
+          }
+        ]
+      },
+      "alt": "An astonished fictional engineer lowers his eyeglasses beside event staff while the two identical Elons stand together by the stage."
+    },
+    {
+      "id": "workshop",
+      "asset": "story-10-workshop",
+      "display": "desktop-and-mobile",
+      "caption": {
+        "narration": "Later, they enter the workshop together.",
+        "dialogue": [
+          {
+            "speaker": "ELON",
+            "text": "What’s next?"
+          },
+          {
+            "speaker": "SI-ELON",
+            "text": "SI will create our story too. Hopefully, it fixes my dancing."
+          }
+        ]
+      },
+      "alt": "Elon and SI-Elon walk into the workshop together, exchanging a smile as SI-Elon delivers the closing joke."
+    }
+  ]
+}

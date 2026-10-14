@@ -1,0 +1,1 @@
+{"name":"sielon-quantum-rebuild","private":true,"type":"module","scripts":{"dev":"node tools/serve.mjs","build":"node tools/build.mjs","verify":"node tools/verify.mjs"}}

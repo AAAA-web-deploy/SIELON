@@ -51,9 +51,11 @@ function progress(record){
  const rect=record.stage.getBoundingClientRect();
  const travel=Math.max(1,record.stage.offsetHeight-(innerHeight-header));
  const scrolled=header-rect.top;
+ const cinematic=record.stage.dataset.cinematic==='1';
  const phase=record.stage.hasAttribute('data-reveal')?mapOpening(scrolled,travel,innerWidth,innerHeight,header):{scene:unit(scrolled/travel),depart:0};
- record.engine.setProgress(phase.scene);
- record.engine.setDepart?.(phase.depart);
+ const depart=cinematic?Number(record.stage.dataset.cinematicDepart)||0:0;
+ record.engine.setProgress(cinematic?1:phase.scene);
+ record.engine.setDepart?.(depart);
  record.stage.style.setProperty('--field-p',phase.scene.toFixed(4));
  record.stage.classList.toggle('is-settled',phase.scene>=.94&&phase.depart<.04);
  syncHold(record);
@@ -72,7 +74,7 @@ async function mount(stage){
  const record={stage,host,engine:null,abort};records.set(stage,record);
  const turn=epoch;
  try{
-  const [{createSielonField},sources]=await Promise.all([import('./quantum-field.js?v=encounter-v1'),fetch(new URL('./particle-sources.json',import.meta.url)).then(response=>{if(!response.ok)throw new Error('Portrait source configuration missing');return response.json();})]);
+  const [{createSielonField},sources]=await Promise.all([import('./quantum-field.js?v=reel-v2'),fetch(new URL('./particle-sources.json',import.meta.url)).then(response=>{if(!response.ok)throw new Error('Portrait source configuration missing');return response.json();})]);
   if(matchMedia('(max-width: 1023px)').matches){
    sources.human.url='assets/home-v2/human-portrait-v2-640.webp';
    sources.si.url='assets/home-v2/si-portrait-v2-640.webp';
@@ -150,6 +152,13 @@ capable.addEventListener('change',sync);
 reduce.addEventListener('change',()=>{
  for(const record of records.values())record.engine?.setReducedMotion(reduce.matches);
  sync();
+});
+document.addEventListener('sielon:cinematic',event=>{
+ for(const record of records.values()){
+  if(!record.stage.hasAttribute('data-reveal')||!record.engine)continue;
+  record.engine.setProgress(1);
+  record.engine.setDepart?.(Number(event.detail?.depart)||0);
+ }
 });
 document.addEventListener('sielon:field-open',sync);
 document.addEventListener('sielon:modal',event=>{for(const record of records.values())record.engine?.setPaused(!!event.detail?.open);});

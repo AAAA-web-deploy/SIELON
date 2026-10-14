@@ -99,8 +99,7 @@
       const oldTravel = Math.max(1, (width >= 768 ? 3.2 : 2.8) * height - (height - header));
       const scene = unit(scrolled / oldTravel);
       const after = unit((scrolled - oldTravel) / Math.max(1, travel - oldTravel));
-      const fade = (a, b, x) => smooth(unit((x - a) / (b - a)));
-      return { scene, depart: fade(0.08, 0.52, after), veil: fade(0.40, 0.68, after), type: unit((after - 0.62) / 0.22) };
+      return { scene, after };
     };
     const paintReveal = (scene, depart = 0, veil = 0, type = 0) => {
       const p = unit(scene);
@@ -116,11 +115,114 @@
       reveal.classList.toggle('is-card', veil > 0.55);
       reveal.classList.toggle('is-typed', type >= 0.999);
       writeLine(Math.round(unit(type) * line.length));
+      document.documentElement.classList.toggle('is-encounter', veil > 0.92);
     };
+    const reel = reveal.querySelector('[data-reel]');
+    const storySlides = [
+      { motion: 'rise', src: 'assets/story-01-interview-1440.webp', fallback: 'assets/story-01-interview-1440.jpg', alt: 'Elon sits after the interview while a crew member turns off the studio light and a camera stops recording.', caption: 'The interview ends. The cameras switch off.' },
+      { motion: 'left', src: 'assets/story-02-comparison-1440.webp', fallback: 'assets/story-02-comparison-1440.jpg', alt: 'A visual comparison: Elon watches an Elon Ma lookalike video on his phone, then looks up at a man whose face matches his almost exactly, only a few feet away.', caption: '' },
+      { motion: 'settle', src: 'assets/story-03-meeting-1440.webp', fallback: 'assets/story-03-meeting-1440.jpg', alt: 'Backstage, a surprised Elon faces an almost identical double wearing an SI shirt and Ethereum pendant.', caption: 'ELON: Okay… that’s strange.\nTHE MAN: The security team said the same thing.' },
+      { motion: 'rise', src: 'assets/story-04-breakfast-1440.webp', fallback: 'assets/story-04-breakfast-1440.jpg', alt: 'Both Elons hold matching white coffee mugs above identical breakfasts of steak and eggs.', caption: 'Asked what they want for breakfast, both answer together.\nELON + THE MAN: Steak, eggs, and coffee.' },
+      { motion: 'scale', src: 'assets/story-05-gaming-1440.webp', fallback: 'assets/story-05-gaming-1440.jpg', alt: 'Elon and his double smile at each other while holding game controllers in a backstage lounge.', caption: 'ELON: What do you do to clear your head?\nTHE MAN: Play a game. Diablo, for example.' },
+      { motion: 'right', src: 'assets/story-06-ideas-1440.webp', fallback: 'assets/story-06-ideas-1440.jpg', alt: 'The two Elons exchange ideas beside a small rocket model, with a robot prototype in the workshop behind them.', caption: 'Rockets, robots, the future. He understands—and brings ideas of his own.' },
+      { motion: 'still', src: 'assets/story-07-reveal-1440.webp', fallback: 'assets/story-07-reveal-1440.jpg', alt: 'The double opens a small panel on his wrist to reveal a delicate metal frame; Elon reacts in astonishment.', caption: 'THE MAN: I’m Robot-Elon. SuperIntelligence created me.' },
+      { motion: 'rise', src: 'assets/story-08-handshake-1440.webp', fallback: 'assets/story-08-handshake-1440.jpg', alt: 'Elon and SI-Elon shake hands warmly, with the robot double’s mechanical wrist visible beside their clasped hands.', caption: 'SI-ELON: I’d like to work with you.\nELON: Then let’s work together.' },
+      { motion: 'scale', src: 'assets/story-09-dance-1440.webp', fallback: 'assets/story-09-dance-1440.jpg', alt: 'The two Elons laugh and attempt a small awkward dance onstage while audience members hold up their phones.', caption: 'Two Elons walk onto the stage. SI-Elon tries a small dance move. Elon laughs and joins him.' },
+      { motion: 'fade', src: 'assets/story-10-workshop-1440.webp', fallback: 'assets/story-10-workshop-1440.jpg', alt: 'Elon and SI-Elon walk into the workshop together, exchanging a smile as SI-Elon delivers the closing joke.', caption: 'SI-ELON: SI will create our story too. Hopefully, it fixes my dancing.' }
+    ];
+    const slideNodes = [];
+    if (reel && !reel.childElementCount) {
+      storySlides.forEach(item => {
+        const figure = document.createElement('figure');
+        figure.className = 'reel-slide';
+        figure.dataset.motion = item.motion;
+        const image = document.createElement('img');
+        image.src = item.src;
+        image.alt = item.alt;
+        image.width = 1440;
+        image.height = 1080;
+        image.decoding = 'async';
+        image.addEventListener('error', () => { image.src = item.fallback; }, { once: true });
+        figure.append(image);
+        if (item.caption) {
+          const caption = document.createElement('figcaption');
+          item.caption.split('\n').forEach(text => {
+            const row = document.createElement('p');
+            row.textContent = text;
+            caption.append(row);
+          });
+          figure.append(caption);
+        }
+        reel.append(figure);
+        slideNodes.push(figure);
+      });
+    }
+    let cinematic = false;
+    let cinematicDone = false;
+    let cinematicFrame = 0;
+    const pushDepart = depart => {
+      reveal.dataset.cinematic = '1';
+      reveal.dataset.cinematicDepart = depart.toFixed(4);
+      document.dispatchEvent(new CustomEvent('sielon:cinematic', { detail: { depart } }));
+    };
+    const paintSlides = elapsed => {
+      const span = reduce.matches ? 2200 : 4200;
+      const exitAt = span * 0.74;
+      reveal.classList.add('is-reel');
+      slideNodes.forEach((slide, index) => {
+        const local = elapsed - index * span;
+        const active = local >= 0 && local < span;
+        const last = index === slideNodes.length - 1 && local >= 0 && local < span + 700;
+        slide.classList.toggle('is-enter', (active && local < exitAt) || last);
+        slide.classList.toggle('is-exit', active && local >= exitAt && !last);
+      });
+      return elapsed < slideNodes.length * span + 500;
+    };
+    const finishCinematic = () => {
+      if (cinematicFrame) cancelAnimationFrame(cinematicFrame);
+      cinematicFrame = 0;
+      cinematic = false;
+      cinematicDone = true;
+      document.documentElement.classList.remove('is-cinematic', 'is-encounter');
+      reveal.classList.remove('is-reel');
+      reveal.dataset.cinematic = '0';
+      paintReveal(1, 0, 0, 0);
+      pushDepart(0);
+      const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 68;
+      const root = document.documentElement;
+      root.style.scrollBehavior = 'auto';
+      window.scrollTo(0, Math.max(0, reveal.offsetTop + reveal.offsetHeight - header));
+    };
+    const beginCinematic = () => {
+      if (cinematic) return;
+      cinematic = true;
+      cinematicDone = true;
+      paintReveal(1, 0, 0, 0);
+      document.documentElement.classList.add('is-cinematic');
+      const startedAt = performance.now();
+      const charMs = reduce.matches ? 1 : 46;
+      const typeStart = reduce.matches ? 460 : 2280;
+      const typeDur = Math.max(1, line.length * charMs);
+      const reelStart = typeStart + typeDur + (reduce.matches ? 200 : 700);
+      const tick = now => {
+        const t = now - startedAt;
+        const depart = smooth(unit(t / (reduce.matches ? 320 : 1800)));
+        const veil = smooth(unit((t - (reduce.matches ? 220 : 1300)) / (reduce.matches ? 240 : 720)));
+        const type = t <= typeStart ? 0 : unit((t - typeStart) / typeDur);
+        paintReveal(1, depart, veil, type);
+        pushDepart(depart);
+        const running = t < reelStart || paintSlides(t - reelStart);
+        if (running) cinematicFrame = requestAnimationFrame(tick);
+        else finishCinematic();
+      };
+      cinematicFrame = requestAnimationFrame(tick);
+    };
+    reveal.querySelector('[data-opening-next]')?.addEventListener('click', beginCinematic);
     const measureReveal = () => {
+      if (cinematic) return;
       if (reduce.matches) {
         reveal.classList.remove('is-live');
-        paintReveal(1, 0, 0, 1);
+        paintReveal(1, 0, 0, 0);
         document.documentElement.classList.remove('is-encounter');
         return;
       }
@@ -131,9 +233,12 @@
       const travel = Math.max(1, reveal.offsetHeight - (window.innerHeight - header));
       const scrolled = header - rect.top;
       const phase = mapOpening(scrolled, travel, window.innerWidth, window.innerHeight, header);
-      paintReveal(phase.scene, phase.depart, phase.veil, phase.type);
-      const stillPinned = rect.bottom > header + 24;
-      document.documentElement.classList.toggle('is-encounter', phase.veil > 0.92 && stillPinned);
+      if (phase.scene < 0.9) cinematicDone = false;
+      if (!cinematicDone && phase.scene >= 0.98 && phase.after > 0.08) {
+        beginCinematic();
+        return;
+      }
+      paintReveal(phase.scene, 0, 0, 0);
     };
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     let holdTop = !location.hash;

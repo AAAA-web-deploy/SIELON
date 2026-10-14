@@ -22,10 +22,10 @@
   <title>SuperIntelligence Elon — $SIELON</title>
   <link rel="icon" type="image/png" href="assets/logo-64.png">
   <link rel="preload" as="image" type="image/webp" href="assets/hero-1440.webp" imagesrcset="assets/hero-720.webp 720w, assets/hero-1440.webp 1440w" imagesizes="100vw">
-  <link rel="stylesheet" href="styles.css?v=scenes-v1">
+  <link rel="stylesheet" href="styles.css?v=reel-v2">
   <script src="site-config.js" defer></script>
-  <script src="main.js?v=scenes-v1" defer></script>
-  <script type="module" src="field-loader.js?v=encounter-v1"></script>
+  <script src="main.js?v=reel-v2" defer></script>
+  <script type="module" src="field-loader.js?v=reel-v2"></script>
   <script>
     document.documentElement.classList.replace('no-js', 'js');
     document.documentElement.classList.add('intro-open');
@@ -62,8 +62,6 @@
       <nav class="site-nav" aria-label="Main navigation">
         <a class="nav-story nav-story--mobile" href="#story">Story</a>
         <a class="nav-story nav-story--desktop" href="story.html">Story</a>
-        <a href="#token" data-open-token>Token</a>
-        <a href="#community">Community</a>
       </nav>
     </div>
   </header>
@@ -94,7 +92,9 @@
         <div class="encounter" data-encounter>
           <p class="encounter-line"><span class="encounter-typed" data-encounter-typed>Elon's Encounter with SI-Elon</span><span class="encounter-caret" aria-hidden="true"></span></p>
         </div>
+        <div class="reel" data-reel aria-hidden="true"></div>
         <p class="sr-only">Elon's Encounter with SI-Elon</p>
+        <button class="button button-primary opening-next" type="button" data-opening-next>Next</button>
         <div class="opening-finale">
           <h1 id="opening-title">
             <a class="desktop-only" href="story.html"><span class="title-small">SUPERINTELLIGENCE</span><span class="title-elon">ELON</span></a>
@@ -111,7 +111,6 @@
             <a class="button" data-trading="dexTools" hidden>DEXTools</a>
             <a class="button button-primary" data-trading="buy" hidden>Trade $SIELON</a>
             <button class="button" type="button" data-copy-contract data-copy-label="ca" disabled>CA pending</button>
-            <button class="button" type="button" data-open-token>Token</button>
             <p class="copy-feedback" data-copy-feedback role="status" aria-live="polite"></p>
           </div>
         </div>
@@ -280,77 +279,7 @@
     </section>
     <div class="story-fade" aria-hidden="true"></div>
     </div>
-    <section class="closing closing--compact" id="community" aria-labelledby="closing-title">
-      <p class="project-signature">SuperIntelligence Elon <span>$SIELON</span></p>
-      <h2 id="closing-title">Share a scene.</h2>
-      <p class="project-purpose">An independent Ethereum project inspired by this fictional partnership.</p>
-      <p class="community-line">Join the community. Help shape the next chapter.</p>
-      <div class="community-actions">
-        <a class="button button-primary" data-social="telegram" aria-disabled="true">Telegram — coming soon</a>
-        <a class="button" data-social="x" aria-disabled="true">X — coming soon</a>
-        <button type="button" class="button" data-open-token>Token details</button>
-      </div>
-      <div class="meme-board">
-        <figure class="meme-card">
-          <picture>
-            <source type="image/webp" srcset="assets/story-09-dance-720.webp 720w, assets/story-09-dance-1440.webp 1440w" sizes="(min-width:768px) 360px, 100vw">
-            <img src="assets/story-09-dance-1440.jpg" width="1440" height="1080" alt="The two Elons laugh and attempt a small awkward dance onstage while audience members hold up their phones." loading="lazy" decoding="async">
-          </picture>
-          <figcaption>
-            <p class="meme-caption">“SI will create our story too. Hopefully, it fixes my dancing.”</p>
-            <div class="meme-actions">
-              <button type="button" class="button" data-meme-download data-meme-src="assets/story-09-dance-1440.jpg" data-meme-file="sielon-dance-scene.jpg">Download image</button>
-              <button type="button" class="button" data-meme-copy>Copy caption</button>
-            </div>
-            <p class="copy-feedback" data-meme-status role="status" aria-live="polite"></p>
-          </figcaption>
-        </figure>
-        <figure class="meme-card">
-          <picture>
-            <source type="image/webp" srcset="assets/story-07-reveal-720.webp 720w, assets/story-07-reveal-1440.webp 1440w" sizes="(min-width:768px) 360px, 100vw">
-            <img src="assets/story-07-reveal-1440.jpg" width="1440" height="1080" alt="The double opens a small panel on his wrist to reveal a delicate metal frame; Elon reacts in astonishment." loading="lazy" decoding="async">
-          </picture>
-          <figcaption>
-            <p class="meme-caption">“I’m Robot-Elon. SuperIntelligence created me.”</p>
-            <div class="meme-actions">
-              <button type="button" class="button" data-meme-download data-meme-src="assets/story-07-reveal-1440.jpg" data-meme-file="sielon-wrist-scene.jpg">Download image</button>
-              <button type="button" class="button" data-meme-copy>Copy caption</button>
-            </div>
-            <p class="copy-feedback" data-meme-status role="status" aria-live="polite"></p>
-          </figcaption>
-        </figure>
-      </div>
-    </section>
-    <section class="token-section" id="token" aria-labelledby="token-heading">
-      <h2 id="token-heading">Token details</h2>
-      <dl class="token-facts" data-optional-facts>
-        <dt>Name</dt><dd data-token-name>SuperIntelligence Elon</dd>
-        <dt>Ticker</dt><dd data-token-ticker>$SIELON</dd>
-        <dt>Network</dt><dd data-token-network>Ethereum mainnet</dd>
-        <dt>Contract</dt><dd><span class="contract-address" data-contract>To be announced</span></dd>
-      </dl>
-      <div class="contract-actions">
-        <button class="button" type="button" data-copy-contract disabled>Copy contract</button>
-        <a class="button" data-etherscan hidden>View on Etherscan</a>
-        <a class="button" data-trading="dexScreener" hidden>DEX Screener</a>
-        <a class="button" data-trading="dexTools" hidden>DEXTools</a>
-        <a class="button button-primary" data-trading="buy" hidden>Trade $SIELON</a>
-      </div>
-      <p class="copy-feedback" data-copy-feedback role="status" aria-live="polite"></p>
-    </section>
   </main>
   <footer class="site-footer" data-intro-lock>Fictional story. No affiliation with Elon Musk.</footer>
-  <dialog class="token-dialog" id="token-dialog" aria-labelledby="dialog-title">
-    <div class="dialog-top"><h2 id="dialog-title">Token details</h2><button type="button" class="dialog-close" data-close-token>Close</button></div>
-    <dl class="token-facts" data-optional-facts>
-      <dt>Name</dt><dd data-token-name>SuperIntelligence Elon</dd>
-      <dt>Ticker</dt><dd data-token-ticker>$SIELON</dd>
-      <dt>Network</dt><dd data-token-network>Ethereum mainnet</dd>
-      <dt>Contract</dt><dd><span class="contract-address" data-contract>To be announced</span></dd>
-    </dl>
-    <div class="contract-actions"><button class="button" type="button" data-copy-contract disabled>Copy contract</button><a class="button" data-etherscan hidden>View on Etherscan</a></div>
-    <p class="copy-feedback" data-copy-feedback role="status" aria-live="polite"></p>
-    <p class="dialog-note">Fictional story. No affiliation with Elon Musk.</p>
-  </dialog>
 </body>
 </html>

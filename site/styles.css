@@ -201,7 +201,7 @@ html.story-motion .intertitle { letter-spacing:calc(.2em + (1 - var(--in)) * .14
 }
 .opening { --p:1; --reveal:1; --mix:1; --depart:0; --veil:0; --type:0; position:relative; height:auto; }
 html.js .opening { --p:0; --reveal:0; --mix:0; }
-.opening.is-live { height:460vh; }
+.opening.is-live { height:340vh; }
 .opening.is-live .opening-sticky { position:sticky; top:var(--header-h,68px); height:calc(100svh - var(--header-h,68px)); min-height:0; }
 .opening-sticky { position:relative; height:calc(100svh - var(--header-h,68px)); min-height:560px; overflow:hidden; background:#050a11; }
 .reveal-plate,.reveal-cast,.reveal-shade { position:absolute; inset:0; }
@@ -232,6 +232,25 @@ html.js .opening { --p:0; --reveal:0; --mix:0; }
 @keyframes encounter-caret { 50% { opacity:0; } }
 html.is-encounter .encounter { position:fixed; inset:0; z-index:40; }
 html.is-encounter .site-header { visibility:hidden; }
+.opening-next { position:absolute; z-index:8; left:50%; bottom:28px; transform:translateX(-50%); opacity:0; pointer-events:none; }
+.opening.is-ending:not(.is-departing) .opening-next { opacity:1; pointer-events:auto; }
+html.is-cinematic, html.is-cinematic body { overflow:hidden; }
+html.is-cinematic .site-header { visibility:hidden; }
+.reel { position:absolute; inset:0; z-index:7; background:#000; opacity:0; pointer-events:none; }
+.opening.is-reel .reel { opacity:1; }
+.reel-slide { position:absolute; inset:0; display:grid; grid-template-rows:1fr auto; align-items:center; justify-items:center; padding:7vh 6vw 6vh; opacity:0; transform:translate3d(var(--sx, 0), var(--sy, 24px), 0) scale(var(--grow, 1)); transition:opacity .9s ease, transform 1s ease; }
+.reel-slide img { width:min(980px, 88vw); max-height:68vh; height:auto; object-fit:contain; box-shadow:0 24px 60px rgba(0,0,0,.45); }
+.reel-slide figcaption { width:min(760px, 88vw); margin-top:18px; text-align:center; color:#f6f1ea; font-size:clamp(16px, 2vw, 20px); line-height:1.45; }
+.reel-slide figcaption p { margin:0 0 8px; }
+.reel-slide.is-enter { opacity:1; transform:none; }
+.reel-slide.is-exit { opacity:0; transform:translate3d(var(--ex, 0), var(--ey, -16px), 0) scale(var(--eg, 1)); }
+.reel-slide[data-motion="left"] { --sx:-64px; --sy:0px; --grow:1; --ex:56px; --ey:0px; --eg:1; }
+.reel-slide[data-motion="right"] { --sx:64px; --sy:0px; --grow:1; --ex:-56px; --ey:0px; --eg:1; }
+.reel-slide[data-motion="settle"] { --sx:0px; --sy:28px; --grow:.96; --ex:0px; --ey:-8px; --eg:1.03; }
+.reel-slide[data-motion="scale"] { --sx:0px; --sy:0px; --grow:.86; --ex:0px; --ey:0px; --eg:1.08; }
+.reel-slide[data-motion="fade"] { --sx:0px; --sy:0px; --grow:1; --ex:0px; --ey:0px; --eg:1; }
+.reel-slide[data-motion="still"] { --sx:0px; --sy:12px; --grow:.99; --ex:-18px; --ey:10px; --eg:.98; }
+.reel-slide[data-motion="rise"] { --sx:0px; --sy:48px; --grow:.98; --ex:0px; --ey:-40px; --eg:1; }
 .opening.is-ending .opening-finale, html.no-js .opening-finale { pointer-events:auto; }
 .opening-finale { pointer-events:none; }
 .opening-finale h1 { margin:0; }
@@ -256,7 +275,7 @@ html.is-encounter .site-header { visibility:hidden; }
   .site-nav a.nav-story--mobile,.skip-link.skip-link--mobile { display:none; }
   .site-nav a.nav-story--desktop { display:flex; }
   .skip-link.skip-link--desktop { display:block; }
-  .opening.is-live { height:520vh; }
+  .opening.is-live { height:380vh; }
   .opening.is-live .opening-sticky { position:sticky; top:var(--header-h,68px); height:calc(100svh - var(--header-h,68px)); min-height:560px; }
   .opening-finale { left:max(28px, 3vw); right:auto; top:12%; bottom:auto; max-width:min(340px, 26vw); }
   .opening .title-elon { font-size:clamp(48px, 5vw, 78px); }
@@ -353,3 +372,10 @@ body.is-loading { overflow:hidden; }
   html.is-encounter .encounter { position:relative; }
   html.is-encounter .site-header { visibility:visible; }
 }
+html.is-cinematic .opening.is-live .opening-sticky,
+html.is-cinematic .opening-sticky {
+  position:fixed; top:0; left:0; right:0; width:100vw; height:100svh; min-height:100svh; z-index:30;
+}
+html.is-cinematic .encounter { position:absolute; inset:0; min-height:0; opacity:var(--veil); z-index:6; }
+html.is-cinematic .opening.is-reel .encounter,
+html.is-cinematic .opening.is-reel .encounter-line { opacity:0; }

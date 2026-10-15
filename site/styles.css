@@ -602,7 +602,7 @@ body:has(#community) .meme-card img {
 }
 body:has(#community) .meme-card figcaption {
   flex:none;
-  padding:14px 8px 0;
+  padding:28px 8px 0;
   text-align:center;
 }
 body:has(#community) .meme-caption { margin:0 0 12px; }

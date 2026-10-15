@@ -445,7 +445,14 @@ body:has(> main.page-chapter) > main.page-chapter { flex:1; min-height:0; displa
     padding:0;
     background:none;
   }
-  .film-story:has(.story-board) .story-lede h1 { font-size:clamp(22px, 2.4vw, 34px); }
+  .film-story:has(.story-board) .story-lede h1 {
+    font-size:clamp(30px, 3.2vw, 48px);
+    color:#fffdf6;
+    font-weight:750;
+    letter-spacing:-.02em;
+    text-shadow:0 0 8px rgba(255,252,245,.95), 0 0 22px rgba(255,220,150,.72), 0 0 42px rgba(241,196,90,.38);
+  }
+  html.story-motion .film-story:has(.story-board) .story-lede { opacity:1; }
   .story-board.film-page {
     flex:1;
     min-height:0;

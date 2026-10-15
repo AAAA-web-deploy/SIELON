@@ -530,16 +530,20 @@ body:has(#community) > .site-footer { padding:12px 20px 16px; }
 body:has(#token) > main.page-chapter,
 body:has(#community) > main.page-chapter { flex:1; min-height:0; height:auto; width:100%; }
 body:has(#token) > main.page-chapter { align-items:center; justify-content:center; }
-body:has(#token) .token-section { width:min(640px, calc(100vw - 48px)); margin:0; padding:0; }
-body:has(#token) .token-section h2 { text-align:center; font-size:clamp(28px, 3vw, 40px); margin:0 0 28px; }
+body:has(#token) .token-section { width:min(1080px, calc(100vw - 80px)); margin:0; padding:0; }
+body:has(#token) .token-section h2 { text-align:center; font-size:clamp(42px, 4.6vw, 68px); margin:0 0 36px; }
 body:has(#token) .token-facts {
-  width:min(560px, 100%);
+  width:100%;
   margin:0 auto;
-  padding:22px 26px;
+  padding:clamp(36px, 5vh, 64px) clamp(36px, 4vw, 72px);
   border:1px solid rgba(189,214,236,.32);
-  border-radius:18px;
+  border-radius:22px;
   background:#08111c;
+  grid-template-columns:minmax(150px, 220px) minmax(0, 1fr);
+  gap:clamp(28px, 4vh, 48px) 40px;
 }
+body:has(#token) .token-facts dt { font-size:clamp(16px, 1.7vw, 22px); }
+body:has(#token) .token-facts dd { font-size:clamp(22px, 2.4vw, 32px); line-height:1.35; }
 body:has(#token) .contract-line { display:flex; align-items:center; justify-content:flex-start; gap:12px; }
 body:has(#token) .contract-address { flex:none; min-width:0; }
 body:has(#token) .contract-copy {
@@ -571,22 +575,35 @@ body:has(#community) .closing {
   background:transparent;
   overflow:hidden;
 }
-body:has(#community) .community-copy { width:min(100%, 360px); max-width:360px; flex:none; align-self:center; }
+body:has(#community) .community-copy { width:min(100%, 460px); max-width:460px; flex:none; align-self:center; }
 body:has(#community) .closing-title { margin:0; transform:none; text-align:left; }
-body:has(#community) .closing .title-small { display:block; font-size:16px; letter-spacing:.14em; font-weight:700; line-height:1.2; }
+body:has(#community) .closing .title-small { display:block; font-size:26px; letter-spacing:.16em; font-weight:700; line-height:1.15; }
 body:has(#community) .closing .title-elon {
+  position:relative;
   font-family:Cinzel, Georgia, "Times New Roman", serif;
   font-weight:700;
-  font-size:96px;
+  font-size:118px;
   line-height:.95;
-  margin:8px 0 0;
-  letter-spacing:.16em;
-  background:linear-gradient(180deg, #fff8ea 0%, #f6d78a 42%, #c9963a 100%);
+  margin:10px 0 0;
+  letter-spacing:.12em;
+  background:linear-gradient(180deg, #fffdf6 0%, #ffe7a8 38%, #e2b04a 100%);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
   -webkit-text-fill-color:transparent;
   text-shadow:none;
+  filter:drop-shadow(0 0 8px rgba(255,246,214,.95)) drop-shadow(0 0 22px rgba(255,210,110,.72)) drop-shadow(0 0 42px rgba(241,186,64,.42));
+}
+body:has(#community) .closing .title-elon::before {
+  content:"ELON";
+  position:absolute;
+  z-index:-1;
+  left:0;
+  top:0;
+  color:#a56b22;
+  -webkit-text-fill-color:#a56b22;
+  background:none;
+  text-shadow:1px 1px 0 #8a5818, 2px 2px 0 #734812, 3px 4px 0 #5c390e, 5px 7px 0 #3d260b;
 }
 body:has(#community) .closing .ticker { margin:8px 0 0; font-size:40px; letter-spacing:.14em; }
 body:has(#community) .project-purpose,
@@ -680,6 +697,7 @@ body:has(#community) .meme-card .copy-feedback { margin:0; min-height:0; }
 @media(max-width:767px) {
   body:has(#community) .closing { display:grid; grid-template-columns:minmax(120px, 42%) minmax(0, 1fr); padding:12px; column-gap:10px; gap:10px; justify-content:stretch; }
   body:has(#community) .closing .title-elon { font-size:clamp(40px, 12vw, 64px); }
+  body:has(#community) .closing .title-small { font-size:12px; letter-spacing:.08em; }
   body:has(#community) .community-copy { width:auto; max-width:none; }
   body:has(#community) .community-actions { gap:8px; }
   body:has(#community) .community-actions .button { min-height:40px; padding:8px 10px; font-size:12px; }

@@ -21,9 +21,9 @@
   <meta name="twitter:image:alt" content="SuperIntelligence Elon branding banner with the project title and $SIELON ticker.">
   <title>Token details — SuperIntelligence Elon</title>
   <link rel="icon" type="image/png" href="assets/logo-64.png">
-  <link rel="stylesheet" href="styles.css?v=pages-v4">
+  <link rel="stylesheet" href="styles.css?v=pages-v17">
   <script src="site-config.js" defer></script>
-  <script src="main.js?v=pages-v3" defer></script>
+  <script src="main.js?v=pages-v16" defer></script>
   <script>document.documentElement.classList.replace('no-js', 'js');</script>
 </head>
 <body>
@@ -48,10 +48,15 @@
         <dt>Name</dt><dd data-token-name>SuperIntelligence Elon</dd>
         <dt>Ticker</dt><dd data-token-ticker>$SIELON</dd>
         <dt>Network</dt><dd data-token-network>Ethereum mainnet</dd>
-        <dt>Contract</dt><dd><span class="contract-address" data-contract>To be announced</span></dd>
+        <dt>Contract</dt>
+        <dd class="contract-line">
+          <span class="contract-address" data-contract>To be announced</span>
+          <button class="button contract-copy" type="button" data-copy-contract disabled aria-label="Copy contract address">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="3.5" y="7.5" width="12" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="8.5" y="3.5" width="12" height="12" rx="1.6" fill="#08111c" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+        </dd>
       </dl>
       <div class="contract-actions">
-        <button class="button" type="button" data-copy-contract disabled>Copy contract</button>
         <a class="button" data-etherscan hidden>View on Etherscan</a>
         <a class="button" data-trading="dexScreener" hidden>DEX Screener</a>
         <a class="button" data-trading="dexTools" hidden>DEXTools</a>
@@ -60,7 +65,6 @@
       <p class="copy-feedback" data-copy-feedback role="status" aria-live="polite"></p>
     </section>
   </main>
-  <footer class="site-footer">Fictional story. No affiliation with Elon Musk.</footer>
   <button class="stage-skip" type="button" data-stage-skip>Skip</button>
 </body>
 </html>

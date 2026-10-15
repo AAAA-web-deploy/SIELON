@@ -378,8 +378,9 @@
   text('[data-contract]', address || 'To be announced');
   document.querySelectorAll('[data-copy-contract]').forEach(button => {
     button.disabled = !address;
-    if (button.dataset.copyLabel === 'ca') button.textContent = address ? 'Copy CA' : 'CA pending';
-    if (!address) button.setAttribute('aria-label', 'Contract address pending');
+    if (button.querySelector('svg')) button.setAttribute('aria-label', address ? 'Copy contract address' : 'Contract address pending');
+    else if (button.dataset.copyLabel === 'ca') button.textContent = address ? 'Copy CA' : 'CA pending';
+    if (!address && !button.querySelector('svg')) button.setAttribute('aria-label', 'Contract address pending');
   });
   document.querySelectorAll('[data-etherscan]').forEach(link => {
     if (address) { link.href = 'https://etherscan.io/token/' + address; link.hidden = false; }

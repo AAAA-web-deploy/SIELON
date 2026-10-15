@@ -52,9 +52,6 @@
     }).then(function (response) { return response.ok; }).catch(function () { return false; });
   }
   var pageId = crypto.randomUUID();
-  post('/api/analytics/collect', payload('pageview', pageId)).then(function (ok) {
-    if (!ok) post('/api/analytics/collect', payload('pageview', pageId));
-  });
   var beatId = crypto.randomUUID();
   var timer = 0;
   function beat() {
@@ -69,11 +66,28 @@
     if (document.visibilityState !== 'visible') return;
     timer = window.setInterval(beat, 30000);
   }
+  post('/api/analytics/collect', payload('pageview', pageId)).then(function (ok) {
+    if (!ok) post('/api/analytics/collect', payload('pageview', pageId));
+    if (document.visibilityState === 'visible') beat();
+  });
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible') { beat(); arm(); }
     else window.clearInterval(timer);
   });
   if (document.visibilityState === 'visible') arm();
+  var sectionTimer = 0;
+  window.addEventListener('scroll', function () {
+    if (sectionTimer) return;
+    sectionTimer = window.setTimeout(function () {
+      sectionTimer = 0;
+      var story = document.getElementById('story');
+      var next = section;
+      if (story && (file === '' || file === 'index.html')) next = story.getBoundingClientRect().top < window.innerHeight * 0.45 ? 'story' : 'home';
+      if (next === section) return;
+      section = next;
+      post('/api/analytics/collect', payload('section', crypto.randomUUID()));
+    }, 400);
+  }, { passive: true });
   document.addEventListener('click', function (event) {
     var node = event.target instanceof Element ? event.target : null;
     if (!node) return;

@@ -1,26 +1,46 @@
-:root { color-scheme: dark; font-family: Arial, Helvetica, sans-serif; background: #050a11; color: #f5f7fb; }
 [hidden] { display: none !important; }
-* { box-sizing: border-box; }
-body { margin: 0; background: #050a11; }
-.dash { width: min(1080px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 64px; }
-.dash-top { display: flex; align-items: center; gap: 16px; }
-.dash-mark { margin: 0; color: #b7e6ff; letter-spacing: .16em; font-weight: 700; }
-h1 { margin: 0; font-size: 32px; }
-.dash-out { margin-left: auto; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(211,230,248,.4); background: transparent; color: #f5f7fb; cursor: pointer; }
-.dash-login, .dash-board { margin-top: 28px; }
-.dash-login { display: grid; gap: 10px; width: min(360px, 100%); }
-label { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #bdc8d6; }
-input { min-height: 46px; padding: 0 14px; border-radius: 12px; border: 1px solid rgba(189,214,236,.32); background: #08111c; color: #fff; font-size: 16px; }
-button[type="submit"], .dash-filters button { min-height: 42px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(189,214,236,.32); background: #08111c; color: #f5f7fb; cursor: pointer; }
-button[type="submit"] { background: #147bdf; border-color: #147bdf; font-weight: 700; }
-.dash-filters { display: flex; flex-wrap: wrap; gap: 8px; }
-.dash-filters button.is-on { background: #147bdf; border-color: #147bdf; }
-.dash-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 18px; }
-.dash-stat { padding: 16px; border: 1px solid rgba(189,214,236,.28); border-radius: 16px; background: #08111c; }
-.dash-stat b { display: block; font-size: 28px; line-height: 1.1; }
-.dash-stat span { color: #bdc8d6; font-size: 13px; }
-.dash-note { min-height: 20px; color: #69d4ff; }
-.dash-table-wrap { overflow: auto; margin-top: 8px; border: 1px solid rgba(189,214,236,.28); border-radius: 16px; }
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid rgba(189,214,236,.16); font-size: 14px; white-space: nowrap; }
-th { color: #bdc8d6; font-weight: 600; }
+body { margin: 0; background: #050a11; color: #f4f7fb; font-family: "Segoe UI", sans-serif; }
+.dash { width: min(1180px, calc(100% - 32px)); margin: 0 auto; min-height: 100vh; padding: 28px 0 72px; }
+h1, h2 { font-family: Orbitron, "Segoe UI", sans-serif; letter-spacing: .04em; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0 0 12px; }
+h2 { font-size: 1.15rem; margin: 0 0 10px; }
+button, input, select { font: inherit; }
+button { border: 0; border-radius: 999px; padding: 10px 16px; background: #147bdf; color: #fff; cursor: pointer; }
+button:disabled { opacity: .45; cursor: default; }
+.dash-card, .dash-stats article { background: #122033; border-radius: 18px; padding: 18px; margin: 16px 0; }
+.dash-card label, .dash-filters label { display: grid; gap: 6px; }
+input, select { border: 1px solid rgba(244,247,251,.2); border-radius: 10px; padding: 10px 12px; background: #050a11; color: #f4f7fb; }
+.dash-top, .dash-actions, .dash-pager, .history-head { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: end; justify-content: space-between; }
+.dash-note, .dash-quiet, .dash-refresh { color: #9aabbd; }
+.dash-filters { display: grid; gap: 14px; margin: 18px 0 8px; padding: 16px; border-radius: 18px; border: 1px solid rgba(244,247,251,.14); }
+.dash-filter-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 16px; }
+.dash-filter-actions { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+.dash-check { display: flex; gap: 8px; align-items: center; }
+.dash-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.dash-stats article.is-lead { background: #147bdf; }
+.dash-stats article.is-live strong::after { content: ""; display: inline-block; width: 10px; height: 10px; margin-left: 10px; border-radius: 50%; background: #9dffb0; box-shadow: 0 0 0 0 rgba(157,255,176,.7); animation: pulse 1.6s infinite; vertical-align: middle; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(157,255,176,0); } 100% { box-shadow: 0 0 0 0 rgba(157,255,176,0); } }
+.dash-stats strong { display: block; font-size: 2.4rem; line-height: 1; margin: 8px 0; }
+.dash-stats span, .cta-chips { color: #c5d2e0; font-size: .92rem; }
+.dash-cta { grid-column: 1 / -1; }
+.cta-chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 10px 0 0; padding: 0; }
+.cta-chips li { display: flex; gap: 8px; align-items: center; border-radius: 999px; padding: 6px 10px; background: rgba(5,10,17,.35); }
+.trend-chart { display: grid; gap: 6px; align-items: end; min-height: 180px; }
+.trend-col { display: grid; grid-template-rows: 18px 120px auto; gap: 4px; justify-items: center; min-width: 0; }
+.trend-count, .trend-label { font-size: .72rem; color: #9aabbd; }
+.trend-label.is-hidden { visibility: hidden; }
+.trend-bar { display: flex; align-items: end; width: 100%; height: 120px; }
+.trend-bar span { display: block; width: 100%; border-radius: 6px 6px 0 0; background: #147bdf; }
+.trend-col.is-peak .trend-bar span { background: #9dffb0; }
+.dash-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.visit-list { list-style: none; margin: 16px 0; padding: 0; display: grid; gap: 10px; }
+.visit-row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: start; padding: 12px; border-radius: 14px; background: #050a11; }
+.visit-headline { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.visit-badge { border-radius: 999px; padding: 2px 8px; background: rgba(20,123,223,.25); font-size: .78rem; text-transform: uppercase; }
+.visit-when, .visit-meta, .visit-ip { color: #9aabbd; margin: 4px 0; }
+.visit-actions { display: grid; gap: 8px; justify-items: end; }
+.dash-detail { background: #050a11; border-radius: 14px; padding: 14px; }
+@media (max-width: 800px) {
+  .dash-filter-fields, .dash-stats, .dash-split, .visit-row { grid-template-columns: 1fr; }
+  .visit-actions { justify-items: start; }
+}

@@ -1,44 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
   <title>Visitors — $SIELON</title>
-  <link rel="icon" type="image/png" href="../assets/logo-64.png">
-  <link rel="stylesheet" href="dashboard.css?v=track-v2">
+  <link rel="icon" href="../assets/sielon-logo.png">
+  <link rel="stylesheet" href="dashboard.css?v=track-v3">
 </head>
 <body>
-  <main class="dash">
-    <header class="dash-top">
-      <p class="dash-mark">$SIELON</p>
-      <h1>Visitors</h1>
-      <button class="dash-out" type="button" data-logout hidden>Sign out</button>
-    </header>
-    <form class="dash-login" data-login>
-      <label for="dash-password">Password</label>
-      <input id="dash-password" type="password" name="password" autocomplete="current-password" required>
-      <button type="submit">Open</button>
-      <p class="dash-note" data-login-note role="status"></p>
+  <main class="dash" id="dashboard-main">
+    <h1>Private Visitor Dashboard</h1>
+    <p data-login-note role="status"></p>
+    <form class="dash-card" data-login hidden>
+      <label for="dashboard-password">Password</label>
+      <input id="dashboard-password" name="password" type="password" autocomplete="current-password" required>
+      <button type="submit">Open dashboard</button>
     </form>
-    <section class="dash-board" data-board hidden>
-      <div class="dash-filters">
-        <button type="button" data-range="today" class="is-on">Today</button>
-        <button type="button" data-range="24h">24 hours</button>
-        <button type="button" data-range="7d">7 days</button>
+    <section data-board hidden>
+      <div class="dash-top">
+        <p class="dash-note">Each IP address is counted once. Times are America/New_York. This page refreshes every 10 seconds while it is open.</p>
+        <button type="button" data-logout>Log out</button>
       </div>
-      <div class="dash-stats" data-stats></div>
-      <p class="dash-note" data-board-note role="status"></p>
-      <div class="dash-table-wrap">
-        <table>
-          <thead>
-            <tr><th>Seen</th><th>Page</th><th>Place</th><th>Device</th><th>From</th></tr>
-          </thead>
-          <tbody data-visits></tbody>
-        </table>
+      <p data-board-note role="status"></p>
+      <form class="dash-filters" data-filters>
+        <div class="dash-filter-fields">
+          <label>Range
+            <select name="range">
+              <option value="today">Today in New York</option>
+              <option value="24h">Rolling last 24 hours</option>
+              <option value="7d">Last 7 days</option>
+              <option value="custom">Custom range</option>
+            </select>
+          </label>
+          <label data-from hidden>From <input name="from" type="date"></label>
+          <label data-to hidden>To <input name="to" type="date"></label>
+          <label>Campaign <input name="campaign" type="text"></label>
+          <label>Referrer <input name="referrer" type="text"></label>
+        </div>
+        <div class="dash-filter-actions">
+          <label class="dash-check"><input name="bots" type="checkbox"> Include likely bots</label>
+          <label class="dash-check"><input name="tests" type="checkbox"> Include admin and development traffic</label>
+          <button type="submit">Apply filters</button>
+        </div>
+      </form>
+      <p class="dash-refresh" data-refresh>Last successful refresh: Not yet</p>
+      <section class="dash-stats" data-stats aria-label="Summary"></section>
+      <section class="dash-card" data-trend></section>
+      <div class="dash-split">
+        <section class="dash-card" data-referrals></section>
+        <section class="dash-card" data-campaigns></section>
       </div>
+      <section class="dash-card dash-history">
+        <div class="history-head">
+          <div>
+            <h2>Visit history</h2>
+            <p class="dash-quiet">Location is the city, region, and country for each visit.</p>
+          </div>
+          <div class="dash-actions">
+            <label class="dash-check"><input data-reveal-export type="checkbox"> Include full IP addresses in the export</label>
+            <button type="button" data-export>Export CSV</button>
+            <button type="button" data-delete disabled>Delete selected</button>
+          </div>
+        </div>
+        <p class="dash-confirm" data-confirm hidden>
+          Delete <span data-confirm-count>0</span> selected visits?
+          <button type="button" data-confirm-delete>Confirm delete</button>
+          <button type="button" data-confirm-cancel>Cancel</button>
+        </p>
+        <ul class="visit-list" data-visits></ul>
+        <div class="dash-pager">
+          <button type="button" data-prev>Previous</button>
+          <span data-page>Page 1 of 1</span>
+          <button type="button" data-next>Next</button>
+        </div>
+        <article class="dash-detail" data-detail hidden></article>
+      </section>
     </section>
   </main>
-  <script src="dashboard.js?v=track-v1"></script>
+  <script src="dashboard.js?v=track-v3" defer></script>
 </body>
 </html>

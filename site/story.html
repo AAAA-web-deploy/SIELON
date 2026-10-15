@@ -23,10 +23,10 @@
   <link rel="icon" type="image/png" href="assets/logo-64.png">
   <link rel="preload" as="image" type="image/webp" href="assets/story-01-interview-1440.webp" media="(min-width:768px)" imagesrcset="assets/story-01-interview-720.webp 720w, assets/story-01-interview-1440.webp 1440w" imagesizes="840px">
   <link rel="preload" as="image" type="image/webp" href="assets/hero-1440.webp" media="(max-width:767px)" imagesrcset="assets/hero-720.webp 720w, assets/hero-1440.webp 1440w" imagesizes="100vw">
-  <link rel="stylesheet" href="styles.css?v=reel-v2">
+  <link rel="stylesheet" href="styles.css?v=rail-v1">
   <link rel="stylesheet" href="desktop-depth.css">
   <script src="site-config.js" defer></script>
-  <script src="main.js?v=reel-v2" defer></script>
+  <script src="main.js?v=rail-v1" defer></script>
   <script src="desktop-depth.js" defer></script>
   <script type="module" src="field-loader.js?v=reel-v2"></script>
   <script>
@@ -61,11 +61,11 @@
         <span class="brand-name">SuperIntelligence Elon</span>
       </a>
       <nav class="site-nav" aria-label="Main navigation">
-        <a href="index.html">Home</a>
-        <a class="nav-story nav-story--mobile" href="#story">Story</a>
-        <a class="nav-story nav-story--desktop" href="#film">Story</a>
-        <a href="#token" data-open-token>Token</a>
-        <a href="#community">Community</a>
+        <a href="index.html" data-nav="home">Home</a>
+        <a class="nav-story nav-story--mobile" href="#story" data-nav="story">Story</a>
+        <a class="nav-story nav-story--desktop" href="#film" data-nav="story">Story</a>
+        <a href="#token" data-nav="token">Token</a>
+        <a href="#community" data-nav="community">Community</a>
       </nav>
     </div>
   </header>
@@ -261,6 +261,23 @@
     </section>
     <div class="story-fade" aria-hidden="true"></div>
     </div>
+    <section class="token-section" id="token" aria-labelledby="token-heading">
+      <h2 id="token-heading">Token details</h2>
+      <dl class="token-facts" data-optional-facts>
+        <dt>Name</dt><dd data-token-name>SuperIntelligence Elon</dd>
+        <dt>Ticker</dt><dd data-token-ticker>$SIELON</dd>
+        <dt>Network</dt><dd data-token-network>Ethereum mainnet</dd>
+        <dt>Contract</dt><dd><span class="contract-address" data-contract>To be announced</span></dd>
+      </dl>
+      <div class="contract-actions">
+        <button class="button" type="button" data-copy-contract disabled>Copy contract</button>
+        <a class="button" data-etherscan hidden>View on Etherscan</a>
+        <a class="button" data-trading="dexScreener" hidden>DEX Screener</a>
+        <a class="button" data-trading="dexTools" hidden>DEXTools</a>
+        <a class="button button-primary" data-trading="buy" hidden>Trade $SIELON</a>
+      </div>
+      <p class="copy-feedback" data-copy-feedback role="status" aria-live="polite"></p>
+    </section>
     <section class="closing" id="community" aria-labelledby="closing-title">
       <div class="closing-title">
         <h2 id="closing-title"><span class="title-small">SUPERINTELLIGENCE</span><span class="title-elon">ELON</span></h2>
@@ -304,25 +321,14 @@
         </figure>
       </div>
     </section>
-    <section class="token-section" id="token" aria-labelledby="token-heading">
-      <h2 id="token-heading">Token details</h2>
-      <dl class="token-facts" data-optional-facts>
-        <dt>Name</dt><dd data-token-name>SuperIntelligence Elon</dd>
-        <dt>Ticker</dt><dd data-token-ticker>$SIELON</dd>
-        <dt>Network</dt><dd data-token-network>Ethereum mainnet</dd>
-        <dt>Contract</dt><dd><span class="contract-address" data-contract>To be announced</span></dd>
-      </dl>
-      <div class="contract-actions">
-        <button class="button" type="button" data-copy-contract disabled>Copy contract</button>
-        <a class="button" data-etherscan hidden>View on Etherscan</a>
-        <a class="button" data-trading="dexScreener" hidden>DEX Screener</a>
-        <a class="button" data-trading="dexTools" hidden>DEXTools</a>
-        <a class="button button-primary" data-trading="buy" hidden>Trade $SIELON</a>
-      </div>
-      <p class="copy-feedback" data-copy-feedback role="status" aria-live="polite"></p>
-    </section>
   </main>
   <footer class="site-footer" data-intro-lock>Fictional story. No affiliation with Elon Musk.</footer>
+  <nav class="rail" aria-label="Chapters" data-rail>
+    <a href="index.html" data-step="home"><span>Home</span></a>
+    <a href="#film" data-step="story"><span>Story</span></a>
+    <a href="#token" data-step="token"><span>Token</span></a>
+    <a href="#community" data-step="community"><span>Community</span></a>
+  </nav>
   <dialog class="token-dialog" id="token-dialog" aria-labelledby="dialog-title">
     <div class="dialog-top"><h2 id="dialog-title">Token details</h2><button type="button" class="dialog-close" data-close-token>Close</button></div>
     <dl class="token-facts" data-optional-facts>

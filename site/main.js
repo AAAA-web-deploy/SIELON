@@ -655,6 +655,75 @@
     reduce.addEventListener('change', syncWrist);
     syncWrist();
   }
+  const rail = document.querySelector('[data-rail]');
+  if (rail) {
+    const steps = [...rail.querySelectorAll('[data-step]')];
+    const keys = ['home', 'story', 'token', 'community'];
+    const narrow = window.matchMedia('(max-width: 767px)');
+    const sectionTop = id => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      const hidden = el.closest('.phone-only, .desktop-only');
+      if (hidden && getComputedStyle(hidden).display === 'none') return null;
+      return el.getBoundingClientRect().top + window.scrollY;
+    };
+    const paintRail = () => {
+      const storyStep = rail.querySelector('[data-step="story"]');
+      const homePage = !!document.querySelector('[data-reveal]');
+      if (storyStep) storyStep.setAttribute('href', homePage ? (narrow.matches ? '#story' : 'story.html') : (narrow.matches ? '#story' : '#film'));
+      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      let active = homePage ? 'home' : 'story';
+      let local = 0;
+      if (homePage) {
+        const reveal = document.querySelector('[data-reveal]');
+        const cinematic = document.documentElement.classList.contains('is-cinematic') || reveal.classList.contains('is-reel');
+        const storyTop = sectionTop('story');
+        if (cinematic) { active = 'story'; local = 0; }
+        else if (storyTop !== null && window.scrollY + window.innerHeight * 0.45 >= storyTop) {
+          active = 'story';
+          local = Math.min(1, Math.max(0, (window.scrollY + window.innerHeight * 0.45 - storyTop) / Math.max(1, document.documentElement.scrollHeight - storyTop)));
+        } else {
+          active = 'home';
+          local = Math.min(1, Math.max(0, window.scrollY / Math.max(1, storyTop === null ? max : storyTop)));
+        }
+      } else {
+        const marker = window.scrollY + window.innerHeight * 0.42;
+        const sections = [
+          { key: 'story', top: sectionTop('film') ?? sectionTop('story') },
+          { key: 'token', top: sectionTop('token') },
+          { key: 'community', top: sectionTop('community') }
+        ].filter(item => item.top !== null);
+        active = sections[0]?.key || 'story';
+        for (let i = 0; i < sections.length; i++) {
+          if (sections[i].top <= marker) {
+            active = sections[i].key;
+            const next = sections[i + 1]?.top ?? document.documentElement.scrollHeight;
+            local = Math.min(1, Math.max(0, (marker - sections[i].top) / Math.max(1, next - sections[i].top)));
+          }
+        }
+      }
+      const index = Math.max(0, keys.indexOf(active));
+      const flight = Math.min(1, (index + (index < keys.length - 1 ? local : 0)) / (keys.length - 1));
+      rail.style.setProperty('--flight', flight.toFixed(4));
+      steps.forEach((step, stepIndex) => {
+        const on = step.dataset.step === active;
+        step.classList.toggle('is-active', on);
+        step.classList.toggle('is-done', stepIndex < index);
+        if (on) step.setAttribute('aria-current', 'true');
+        else step.removeAttribute('aria-current');
+      });
+      document.querySelectorAll('[data-nav]').forEach(link => {
+        const on = link.dataset.nav === active;
+        link.classList.toggle('is-active', on);
+        if (on) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    };
+    addEventListener('scroll', () => requestAnimationFrame(paintRail), { passive: true });
+    addEventListener('resize', paintRail);
+    document.addEventListener('sielon:cinematic', paintRail);
+    paintRail();
+  }
   addEventListener('scroll', requestPaint, { passive: true });
   addEventListener('resize', () => { syncHeader(); pin(); clampCopy(); requestPaint(); }, { passive: true });
   const reset = () => {

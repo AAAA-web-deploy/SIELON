@@ -1,0 +1,26 @@
+:root { color-scheme: dark; font-family: Arial, Helvetica, sans-serif; background: #050a11; color: #f5f7fb; }
+[hidden] { display: none !important; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #050a11; }
+.dash { width: min(1080px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 64px; }
+.dash-top { display: flex; align-items: center; gap: 16px; }
+.dash-mark { margin: 0; color: #b7e6ff; letter-spacing: .16em; font-weight: 700; }
+h1 { margin: 0; font-size: 32px; }
+.dash-out { margin-left: auto; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(211,230,248,.4); background: transparent; color: #f5f7fb; cursor: pointer; }
+.dash-login, .dash-board { margin-top: 28px; }
+.dash-login { display: grid; gap: 10px; width: min(360px, 100%); }
+label { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #bdc8d6; }
+input { min-height: 46px; padding: 0 14px; border-radius: 12px; border: 1px solid rgba(189,214,236,.32); background: #08111c; color: #fff; font-size: 16px; }
+button[type="submit"], .dash-filters button { min-height: 42px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(189,214,236,.32); background: #08111c; color: #f5f7fb; cursor: pointer; }
+button[type="submit"] { background: #147bdf; border-color: #147bdf; font-weight: 700; }
+.dash-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.dash-filters button.is-on { background: #147bdf; border-color: #147bdf; }
+.dash-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 18px; }
+.dash-stat { padding: 16px; border: 1px solid rgba(189,214,236,.28); border-radius: 16px; background: #08111c; }
+.dash-stat b { display: block; font-size: 28px; line-height: 1.1; }
+.dash-stat span { color: #bdc8d6; font-size: 13px; }
+.dash-note { min-height: 20px; color: #69d4ff; }
+.dash-table-wrap { overflow: auto; margin-top: 8px; border: 1px solid rgba(189,214,236,.28); border-radius: 16px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid rgba(189,214,236,.16); font-size: 14px; white-space: nowrap; }
+th { color: #bdc8d6; font-weight: 600; }

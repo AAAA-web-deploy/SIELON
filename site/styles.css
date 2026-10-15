@@ -41,7 +41,9 @@ button:focus-visible,a:focus-visible { outline:2px solid var(--blue); outline-of
 .site-nav a:hover, .header-copy:hover:not(:disabled), .header-social:hover { color:#fff; border-color:rgba(241,207,103,.8); background:#122033; }
 .site-nav a.is-active { color:#fff; background:#147bdf; border-color:#147bdf; }
 .site-nav a.is-active::after { content:none; }
-.header-copy { color:#fff6df; border-color:rgba(241,207,103,.72); background:transparent; cursor:pointer; }
+.header-copy { color:#fff6df; border-color:rgba(241,207,103,.72); background:transparent; cursor:pointer; transition:border-radius .2s ease, background .2s ease, border-color .2s ease; }
+.header-copy.is-copied, .button.is-copied[data-copy-contract] { border-radius:12px; background:#147bdf; border-color:#147bdf; color:#fff; }
+.contract-copy.is-copied { border-radius:50%; background:#147bdf; border-color:#147bdf; color:#fff; }
 .header-copy:disabled { opacity:.55; cursor:default; }
 .header-social { width:42px; height:42px; min-width:42px; min-height:42px; padding:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; }
 .header-social[data-social="telegram"] { background:#147bdf; border-color:#147bdf; color:#fff; }
@@ -332,16 +334,16 @@ html.intro-open .continue-note { visibility:hidden; }
 .opening-finale h1 { margin:0; }
 .opening-finale a { color:inherit; }
 .opening .title-small,.opening .ticker { text-shadow:0 1px 2px rgba(0,0,0,.72); }
-.opening .title-small { text-align:left; letter-spacing:.18em; }
+.opening .title-small { text-align:left; font-family:Orbitron, Arial, sans-serif; font-weight:700; font-size:clamp(28px, 3vw, 44px); letter-spacing:.1em; }
 .opening .title-elon {
   position:relative;
-  margin:6px 0 0;
+  margin:8px 0 0;
   width:fit-content;
   font-family:Orbitron, Arial, sans-serif;
   font-weight:700;
-  font-size:clamp(58px, 6.6vw, 104px);
-  line-height:.95;
-  letter-spacing:.14em;
+  font-size:clamp(96px, 9.2vw, 156px);
+  line-height:.9;
+  letter-spacing:.1em;
   color:#f5f8ff;
   -webkit-text-fill-color:#f5f8ff;
   text-shadow:0 1px 0 #ffffff, 1px 2px 0 #d7e2f4, 2px 4px 0 #a9bdd8, 3px 6px 0 #7c96b8, 4px 8px 0 #567498, 5px 11px 0 #35506e, 7px 16px 18px rgba(0,0,0,.5);
@@ -361,7 +363,8 @@ html.intro-open .continue-note { visibility:hidden; }
   .reveal-si { left:72%; bottom:0; height:100%; opacity:1; }
   .reveal-thread { display:none; }
   .phone-only .story { width:min(100%, 680px); padding:12px 16px 56px; }
-  .opening .title-elon { font-size:48px; letter-spacing:.08em; }
+  .opening .title-elon { font-size:72px; letter-spacing:.06em; }
+  .opening .title-small { font-size:22px; letter-spacing:.08em; }
   .identity-name { font-size:clamp(40px, 12vw, 56px); letter-spacing:.02em; }
   .identity-line { font-size:clamp(18px, 4.6vw, 22px); margin-top:10px; }
   .opening-finale { position:relative; left:auto; right:auto; top:auto; bottom:auto; width:auto; max-width:none; margin:0; padding:18px 16px 8px; transform:none; text-align:left; }
@@ -381,8 +384,8 @@ html.intro-open .continue-note { visibility:hidden; }
   .opening-finale { position:fixed; z-index:28; left:max(40px, 4vw); right:auto; top:calc(var(--header-h, 68px) + (100svh - var(--header-h, 68px)) / 2); bottom:auto; width:min(780px, 52vw); max-width:min(780px, 52vw); transform:translateY(-50%); text-align:left; }
   .identity-name { white-space:nowrap; }
   .story-lede { position:sticky; top:calc(var(--header-h, 68px) + 8px); z-index:6; padding-bottom:16px; background:linear-gradient(#050a11 70%, rgba(5,10,17,0)); }
-  .opening .title-elon { font-size:clamp(72px, 6.2vw, 108px); }
-  .opening .title-small { font-size:clamp(18px, 2vw, 28px); }
+  .opening .title-elon { font-size:clamp(108px, 9.4vw, 164px); }
+  .opening .title-small { font-size:clamp(32px, 3.2vw, 48px); letter-spacing:.1em; }
   .story-lede,.film-page { width:min(1240px,calc(100% - 56px)); margin-left:auto; margin-right:auto; }
   .story-lede { margin-top:42px; margin-bottom:18px; }
   .story-lede h1 { margin:0; font-size:clamp(42px,5vw,72px); line-height:1.02; letter-spacing:-.03em; }
@@ -443,8 +446,8 @@ html.intro-open .continue-note { visibility:hidden; }
   .habit-pair .film--gaming { margin-top:48px; }
 }
 @media(max-height:760px) and (min-width:768px) {
-  .opening .title-elon { font-size:76px; }
-  .opening .title-small { font-size:16px; }
+  .opening .title-elon { font-size:112px; }
+  .opening .title-small { font-size:30px; }
   .identity-name { font-size:96px; }
   .identity-line { font-size:30px; }
 }

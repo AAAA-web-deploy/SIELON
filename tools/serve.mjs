@@ -12,9 +12,20 @@ http.createServer((request, response) => {
   catch { response.writeHead(400); response.end('Bad path'); return; }
   const file = path.resolve(root, '.' + (decoded === '/' ? '/index.html' : decoded));
   if (file !== root && !file.startsWith(root + path.sep)) { response.writeHead(403); response.end('Forbidden'); return; }
+  const send = target => {
+    response.writeHead(200, { 'Content-Type': mime[path.extname(target)] || 'application/octet-stream', 'Cache-Control':'no-cache' });
+    fs.createReadStream(target).pipe(response);
+  };
   fs.stat(file, (error, stat) => {
+    if (!error && stat.isDirectory()) {
+      const index = path.join(file, 'index.html');
+      fs.stat(index, (indexError, indexStat) => {
+        if (indexError || !indexStat.isFile()) { response.writeHead(404); response.end('Not found'); return; }
+        send(index);
+      });
+      return;
+    }
     if (error || !stat.isFile()) { response.writeHead(404); response.end('Not found'); return; }
-    response.writeHead(200, { 'Content-Type': mime[path.extname(file)] || 'application/octet-stream', 'Cache-Control':'no-cache' });
-    fs.createReadStream(file).pipe(response);
+    send(file);
   });
 }).listen(port, '127.0.0.1', () => console.log(`SIELON preview: http://127.0.0.1:${port}`));

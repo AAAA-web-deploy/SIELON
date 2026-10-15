@@ -538,9 +538,20 @@
       const feedback = button.closest('section, dialog, .opening-controls, .site-header')?.querySelector('[data-copy-feedback]');
       const copied = await writeCopy(contractText);
       if (feedback) feedback.textContent = copied ? (address ? 'Contract address copied.' : 'Copied.') : 'Select and copy the address displayed above.';
-      if (!copied || !button.hasAttribute('data-header-copy')) return;
-      button.textContent = 'Copied';
-      window.setTimeout(() => { button.textContent = 'Copy CA'; }, 1400);
+      if (!copied) return;
+      button.classList.add('is-copied');
+      const icon = button.querySelector('svg');
+      const previousIcon = icon ? button.innerHTML : '';
+      if (icon) {
+        button.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12.5 9.2 17 19 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      } else if (button.hasAttribute('data-header-copy') || button.dataset.copyLabel === 'ca') {
+        button.textContent = 'Copied';
+      }
+      window.setTimeout(() => {
+        button.classList.remove('is-copied');
+        if (icon) button.innerHTML = previousIcon;
+        else if (button.hasAttribute('data-header-copy') || button.dataset.copyLabel === 'ca') button.textContent = 'Copy CA';
+      }, 1400);
     });
   });
   const dialog = document.getElementById('token-dialog');

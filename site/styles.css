@@ -737,9 +737,13 @@ body:has(#community) .meme-card .copy-feedback { margin:0; min-height:0; }
   width:auto;
   height:auto;
   max-width:100%;
-  max-height:min(72vh, 760px);
+  max-height:min(58vh, 620px);
   margin:0 auto;
   object-fit:contain;
   object-position:center center;
 }
+.story-lightbox-copy { margin-top:14px; max-height:22vh; overflow:auto; text-align:left; }
+.story-lightbox-copy .narration { margin:0 0 8px; font-size:16px; line-height:1.45; }
+.story-lightbox-copy .dialogue { margin:0; padding:0; list-style:none; display:grid; gap:6px; }
+.story-lightbox-copy .dialogue li { font-size:16px; line-height:1.45; }
 .story-lightbox-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:10px; margin-top:14px; }

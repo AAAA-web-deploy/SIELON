@@ -872,12 +872,17 @@
   if (lightbox) {
     const view = lightbox.querySelector('[data-lightbox-image]');
     const save = lightbox.querySelector('[data-lightbox-download]');
+    const copy = lightbox.querySelector('[data-lightbox-copy]');
     const openScene = image => {
       const source = image.getAttribute('src') || image.currentSrc;
+      const scene = image.closest('.film, .scene');
+      const caption = scene ? scene.querySelector('.film-caption, .scene-caption') : null;
       view.src = image.currentSrc || source;
       view.alt = image.alt || '';
       save.href = source;
       save.setAttribute('download', source.split('/').pop() || 'sielon-story.jpg');
+      if (caption) { copy.innerHTML = caption.innerHTML; copy.hidden = false; }
+      else { copy.innerHTML = ''; copy.hidden = true; }
       if (!lightbox.open) lightbox.showModal();
     };
     document.querySelectorAll('.story-board img').forEach(image => {

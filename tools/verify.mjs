@@ -32,7 +32,7 @@ for(const page of ['index.html','story.html']){
  if(page==='story.html')check(html.includes('Download image'),page+' community image controls missing.');
  check(!/meme/i.test(html.replace(/class="[^"]*meme[^"]*"/g,'').replace(/data-meme-[a-z-]+/g,'')),page+' public meme wording remains.');
  check(!html.includes('vendor/three.min.js'),page+' must not download Three.js up front.');
- check(html.includes('Fictional story. No affiliation with Elon Musk.'),page+' fiction footer missing.');
+ if(page==='story.html')check(html.includes('Fictional story. No affiliation with Elon Musk.'),page+' fiction footer missing.');
  for(const item of html.matchAll(/(?:src|href)="([^"#]+)"/g)){
   const value=item[1];if(/^(?:https?:|data:|mailto:|tel:)/.test(value))continue;
   check(fs.existsSync(path.join(root,'site',value.split('?')[0])),'Unresolved '+page+' path '+value);

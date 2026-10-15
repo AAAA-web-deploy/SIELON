@@ -826,14 +826,23 @@
     addEventListener('resize', paintRail);
     document.addEventListener('sielon:cinematic', paintRail);
     document.addEventListener('sielon:flow', paintRail);
-    if (!document.querySelector('[data-reveal]')) {
-      document.querySelector('[data-stage-skip]')?.addEventListener('click', () => {
-        const pageFile = location.pathname.split('/').pop() || 'index.html';
-        if (pageFile === 'token.html') window.location.href = 'community.html';
-        else if (pageFile === 'story.html') window.location.href = 'token.html';
-      });
-    }
     paintRail();
+  } else {
+    const file = location.pathname.split('/').pop() || 'index.html';
+    const active = file === 'token.html' ? 'token' : file === 'community.html' ? 'community' : file === 'story.html' ? 'story' : 'home';
+    document.querySelectorAll('[data-nav]').forEach(link => {
+      const on = link.dataset.nav === active;
+      link.classList.toggle('is-active', on);
+      if (on) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    });
+  }
+  if (!document.querySelector('[data-reveal]')) {
+    document.querySelector('[data-stage-skip]')?.addEventListener('click', () => {
+      const pageFile = location.pathname.split('/').pop() || 'index.html';
+      if (pageFile === 'token.html') window.location.href = 'community.html';
+      else if (pageFile === 'story.html') window.location.href = 'token.html';
+    });
   }
   addEventListener('scroll', requestPaint, { passive: true });
   addEventListener('resize', () => { syncHeader(); pin(); clampCopy(); requestPaint(); }, { passive: true });

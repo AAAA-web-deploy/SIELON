@@ -1,5 +1,16 @@
 (() => {
   'use strict';
+  const handset = window.matchMedia('(max-width: 767px), ((hover: none) and (pointer: coarse))');
+  const pageFile = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  if (handset.matches && (pageFile === 'story.html' || pageFile === 'token.html' || pageFile === 'community.html')) {
+    const place = pageFile === 'token.html' ? '#token' : pageFile === 'community.html' ? '#community' : '#story';
+    location.replace('index.html' + place);
+    return;
+  }
+  if (handset.matches && document.querySelector('[data-reveal]')) {
+    document.querySelectorAll('[data-nav="token"], a[href="token.html"]').forEach(link => link.setAttribute('href', '#token'));
+    document.querySelectorAll('[data-nav="community"], a[href="community.html"]').forEach(link => link.setAttribute('href', '#community'));
+  }
   if (sessionStorage.getItem('sielon-from-nav') === '1') {
     sessionStorage.removeItem('sielon-from-nav');
     const skip = document.querySelector('[data-stage-skip]');
@@ -272,7 +283,7 @@
       holdThen(() => { window.location.href = 'token.html'; });
     };
     const beginCinematic = () => {
-      if (cinematic || window.matchMedia('(max-width: 767px)').matches) return;
+      if (cinematic || handset.matches) return;
       hideContinueNote();
       const wristDetail = document.getElementById('wrist-detail');
       if (wristDetail && !wristDetail.hidden) {
@@ -324,7 +335,7 @@
       document.dispatchEvent(new CustomEvent('sielon:field-open'));
     };
     const skipStage = () => {
-      if (window.matchMedia('(max-width: 767px)').matches) {
+      if (handset.matches) {
         document.getElementById('story')?.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth' });
         return;
       }
@@ -387,7 +398,7 @@
         document.documentElement.classList.remove('is-encounter');
         return;
       }
-      if (window.matchMedia('(max-width: 767px)').matches) {
+      if (handset.matches) {
         reveal.classList.remove('is-live');
         reveal.style.setProperty('--p', '1');
         reveal.style.setProperty('--reveal', '1');
@@ -990,7 +1001,7 @@
     };
     document.querySelector('[data-stage-skip]')?.addEventListener('click', pauseNext);
     addEventListener('scroll', () => {
-      if (window.matchMedia('(max-width: 767px)').matches) {
+      if (handset.matches) {
         if (pageTimer) { clearTimeout(pageTimer); pageTimer = 0; }
         return;
       }

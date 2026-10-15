@@ -551,13 +551,22 @@ body:has(#community) .closing {
   background:transparent;
   overflow:hidden;
 }
-body:has(#community) .community-copy { min-width:0; max-width:380px; align-self:center; }
+body:has(#community) .community-copy { width:min(100%, 336px); max-width:336px; align-self:center; }
 body:has(#community) .closing-title { margin:0; transform:none; text-align:left; }
+body:has(#community) .closing .title-small { display:block; font-size:15px; letter-spacing:.14em; font-weight:700; line-height:1.2; }
+body:has(#community) .closing .title-elon { font-size:86px; line-height:.84; margin:4px 0 0; letter-spacing:.02em; }
+body:has(#community) .closing .ticker { margin:10px 0 0; font-size:28px; letter-spacing:.16em; }
 body:has(#community) .project-purpose,
-body:has(#community) .community-line { margin:14px 0 0; max-width:36ch; }
-body:has(#community) .community-actions { margin:18px 0 0; justify-content:flex-start; }
-body:has(#community) .closing .title-elon { font-size:clamp(56px, 7vw, 112px); line-height:.9; margin:0; }
-body:has(#community) .closing .title-small { font-size:clamp(14px, 1.6vw, 22px); }
+body:has(#community) .community-line { margin:18px 0 0; max-width:none; color:#e7eef6; font-size:15px; line-height:1.45; }
+body:has(#community) .community-actions {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  width:100%;
+  margin:22px 0 0;
+}
+body:has(#community) .community-actions .button { width:100%; min-height:46px; padding:12px 14px; }
+body:has(#community) .community-actions .button-primary { grid-column:1 / -1; }
 body:has(#community) .meme-board {
   position:static;
   width:min(100%, 860px);
@@ -619,8 +628,11 @@ body:has(#community) .meme-actions .button { height:44px; min-height:44px; }
 body:has(#community) .meme-card .copy-feedback { margin:0; min-height:0; }
 @media(max-width:767px) {
   body:has(#community) .closing { grid-template-columns:minmax(120px, 42%) minmax(0, 1fr); padding:12px; column-gap:10px; }
-  body:has(#community) .closing .title-elon { font-size:clamp(32px, 11vw, 52px); }
-  body:has(#community) .community-actions { flex-wrap:wrap; }
+  body:has(#community) .closing .title-elon { font-size:clamp(40px, 12vw, 64px); }
+  body:has(#community) .community-copy { width:auto; max-width:none; }
+  body:has(#community) .community-actions { display:flex; flex-wrap:wrap; }
+  body:has(#community) .community-actions .button,
+  body:has(#community) .community-actions .button-primary { width:auto; grid-column:auto; }
   body:has(#community) .meme-board { width:100%; margin:0; gap:8px; }
   body:has(#community) .meme-card img { max-height:34vh; }
   body:has(#community) .meme-card figcaption { padding:8px 0 0; }

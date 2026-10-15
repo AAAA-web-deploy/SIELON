@@ -45,10 +45,11 @@ button:focus-visible,a:focus-visible { outline:2px solid var(--blue); outline-of
 .header-copy.is-copied, .button.is-copied[data-copy-contract] { border-radius:12px; background:#147bdf; border-color:#147bdf; color:#fff; }
 .contract-copy.is-copied { border-radius:50%; background:#147bdf; border-color:#147bdf; color:#fff; }
 .header-copy:disabled { opacity:.55; cursor:default; }
-.header-social { width:42px; height:42px; min-width:42px; min-height:42px; padding:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; }
+.header-social { width:42px; height:42px; min-width:42px; min-height:42px; padding:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease; }
 .header-social[data-social="telegram"] { background:#147bdf; border-color:#147bdf; color:#fff; }
-.header-social[data-social="telegram"]:hover { background:#1a8cf5; border-color:#1a8cf5; }
-.header-social[data-social="x"] { background:transparent; border-color:rgba(211,230,248,.72); color:#f4f7fb; }
+.header-social[data-social="telegram"]:hover { background:#1a8cf5; border-color:#1a8cf5; transform:translateY(-3px); box-shadow:0 7px 22px rgba(69,161,247,.35); }
+.header-social[data-social="x"] { background:#f4f7fb; border-color:#f4f7fb; color:#050a11; }
+.header-social[data-social="x"]:hover { background:#fff; border-color:#fff; color:#050a11; transform:translateY(-3px); box-shadow:0 7px 22px rgba(244,247,251,.34); }
 .header-social svg { display:block; width:18px; height:18px; }
 .header-social[aria-disabled="true"] { opacity:1; cursor:default; }
 .hero { padding:0; perspective:1200px; overflow:hidden; }
@@ -735,7 +736,9 @@ body:has(#community) .community-actions .button-icon {
   opacity:1;
 }
 body:has(#community) .community-actions .button-icon[data-social="telegram"] { background:#147bdf; border-color:#147bdf; color:#fff; }
-body:has(#community) .community-actions .button-icon[data-social="x"] { background:transparent; border-color:rgba(211,230,248,.72); color:#f4f7fb; }
+body:has(#community) .community-actions .button-icon[data-social="x"] { background:#f4f7fb; border-color:#f4f7fb; color:#050a11; }
+body:has(#community) .community-actions .button-icon[data-social="telegram"]:hover { background:#1a8cf5; border-color:#1a8cf5; box-shadow:0 7px 22px rgba(69,161,247,.35); }
+body:has(#community) .community-actions .button-icon[data-social="x"]:hover { background:#fff; border-color:#fff; color:#050a11; box-shadow:0 7px 22px rgba(244,247,251,.34); }
 body:has(#community) .community-actions .button-icon svg { display:block; width:26px; height:26px; }
 body:has(#community) .meme-board {
   position:static;

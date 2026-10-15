@@ -42,6 +42,11 @@ button:focus-visible,a:focus-visible { outline:2px solid var(--blue); outline-of
 .site-nav a.is-active::after { content:none; }
 .header-copy { color:#fff6df; border-color:rgba(241,207,103,.72); background:transparent; cursor:pointer; }
 .header-copy:disabled { opacity:.55; cursor:default; }
+.site-nav a.header-social { width:42px; height:42px; min-width:42px; min-height:42px; padding:0; border-radius:50%; }
+.site-nav a.header-social[data-social="telegram"] { background:#147bdf; border-color:#147bdf; color:#fff; }
+.site-nav a.header-social[data-social="x"] { background:transparent; border-color:rgba(211,230,248,.72); color:#f4f7fb; }
+.site-nav a.header-social svg { display:block; width:18px; height:18px; }
+.site-nav a.header-social[aria-disabled="true"] { opacity:1; cursor:default; }
 .hero { padding:0; perspective:1200px; overflow:hidden; }
 .hero-stage { position:relative; height:min(850px,calc(100svh - 68px)); min-height:760px; transform-style:preserve-3d; transform:rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)); transition:transform .16s ease-out; }
 .hero-art { position:absolute; inset:0; transform:translateZ(-14px) scale(1.04); }
@@ -154,6 +159,8 @@ html.story-motion .intertitle { letter-spacing:calc(.2em + (1 - var(--in)) * .14
   .brand-name { font-size:12px; max-width:114px; line-height:1.25; }
   .site-nav { gap:6px; }
   .site-nav a, .header-copy { min-height:34px; min-width:0; padding:0 10px; font-size:13px; letter-spacing:.02em; }
+  .site-nav a.header-social { width:34px; height:34px; min-width:34px; min-height:34px; padding:0; }
+  .site-nav a.header-social svg { width:15px; height:15px; }
   .hero { perspective:none; }
   .hero-stage { height:auto; min-height:0; transform:none; display:flex; flex-direction:column; }
   .hero-art { position:relative; transform:none; }
@@ -590,11 +597,12 @@ body:has(#token) .token-facts {
   background:#08111c;
   grid-template-columns:minmax(210px, 280px) minmax(0, 1fr);
   gap:clamp(28px, 4vh, 48px) 40px;
+  align-items:center;
 }
-body:has(#token) .token-facts dt { font-size:clamp(16px, 1.7vw, 22px); }
-body:has(#token) .token-facts dd { font-size:clamp(22px, 2.4vw, 32px); line-height:1.35; }
-body:has(#token) .contract-line { display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; }
-body:has(#token) .contract-address { flex:1 1 auto; min-width:0; }
+body:has(#token) .token-facts dt { font-size:clamp(16px, 1.7vw, 22px); align-self:center; }
+body:has(#token) .token-facts dd { font-size:clamp(22px, 2.4vw, 32px); line-height:1.35; align-self:center; }
+body:has(#token) .contract-line { display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; min-height:72px; }
+body:has(#token) .contract-address { flex:1 1 auto; min-width:0; display:flex; align-items:center; align-self:center; min-height:72px; }
 body:has(#token) .contract-copy {
   width:42px;
   height:42px;
@@ -672,20 +680,25 @@ body:has(#community) .community-actions {
   display:flex;
   flex-wrap:nowrap;
   align-items:center;
-  gap:12px;
+  justify-content:center;
+  gap:14px;
   width:100%;
-  margin:22px 0 0;
+  margin:28px auto 0;
 }
-body:has(#community) .community-actions .button { width:auto; min-height:52px; padding:12px 18px; }
+body:has(#community) .community-actions .button { width:auto; min-height:56px; padding:0 22px; border-radius:999px; }
 body:has(#community) .community-actions .button-icon {
-  width:68px;
-  height:68px;
-  min-width:68px;
-  min-height:68px;
+  width:56px;
+  height:56px;
+  min-width:56px;
+  min-height:56px;
   padding:0;
   flex:none;
+  border-radius:50%;
+  opacity:1;
 }
-body:has(#community) .community-actions .button-icon svg { display:block; width:32px; height:32px; }
+body:has(#community) .community-actions .button-icon[data-social="telegram"] { background:#147bdf; border-color:#147bdf; color:#fff; }
+body:has(#community) .community-actions .button-icon[data-social="x"] { background:transparent; border-color:rgba(211,230,248,.72); color:#f4f7fb; }
+body:has(#community) .community-actions .button-icon svg { display:block; width:26px; height:26px; }
 body:has(#community) .meme-board {
   position:static;
   width:min(52vw, 760px);
@@ -759,8 +772,8 @@ body:has(#community) .meme-card .copy-feedback { margin:0; min-height:0; }
   body:has(#community) .closing .title-elon { font-size:clamp(40px, 12vw, 64px); }
   body:has(#community) .closing .title-small { font-size:12px; letter-spacing:.08em; }
   body:has(#community) .community-copy { width:auto; max-width:none; }
-  body:has(#community) .community-actions { gap:8px; }
-  body:has(#community) .community-actions .button { min-height:40px; padding:8px 10px; font-size:12px; }
+  body:has(#community) .community-actions { flex-wrap:wrap; gap:8px; justify-content:center; }
+  body:has(#community) .community-actions .button { flex:none; white-space:nowrap; height:44px; min-height:44px; padding:0 14px; font-size:12px; }
   body:has(#community) .community-actions .button-icon { width:44px; height:44px; min-width:44px; min-height:44px; }
   body:has(#community) .community-actions .button-icon svg { width:22px; height:22px; }
   body:has(#community) .meme-board { width:100%; margin:0; column-gap:8px; row-gap:0; }

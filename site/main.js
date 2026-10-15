@@ -1,5 +1,17 @@
 (() => {
   'use strict';
+  if (sessionStorage.getItem('sielon-from-nav') === '1') {
+    sessionStorage.removeItem('sielon-from-nav');
+    const skip = document.querySelector('[data-stage-skip]');
+    if (skip) skip.hidden = true;
+  }
+  document.querySelectorAll('.site-nav a[data-nav]').forEach(link => {
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href') || '';
+      if (!href || href.charAt(0) === '#') return;
+      sessionStorage.setItem('sielon-from-nav', '1');
+    });
+  });
   const cfg = window.SIELON_CONFIG || {};
   const motion = cfg.motion || {};
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -416,7 +428,7 @@
   text('[data-token-buy-tax]', taxText(cfg.buyTax));
   text('[data-token-ownership]', shown(cfg.ownershipStatus));
   text('[data-token-lp]', shown(cfg.lpStatus));
-  text('[data-contract]', address || 'To be announced');
+  text('[data-contract]', address || 'Coming soon..');
   document.querySelectorAll('[data-copy-contract]').forEach(button => {
     button.disabled = !address;
     if (button.querySelector('svg')) button.setAttribute('aria-label', address ? 'Copy contract address' : 'Contract address pending');

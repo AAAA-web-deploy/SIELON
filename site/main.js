@@ -272,7 +272,7 @@
       holdThen(() => { window.location.href = 'token.html'; });
     };
     const beginCinematic = () => {
-      if (cinematic) return;
+      if (cinematic || window.matchMedia('(max-width: 767px)').matches) return;
       hideContinueNote();
       const wristDetail = document.getElementById('wrist-detail');
       if (wristDetail && !wristDetail.hidden) {
@@ -303,7 +303,31 @@
       };
       cinematicFrame = requestAnimationFrame(tick);
     };
+    const returnHome = () => {
+      clearHolds();
+      if (cinematicFrame) cancelAnimationFrame(cinematicFrame);
+      cinematicFrame = 0;
+      cinematic = false;
+      held = false;
+      delete document.documentElement.dataset.flow;
+      delete document.documentElement.dataset.flowLocal;
+      progressionStopped = false;
+      hideContinueNote();
+      document.documentElement.classList.remove('is-cinematic', 'is-encounter');
+      reveal.classList.remove('is-reel', 'is-card', 'is-typed', 'is-departing');
+      reveal.dataset.cinematic = '0';
+      paintReveal(0, 0, 0, 0);
+      pushDepart(0);
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      document.dispatchEvent(new CustomEvent('sielon:flow'));
+      document.dispatchEvent(new CustomEvent('sielon:field-open'));
+    };
     const skipStage = () => {
+      if (window.matchMedia('(max-width: 767px)').matches) {
+        document.getElementById('story')?.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth' });
+        return;
+      }
       if (holdTimer) return;
       hideContinueNote();
       if (!cinematic) {
@@ -337,23 +361,12 @@
     document.querySelector('[data-rail] [data-step="home"]')?.addEventListener('click', event => {
       if (!cinematic && !held) return;
       event.preventDefault();
-      clearHolds();
-      if (cinematicFrame) cancelAnimationFrame(cinematicFrame);
-      cinematicFrame = 0;
-      cinematic = false;
-      held = false;
-      delete document.documentElement.dataset.flow;
-      delete document.documentElement.dataset.flowLocal;
-      progressionStopped = false;
-      hideContinueNote();
-      document.documentElement.classList.remove('is-cinematic', 'is-encounter');
-      reveal.classList.remove('is-reel', 'is-card', 'is-typed', 'is-departing');
-      reveal.dataset.cinematic = '0';
-      paintReveal(0, 0, 0, 0);
-      pushDepart(0);
-      document.documentElement.style.scrollBehavior = 'auto';
-      window.scrollTo(0, 0);
-      document.dispatchEvent(new CustomEvent('sielon:flow'));
+      returnHome();
+    });
+    document.querySelector('.site-nav a[data-nav="home"]')?.addEventListener('click', event => {
+      if (!cinematic && !held) return;
+      event.preventDefault();
+      returnHome();
     });
     reveal.querySelector('[data-opening-next]')?.addEventListener('click', beginCinematic);
     document.querySelector('[data-stage-skip]')?.addEventListener('click', skipStage);
@@ -372,6 +385,19 @@
         reveal.classList.remove('is-live');
         paintReveal(1, 0, 0, 0);
         document.documentElement.classList.remove('is-encounter');
+        return;
+      }
+      if (window.matchMedia('(max-width: 767px)').matches) {
+        reveal.classList.remove('is-live');
+        reveal.style.setProperty('--p', '1');
+        reveal.style.setProperty('--reveal', '1');
+        reveal.style.setProperty('--mix', '1');
+        reveal.style.setProperty('--brand', '0');
+        reveal.style.setProperty('--depart', '0');
+        reveal.style.setProperty('--veil', '0');
+        reveal.style.setProperty('--type', '0');
+        document.documentElement.classList.remove('is-encounter');
+        hideContinueNote();
         return;
       }
       reveal.classList.add('is-live');
@@ -953,6 +979,10 @@
     };
     document.querySelector('[data-stage-skip]')?.addEventListener('click', pauseNext);
     addEventListener('scroll', () => {
+      if (window.matchMedia('(max-width: 767px)').matches) {
+        if (pageTimer) { clearTimeout(pageTimer); pageTimer = 0; }
+        return;
+      }
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const near = max > 80 && window.scrollY >= max - 12;
       if (!near) {

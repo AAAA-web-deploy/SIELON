@@ -22,10 +22,10 @@
   <title>SuperIntelligence Elon — $SIELON</title>
   <link rel="icon" type="image/png" href="assets/logo-64.png">
   <link rel="preload" as="image" type="image/webp" href="assets/hero-1440.webp" imagesrcset="assets/hero-720.webp 720w, assets/hero-1440.webp 1440w" imagesizes="100vw">
-  <link rel="stylesheet" href="styles.css?v=pages-v12">
+  <link rel="stylesheet" href="styles.css?v=pages-v15">
   <script src="site-config.js" defer></script>
-  <script src="main.js?v=pages-v8" defer></script>
-  <script type="module" src="field-loader.js?v=flow-v1"></script>
+  <script src="main.js?v=pages-v10" defer></script>
+  <script type="module" src="field-loader.js?v=flow-v2"></script>
   <script>
     document.documentElement.classList.replace('no-js', 'js');
     document.documentElement.classList.add('intro-open');
@@ -300,7 +300,14 @@
   </main>
   <div id="wrist-detail" class="wrist-detail wrist-detail--float" data-field-stage data-field-mode="wrist" hidden tabindex="-1">
     <div class="wrist-bar"><p>Mechanical wrist</p><button type="button" class="dialog-close" data-wrist-close>Close</button></div>
-    <div class="wrist-stage"><div data-particle-host></div><p class="wrist-fallback">The story photograph remains the complete reveal.</p></div>
+    <div class="wrist-stage">
+      <div class="wrist-pair" aria-hidden="true">
+        <img src="assets/home-v2/human-portrait-v2.png" alt="">
+        <img src="assets/home-v2/si-portrait-v2.png" alt="">
+      </div>
+      <div data-particle-host></div>
+      <p class="wrist-fallback">Elon and SI-Elon. The open wrist is the mechanical reveal.</p>
+    </div>
     <button class="button hold-button" type="button" data-field-hold hidden><span data-hold-label>Hold to gather</span><span class="hold-hint">Release to return.</span></button>
   </div>
   <div class="continue-note" data-continue-note hidden role="dialog" aria-labelledby="continue-note-title">

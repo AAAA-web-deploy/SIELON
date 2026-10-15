@@ -46,7 +46,7 @@ function mapOpening(scrolled,travel,width,height,header){
 }
 function progress(record){
  if(!record.engine)return;
- if(record.stage.dataset.fieldMode==='wrist'){record.engine.setProgress(.42);record.engine.setDepart?.(0);return;}
+ if(record.stage.dataset.fieldMode==='wrist'){record.engine.setProgress(1);record.engine.setDepart?.(0);return;}
  const header=headerHeight();
  const rect=record.stage.getBoundingClientRect();
  const travel=Math.max(1,record.stage.offsetHeight-(innerHeight-header));

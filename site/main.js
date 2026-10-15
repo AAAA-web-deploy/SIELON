@@ -750,7 +750,7 @@
   const rail = document.querySelector('[data-rail]');
   if (rail) {
     const steps = [...rail.querySelectorAll('[data-step]')];
-    const keys = ['home', 'story', 'token', 'community'];
+    const keys = steps.map(step => step.dataset.step);
     const narrow = window.matchMedia('(max-width: 767px)');
     const sectionTop = id => {
       const el = document.getElementById(id);

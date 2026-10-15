@@ -542,7 +542,7 @@ body:has(#community) .closing {
   margin:0;
   padding:20px 32px 20px 48px;
   display:grid;
-  grid-template-columns:minmax(240px, 380px) minmax(0, 1fr);
+  grid-template-columns:minmax(280px, 460px) minmax(0, 1fr);
   grid-template-rows:minmax(0, 1fr);
   align-items:stretch;
   column-gap:36px;
@@ -551,22 +551,31 @@ body:has(#community) .closing {
   background:transparent;
   overflow:hidden;
 }
-body:has(#community) .community-copy { width:min(100%, 336px); max-width:336px; align-self:center; }
+body:has(#community) .community-copy { width:min(100%, 420px); max-width:420px; align-self:center; }
 body:has(#community) .closing-title { margin:0; transform:none; text-align:left; }
-body:has(#community) .closing .title-small { display:block; font-size:15px; letter-spacing:.14em; font-weight:700; line-height:1.2; }
-body:has(#community) .closing .title-elon { font-size:86px; line-height:.84; margin:4px 0 0; letter-spacing:.02em; }
-body:has(#community) .closing .ticker { margin:10px 0 0; font-size:28px; letter-spacing:.16em; }
+body:has(#community) .closing .title-small { display:block; font-size:16px; letter-spacing:.14em; font-weight:700; line-height:1.2; }
+body:has(#community) .closing .title-elon { font-size:124px; line-height:.82; margin:2px 0 0; letter-spacing:.02em; }
+body:has(#community) .closing .ticker { margin:8px 0 0; font-size:40px; letter-spacing:.14em; }
 body:has(#community) .project-purpose,
 body:has(#community) .community-line { margin:18px 0 0; max-width:none; color:#e7eef6; font-size:15px; line-height:1.45; }
 body:has(#community) .community-actions {
-  display:grid;
-  grid-template-columns:1fr 1fr;
+  display:flex;
+  flex-wrap:nowrap;
+  align-items:center;
   gap:12px;
   width:100%;
   margin:22px 0 0;
 }
-body:has(#community) .community-actions .button { width:100%; min-height:46px; padding:12px 14px; }
-body:has(#community) .community-actions .button-primary { grid-column:1 / -1; }
+body:has(#community) .community-actions .button { width:auto; min-height:52px; padding:12px 18px; }
+body:has(#community) .community-actions .button-icon {
+  width:68px;
+  height:68px;
+  min-width:68px;
+  min-height:68px;
+  padding:0;
+  flex:none;
+}
+body:has(#community) .community-actions .button-icon svg { display:block; width:32px; height:32px; }
 body:has(#community) .meme-board {
   position:static;
   width:min(100%, 860px);
@@ -639,9 +648,10 @@ body:has(#community) .meme-card .copy-feedback { margin:0; min-height:0; }
   body:has(#community) .closing { grid-template-columns:minmax(120px, 42%) minmax(0, 1fr); padding:12px; column-gap:10px; }
   body:has(#community) .closing .title-elon { font-size:clamp(40px, 12vw, 64px); }
   body:has(#community) .community-copy { width:auto; max-width:none; }
-  body:has(#community) .community-actions { display:flex; flex-wrap:wrap; }
-  body:has(#community) .community-actions .button,
-  body:has(#community) .community-actions .button-primary { width:auto; grid-column:auto; }
+  body:has(#community) .community-actions { gap:8px; }
+  body:has(#community) .community-actions .button { min-height:40px; padding:8px 10px; font-size:12px; }
+  body:has(#community) .community-actions .button-icon { width:44px; height:44px; min-width:44px; min-height:44px; }
+  body:has(#community) .community-actions .button-icon svg { width:22px; height:22px; }
   body:has(#community) .meme-board { width:100%; margin:0; column-gap:8px; row-gap:0; }
   body:has(#community) .meme-card figcaption { padding:0; }
   body:has(#community) .meme-caption { font-size:11px; }

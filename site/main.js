@@ -395,13 +395,16 @@
   });
   document.querySelectorAll('[data-social]').forEach(link => {
     const key = link.dataset.social; const destination = url(cfg.links?.[key]);
+    const label = key === 'telegram' ? 'Telegram' : 'X';
+    const coming = label + ' — coming soon';
     if (destination) {
       link.href = destination; link.hidden = false; link.removeAttribute('aria-disabled'); link.setAttribute('target', '_blank'); link.setAttribute('rel', 'noopener noreferrer');
-      link.textContent = key === 'telegram' ? 'Telegram' : 'X';
+      link.setAttribute('aria-label', label);
     } else {
       link.hidden = false; link.removeAttribute('href'); link.setAttribute('aria-disabled', 'true');
-      link.textContent = (key === 'telegram' ? 'Telegram' : 'X') + ' — coming soon';
+      link.setAttribute('aria-label', coming);
     }
+    if (!link.querySelector('svg')) link.textContent = destination ? label : coming;
   });
   document.querySelectorAll('[data-hero-social]').forEach(link => {
     const key = link.dataset.heroSocial; const destination = url(cfg.links?.[key]);

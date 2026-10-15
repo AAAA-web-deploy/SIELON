@@ -1,3 +1,4 @@
+@font-face { font-family:"Cinzel"; src:url("assets/fonts/cinzel-bold.woff2") format("woff2"); font-weight:700; font-style:normal; font-display:swap; }
 :root {
   color-scheme:dark;
   --ink:#050a11; --navy:#0a1523; --white:#f5f7fb; --muted:#bdc8d6;
@@ -553,7 +554,20 @@ body:has(#community) .closing {
 body:has(#community) .community-copy { width:min(100%, 360px); max-width:360px; flex:none; align-self:center; }
 body:has(#community) .closing-title { margin:0; transform:none; text-align:left; }
 body:has(#community) .closing .title-small { display:block; font-size:16px; letter-spacing:.14em; font-weight:700; line-height:1.2; }
-body:has(#community) .closing .title-elon { font-size:124px; line-height:.82; margin:2px 0 0; letter-spacing:.02em; }
+body:has(#community) .closing .title-elon {
+  font-family:Cinzel, Georgia, "Times New Roman", serif;
+  font-weight:700;
+  font-size:96px;
+  line-height:.95;
+  margin:8px 0 0;
+  letter-spacing:.16em;
+  background:linear-gradient(180deg, #fff8ea 0%, #f6d78a 42%, #c9963a 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  text-shadow:none;
+}
 body:has(#community) .closing .ticker { margin:8px 0 0; font-size:40px; letter-spacing:.14em; }
 body:has(#community) .project-purpose,
 body:has(#community) .community-line { margin:18px 0 0; max-width:none; color:#e7eef6; font-size:15px; line-height:1.45; }

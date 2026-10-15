@@ -236,11 +236,25 @@
       setFlow('story', local);
       return elapsed < slideNodes.length * span;
     };
+    let holdTimer = 0;
+    let bottomTimer = 0;
+    let tick = () => {};
+    const holdThen = action => {
+      if (holdTimer) return;
+      holdTimer = window.setTimeout(() => {
+        holdTimer = 0;
+        action();
+      }, 2000);
+    };
+    const clearHolds = () => {
+      if (holdTimer) { clearTimeout(holdTimer); holdTimer = 0; }
+      if (bottomTimer) { clearTimeout(bottomTimer); bottomTimer = 0; }
+    };
     const finishReel = () => {
       if (cinematicFrame) cancelAnimationFrame(cinematicFrame);
       cinematicFrame = 0;
       held = true;
-      window.location.href = 'token.html';
+      holdThen(() => { window.location.href = 'token.html'; });
     };
     const beginCinematic = () => {
       if (cinematic) return;
@@ -257,7 +271,7 @@
       document.documentElement.classList.add('is-cinematic');
       setFlow('story', 0);
       startedAt = performance.now();
-      const tick = now => {
+      tick = now => {
         if (held) return;
         const clock = marks();
         const t = now - startedAt;
@@ -274,26 +288,39 @@
       cinematicFrame = requestAnimationFrame(tick);
     };
     const skipStage = () => {
+      if (holdTimer) return;
       if (!cinematic) {
-        beginCinematic();
+        holdThen(beginCinematic);
         return;
       }
-      const clock = marks();
-      const t = performance.now() - startedAt;
-      if (t < clock.reelAt) {
-        startedAt = performance.now() - clock.reelAt;
-        return;
-      }
-      const index = Math.floor((t - clock.reelAt) / pace.slide);
-      if (index >= imageCount - 1) {
-        window.location.href = 'token.html';
-        return;
-      }
-      startedAt = performance.now() - (clock.reelAt + (index + 1) * pace.slide);
+      held = true;
+      if (cinematicFrame) cancelAnimationFrame(cinematicFrame);
+      cinematicFrame = 0;
+      const pausedAt = performance.now();
+      holdThen(() => {
+        if (!cinematic) return;
+        const clock = marks();
+        const t = Math.max(0, pausedAt - startedAt);
+        if (t < clock.reelAt) {
+          startedAt = performance.now() - clock.reelAt;
+          held = false;
+          cinematicFrame = requestAnimationFrame(tick);
+          return;
+        }
+        const index = Math.floor((t - clock.reelAt) / pace.slide);
+        if (index >= imageCount - 1) {
+          window.location.href = 'token.html';
+          return;
+        }
+        startedAt = performance.now() - (clock.reelAt + (index + 1) * pace.slide);
+        held = false;
+        cinematicFrame = requestAnimationFrame(tick);
+      });
     };
     document.querySelector('[data-rail] [data-step="home"]')?.addEventListener('click', event => {
       if (!cinematic && !held) return;
       event.preventDefault();
+      clearHolds();
       if (cinematicFrame) cancelAnimationFrame(cinematicFrame);
       cinematicFrame = 0;
       cinematic = false;
@@ -328,9 +355,15 @@
       const phase = mapOpening(scrolled, travel, window.innerWidth, window.innerHeight, header);
       if (phase.scene < 0.9) cinematicDone = false;
       if (!cinematicDone && phase.scene >= 0.98 && phase.after > 0.08) {
-        beginCinematic();
+        if (!bottomTimer) {
+          bottomTimer = window.setTimeout(() => {
+            bottomTimer = 0;
+            beginCinematic();
+          }, 2000);
+        }
         return;
       }
+      if (phase.scene < 0.9 && bottomTimer) { clearTimeout(bottomTimer); bottomTimer = 0; }
       paintReveal(phase.scene, 0, 0, 0);
     };
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -387,6 +420,10 @@
   document.querySelectorAll('[data-copy-contract]').forEach(button => {
     button.disabled = !address;
     if (button.querySelector('svg')) button.setAttribute('aria-label', address ? 'Copy contract address' : 'Contract address pending');
+    else if (button.hasAttribute('data-header-copy')) {
+      button.textContent = 'Copy CA';
+      button.setAttribute('aria-label', address ? 'Copy contract address' : 'Contract address pending');
+    }
     else if (button.dataset.copyLabel === 'ca') button.textContent = address ? 'Copy CA' : 'CA pending';
     if (!address && !button.querySelector('svg')) button.setAttribute('aria-label', 'Contract address pending');
   });
@@ -429,7 +466,7 @@
   document.querySelectorAll('[data-copy-contract]').forEach(button => {
     button.addEventListener('click', async () => {
       if (!address) return;
-      const feedback = button.closest('section, dialog, .opening-controls')?.querySelector('[data-copy-feedback]');
+      const feedback = button.closest('section, dialog, .opening-controls, .site-header')?.querySelector('[data-copy-feedback]');
       try { await navigator.clipboard.writeText(address); if (feedback) feedback.textContent = 'Contract address copied.'; }
       catch { if (feedback) feedback.textContent = 'Select and copy the address displayed above.'; }
     });
@@ -850,11 +887,34 @@
     });
   }
   if (!document.querySelector('[data-reveal]')) {
-    document.querySelector('[data-stage-skip]')?.addEventListener('click', () => {
+    let pageTimer = 0;
+    const nextPage = () => {
       const pageFile = location.pathname.split('/').pop() || 'index.html';
-      if (pageFile === 'token.html') window.location.href = 'community.html';
-      else if (pageFile === 'story.html') window.location.href = 'token.html';
-    });
+      if (pageFile === 'token.html') return 'community.html';
+      if (pageFile === 'story.html') return 'token.html';
+      return '';
+    };
+    const goNext = () => {
+      const href = nextPage();
+      if (href) window.location.href = href;
+    };
+    const pauseNext = () => {
+      if (pageTimer || !nextPage()) return;
+      pageTimer = window.setTimeout(() => {
+        pageTimer = 0;
+        goNext();
+      }, 2000);
+    };
+    document.querySelector('[data-stage-skip]')?.addEventListener('click', pauseNext);
+    addEventListener('scroll', () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const near = max > 80 && window.scrollY >= max - 12;
+      if (!near) {
+        if (pageTimer) { clearTimeout(pageTimer); pageTimer = 0; }
+        return;
+      }
+      pauseNext();
+    }, { passive: true });
   }
   addEventListener('scroll', requestPaint, { passive: true });
   addEventListener('resize', () => { syncHeader(); pin(); clampCopy(); requestPaint(); }, { passive: true });

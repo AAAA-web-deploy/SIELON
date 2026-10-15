@@ -534,22 +534,20 @@ body:has(#token) .token-section h2 { text-align:center; font-size:clamp(28px, 3v
 body:has(#token) .token-facts { width:min(560px, 100%); margin:0 auto; }
 body:has(#community) .closing {
   flex:1;
+  position:relative;
   width:100%;
   height:auto;
   min-height:0;
   max-width:none;
   margin:0;
-  padding:24px 36px;
-  display:grid;
-  grid-template-columns:minmax(280px, 0.82fr) minmax(0, 1.18fr);
-  grid-template-rows:minmax(0, 1fr);
-  align-items:stretch;
-  column-gap:36px;
+  padding:24px min(50vw, 800px) 24px 48px;
+  display:flex;
+  align-items:center;
   text-align:left;
   perspective:none;
   background:transparent;
 }
-body:has(#community) .community-copy { min-width:0; align-self:center; }
+body:has(#community) .community-copy { min-width:0; max-width:460px; }
 body:has(#community) .closing-title { margin:0; transform:none; text-align:left; }
 body:has(#community) .project-purpose,
 body:has(#community) .community-line { margin:14px 0 0; max-width:36ch; }
@@ -557,11 +555,14 @@ body:has(#community) .community-actions { margin:18px 0 0; justify-content:flex-
 body:has(#community) .closing .title-elon { font-size:clamp(56px, 7vw, 112px); line-height:.9; margin:0; }
 body:has(#community) .closing .title-small { font-size:clamp(14px, 1.6vw, 22px); }
 body:has(#community) .meme-board {
-  width:100%;
+  position:absolute;
+  top:24px;
+  right:28px;
+  bottom:24px;
+  width:min(46vw, 720px);
   height:auto;
   min-height:0;
   margin:0;
-  align-self:stretch;
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:16px;
@@ -571,8 +572,8 @@ body:has(#community) .meme-card picture { flex:1; min-height:0; display:flex; al
 body:has(#community) .meme-card img { width:100%; height:100%; max-height:100%; object-fit:contain; object-position:center center; }
 body:has(#community) .meme-card figcaption { flex:none; padding:10px 0 0; }
 @media(max-width:767px) {
-  body:has(#community) .closing { padding:12px; column-gap:10px; grid-template-columns:minmax(0, .85fr) minmax(0, 1.15fr); }
+  body:has(#community) .closing { display:grid; grid-template-columns:minmax(120px, 42%) minmax(0, 1fr); padding:12px; column-gap:10px; }
   body:has(#community) .closing .title-elon { font-size:clamp(32px, 11vw, 52px); }
   body:has(#community) .community-actions { flex-wrap:wrap; }
-  body:has(#community) .meme-board { gap:8px; }
+  body:has(#community) .meme-board { position:static; width:100%; top:auto; right:auto; bottom:auto; gap:8px; }
 }

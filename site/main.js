@@ -440,16 +440,16 @@
   text('[data-token-buy-tax]', taxText(cfg.buyTax));
   text('[data-token-ownership]', shown(cfg.ownershipStatus));
   text('[data-token-lp]', shown(cfg.lpStatus));
-  text('[data-contract]', address || 'Coming soon..');
+  const contractText = address || 'Coming soon..';
+  text('[data-contract]', contractText);
   document.querySelectorAll('[data-copy-contract]').forEach(button => {
-    button.disabled = !address;
-    if (button.querySelector('svg')) button.setAttribute('aria-label', address ? 'Copy contract address' : 'Contract address pending');
+    button.disabled = false;
+    if (button.querySelector('svg')) button.setAttribute('aria-label', 'Copy contract address');
     else if (button.hasAttribute('data-header-copy')) {
       button.textContent = 'Copy CA';
-      button.setAttribute('aria-label', address ? 'Copy contract address' : 'Contract address pending');
+      button.setAttribute('aria-label', 'Copy contract address');
     }
-    else if (button.dataset.copyLabel === 'ca') button.textContent = address ? 'Copy CA' : 'CA pending';
-    if (!address && !button.querySelector('svg')) button.setAttribute('aria-label', 'Contract address pending');
+    else if (button.dataset.copyLabel === 'ca') button.textContent = 'Copy CA';
   });
   document.querySelectorAll('[data-etherscan]').forEach(link => {
     if (address) { link.href = 'https://etherscan.io/token/' + address; link.hidden = false; }
@@ -463,8 +463,10 @@
       dt.textContent = label; dd.textContent = typeof cfg[key] === 'number' && (key === 'buyTax' || key === 'sellTax') ? cfg[key] + '%' : String(cfg[key]); list.append(dt, dd);
     });
   });
+  const platformHome = { telegram: 'https://telegram.org/', x: 'https://x.com/' };
   document.querySelectorAll('[data-social]').forEach(link => {
-    const key = link.dataset.social; const destination = url(cfg.links?.[key]);
+    const key = link.dataset.social;
+    const destination = url(cfg.links?.[key]) || platformHome[key] || null;
     const label = key === 'telegram' ? 'Telegram' : 'X';
     const coming = label + ' — coming soon';
     if (destination) {
@@ -487,12 +489,32 @@
     link.hidden = !destination;
     if (destination) { link.href = destination; link.target = '_blank'; link.rel = 'noopener noreferrer'; }
   });
+  const writeCopy = async value => {
+    try {
+      await navigator.clipboard.writeText(value);
+      return true;
+    } catch {
+      const area = document.createElement('textarea');
+      area.value = value;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-999px';
+      document.body.append(area);
+      area.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch { ok = false; }
+      area.remove();
+      return ok;
+    }
+  };
   document.querySelectorAll('[data-copy-contract]').forEach(button => {
     button.addEventListener('click', async () => {
-      if (!address) return;
       const feedback = button.closest('section, dialog, .opening-controls, .site-header')?.querySelector('[data-copy-feedback]');
-      try { await navigator.clipboard.writeText(address); if (feedback) feedback.textContent = 'Contract address copied.'; }
-      catch { if (feedback) feedback.textContent = 'Select and copy the address displayed above.'; }
+      const copied = await writeCopy(contractText);
+      if (feedback) feedback.textContent = copied ? (address ? 'Contract address copied.' : 'Copied.') : 'Select and copy the address displayed above.';
+      if (!copied || !button.hasAttribute('data-header-copy')) return;
+      button.textContent = 'Copied';
+      window.setTimeout(() => { button.textContent = 'Copy CA'; }, 1400);
     });
   });
   const dialog = document.getElementById('token-dialog');

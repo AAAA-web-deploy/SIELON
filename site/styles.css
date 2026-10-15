@@ -536,21 +536,22 @@ body:has(#community) .closing {
   flex:1;
   position:relative;
   width:100%;
-  height:auto;
+  height:100%;
   min-height:0;
   max-width:none;
   margin:0;
   padding:20px 32px 20px 48px;
   display:grid;
   grid-template-columns:minmax(240px, 380px) minmax(0, 1fr);
-  align-items:center;
+  grid-template-rows:minmax(0, 1fr);
+  align-items:stretch;
   column-gap:36px;
   text-align:left;
   perspective:none;
   background:transparent;
   overflow:hidden;
 }
-body:has(#community) .community-copy { min-width:0; max-width:380px; }
+body:has(#community) .community-copy { min-width:0; max-width:380px; align-self:center; }
 body:has(#community) .closing-title { margin:0; transform:none; text-align:left; }
 body:has(#community) .project-purpose,
 body:has(#community) .community-line { margin:14px 0 0; max-width:36ch; }
@@ -560,13 +561,13 @@ body:has(#community) .closing .title-small { font-size:clamp(14px, 1.6vw, 22px);
 body:has(#community) .meme-board {
   position:static;
   width:min(100%, 860px);
-  height:auto;
+  height:100%;
   max-height:100%;
   min-width:0;
   min-height:0;
   margin:0 0 0 auto;
   justify-self:end;
-  align-self:center;
+  align-self:stretch;
   display:grid;
   grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
   gap:22px;
@@ -575,7 +576,7 @@ body:has(#community) .meme-board {
 body:has(#community) .meme-card {
   min-width:0;
   min-height:0;
-  height:auto;
+  height:100%;
   max-height:100%;
   margin:0;
   display:flex;
@@ -601,8 +602,13 @@ body:has(#community) .meme-card img {
   border-radius:12px;
 }
 body:has(#community) .meme-card figcaption {
-  flex:none;
-  padding:28px 8px 0;
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:12px 8px;
   text-align:center;
 }
 body:has(#community) .meme-caption { margin:0 0 12px; }

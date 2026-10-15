@@ -375,6 +375,13 @@
   text('[data-token-name]', cfg.name || 'SuperIntelligence Elon');
   text('[data-token-ticker]', cfg.ticker || '$SIELON');
   text('[data-token-network]', cfg.network || 'Ethereum mainnet');
+  const shown = value => value === null || value === undefined || value === '' ? '' : String(value);
+  const taxText = value => typeof value === 'number' ? value + '%' : shown(value);
+  text('[data-token-supply]', shown(cfg.totalSupply));
+  text('[data-token-sell-tax]', taxText(cfg.sellTax));
+  text('[data-token-buy-tax]', taxText(cfg.buyTax));
+  text('[data-token-ownership]', shown(cfg.ownershipStatus));
+  text('[data-token-lp]', shown(cfg.lpStatus));
   text('[data-contract]', address || 'To be announced');
   document.querySelectorAll('[data-copy-contract]').forEach(button => {
     button.disabled = !address;
@@ -386,7 +393,7 @@
     if (address) { link.href = 'https://etherscan.io/token/' + address; link.hidden = false; }
     else link.hidden = true;
   });
-  const optional = { totalSupply: 'Supply', buyTax: 'Buy tax', sellTax: 'Sell tax', lpStatus: 'LP status', ownershipStatus: 'Ownership' };
+  const optional = { totalSupply: 'Total Supply', sellTax: 'Sell Tax', buyTax: 'Buy Tax', ownershipStatus: 'Ownership', lpStatus: 'LP status' };
   document.querySelectorAll('[data-optional-facts]').forEach(list => {
     Object.entries(optional).forEach(([key, label]) => {
       if (cfg[key] === null || cfg[key] === undefined || cfg[key] === '') return;

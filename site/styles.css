@@ -580,8 +580,10 @@ body:has(#community) .meme-card {
   margin:0;
   display:flex;
   flex-direction:column;
-  background:transparent;
-  border:0;
+  background:#08111c;
+  border:1px solid rgba(189,214,236,.32);
+  border-radius:18px;
+  padding:10px 10px 16px;
   overflow:hidden;
 }
 body:has(#community) .meme-card picture {
@@ -593,13 +595,14 @@ body:has(#community) .meme-card img {
   display:block;
   width:100%;
   height:auto;
-  max-height:min(52vh, 460px);
+  max-height:min(48vh, 420px);
   object-fit:contain;
   object-position:center center;
+  border-radius:12px;
 }
 body:has(#community) .meme-card figcaption {
   flex:none;
-  padding:14px 4px 0;
+  padding:14px 8px 0;
   text-align:center;
 }
 body:has(#community) .meme-caption { margin:0 0 12px; }

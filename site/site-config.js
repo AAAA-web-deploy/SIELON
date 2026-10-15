@@ -11,8 +11,8 @@ window.SIELON_CONFIG = {
   lpStatus: "Burn",
   ownershipStatus: "Renounce",
   links: {
-    telegram: null,
-    x: null,
+    telegram: "https://t.me/MeetSIELON",
+    x: "https://x.com/MeetSIELON",
     dexScreener: null,
     dexTools: null,
     buy: null

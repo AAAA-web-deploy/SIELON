@@ -707,3 +707,27 @@ body:has(#community) .meme-card .copy-feedback { margin:0; min-height:0; }
   body:has(#community) .meme-card figcaption { padding:0; }
   body:has(#community) .meme-caption { font-size:11px; }
 }
+.story-board img { cursor:zoom-in; }
+.story-lightbox {
+  width:min(1080px, calc(100vw - 48px));
+  max-height:calc(100svh - 40px);
+  margin:auto;
+  padding:18px 18px 16px;
+  border:1px solid rgba(189,214,236,.32);
+  border-radius:18px;
+  background:#08111c;
+  color:var(--white);
+  box-shadow:0 24px 70px rgba(0,0,0,.55);
+}
+.story-lightbox::backdrop { background:rgba(0,0,0,.82); }
+.story-lightbox img {
+  display:block;
+  width:auto;
+  height:auto;
+  max-width:100%;
+  max-height:min(72vh, 760px);
+  margin:0 auto;
+  object-fit:contain;
+  object-position:center center;
+}
+.story-lightbox-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:10px; margin-top:14px; }

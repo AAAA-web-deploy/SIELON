@@ -23,10 +23,10 @@
   <link rel="icon" type="image/png" href="assets/logo-64.png">
   <link rel="preload" as="image" type="image/webp" href="assets/story-01-interview-1440.webp" media="(min-width:768px)" imagesrcset="assets/story-01-interview-720.webp 720w, assets/story-01-interview-1440.webp 1440w" imagesizes="840px">
   <link rel="preload" as="image" type="image/webp" href="assets/hero-1440.webp" media="(max-width:767px)" imagesrcset="assets/hero-720.webp 720w, assets/hero-1440.webp 1440w" imagesizes="100vw">
-  <link rel="stylesheet" href="styles.css?v=pages-v3">
+  <link rel="stylesheet" href="styles.css?v=pages-v19">
   <link rel="stylesheet" href="desktop-depth.css">
   <script src="site-config.js" defer></script>
-  <script src="main.js?v=pages-v3" defer></script>
+  <script src="main.js?v=pages-v19" defer></script>
   <script src="desktop-depth.js" defer></script>
   <script type="module" src="field-loader.js?v=flow-v1"></script>
   <script>
@@ -244,6 +244,13 @@
     <div class="story-fade" aria-hidden="true"></div>
     </div>
   </main>
+  <dialog class="story-lightbox" id="story-lightbox" aria-label="Enlarged story image">
+    <img alt="" data-lightbox-image>
+    <div class="story-lightbox-actions">
+      <a class="button" data-lightbox-download download>Download image</a>
+      <button class="button" type="button" data-lightbox-close>Close</button>
+    </div>
+  </dialog>
   <button class="stage-skip" type="button" data-stage-skip>Skip</button>
 </body>
 </html>

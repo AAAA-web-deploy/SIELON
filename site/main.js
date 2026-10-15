@@ -868,4 +868,28 @@
     else image.addEventListener('load', pin, { once: true });
   });
   syncHeader(); pin(); clampCopy(); requestPaint();
+  const lightbox = document.getElementById('story-lightbox');
+  if (lightbox) {
+    const view = lightbox.querySelector('[data-lightbox-image]');
+    const save = lightbox.querySelector('[data-lightbox-download]');
+    const openScene = image => {
+      const source = image.getAttribute('src') || image.currentSrc;
+      view.src = image.currentSrc || source;
+      view.alt = image.alt || '';
+      save.href = source;
+      save.setAttribute('download', source.split('/').pop() || 'sielon-story.jpg');
+      if (!lightbox.open) lightbox.showModal();
+    };
+    document.querySelectorAll('.story-board img').forEach(image => {
+      image.tabIndex = 0;
+      image.setAttribute('role', 'button');
+      image.setAttribute('aria-label', 'Enlarge image. ' + (image.alt || 'Story scene'));
+      image.addEventListener('click', () => openScene(image));
+      image.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openScene(image); }
+      });
+    });
+    lightbox.querySelector('[data-lightbox-close]').addEventListener('click', () => lightbox.close());
+    lightbox.addEventListener('click', event => { if (event.target === lightbox) lightbox.close(); });
+  }
 })();

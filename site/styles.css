@@ -668,8 +668,11 @@ body:has(#token) .contract-actions:not(:has(a:not([hidden]))) { display:none; ma
   }
   body:has(#token) .token-facts dt { font-size:14px; }
   body:has(#token) .token-facts dd { font-size:16px; line-height:1.35; }
+  body:has(#token) .token-facts dt:has(+ .contract-line),
+  body:has(#token) .contract-line { grid-column:1 / -1; }
   body:has(#token) .contract-line,
   body:has(#token) .contract-address { min-height:0; }
+  body:has(#token) .contract-address { font-size:14px; line-height:1.45; }
   body:has(#token) .contract-copy { border-radius:10px; }
 }
 body:has(#community) .closing {

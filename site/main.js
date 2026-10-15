@@ -109,6 +109,7 @@
       reveal.style.setProperty('--depart', unit(depart).toFixed(4));
       reveal.style.setProperty('--veil', unit(veil).toFixed(4));
       reveal.style.setProperty('--type', unit(type).toFixed(4));
+      reveal.style.setProperty('--brand', smooth(unit((p - 0.08) / 0.7)).toFixed(4));
       reveal.classList.toggle('is-settled', p >= 0.92);
       reveal.classList.toggle('is-ending', p >= 0.84 && depart < 0.04);
       reveal.classList.toggle('is-departing', depart > 0.02);

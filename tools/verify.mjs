@@ -26,13 +26,13 @@ check(Math.abs(offset[0])<.001&&Math.abs(velocity[0])<.001,'Spring does not retu
 for(let i=0;i<1000;i++)springStep(offset,velocity,0,100000,1/60);
 check(Number.isFinite(offset[0])&&Math.abs(offset[0])<=1.4001,'Particle displacement unbounded.');
 const engine=await import('../site/quantum-field.js');check(typeof engine.createSielonField==='function','Engine import failed.');
-for(const page of ['index.html','story.html']){
+for(const page of ['index.html','story.html','token.html','community.html']){
  const html=fs.readFileSync(path.join(root,'site',page),'utf8');
- check(html.includes('comparison-stack'),page+' mobile comparison baseline missing.');
- if(page==='story.html')check(html.includes('Download image'),page+' community image controls missing.');
+ if(page==='index.html'||page==='story.html')check(html.includes('comparison-stack'),page+' mobile comparison baseline missing.');
+ if(page==='community.html')check(html.includes('Download image'),page+' community image controls missing.');
  check(!/meme/i.test(html.replace(/class="[^"]*meme[^"]*"/g,'').replace(/data-meme-[a-z-]+/g,'')),page+' public meme wording remains.');
  check(!html.includes('vendor/three.min.js'),page+' must not download Three.js up front.');
- if(page==='story.html')check(html.includes('Fictional story. No affiliation with Elon Musk.'),page+' fiction footer missing.');
+ if(page!=='index.html')check(html.includes('Fictional story. No affiliation with Elon Musk.'),page+' fiction footer missing.');
  for(const item of html.matchAll(/(?:src|href)="([^"#]+)"/g)){
   const value=item[1];if(/^(?:https?:|data:|mailto:|tel:)/.test(value))continue;
   check(fs.existsSync(path.join(root,'site',value.split('?')[0])),'Unresolved '+page+' path '+value);
@@ -42,7 +42,9 @@ const home=fs.readFileSync(path.join(root,'site/index.html'),'utf8');
 const story=fs.readFileSync(path.join(root,'site/story.html'),'utf8');
 check(home.includes('data-field-stage')&&home.includes('href="story.html"'),'Desktop home opening missing.');
 check(home.includes('canonical" href="https://sielon.world/"'),'Home canonical missing.');
-check(story.includes('Which Elon is real?')&&story.includes('data-field-mode="wrist"'),'Desktop story sequence missing.');
+check(home.includes('Inspect wrist')&&home.includes('data-field-mode="wrist"'),'Wrist control missing from the headline.');
+check(!story.includes('data-wrist-open')&&!story.includes('id="token"')&&!story.includes('id="community"'),'Story page still contains wrist, token, or community.');
+check(story.includes('Which Elon is real?'),'Desktop story sequence missing.');
 check(story.includes('canonical" href="https://sielon.world/story.html"'),'Story canonical missing.');
 check((story.match(/class="film /g)||[]).length===13,'Expected thirteen desktop film frames.');
 check(story.includes('reaction-02-double-take-1440.webp'),'Corrected reaction still missing.');

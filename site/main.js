@@ -195,20 +195,6 @@
         reel.append(figure);
         slideNodes.push(figure);
       });
-      const tokenCard = document.createElement('figure');
-      tokenCard.className = 'reel-slide';
-      tokenCard.dataset.motion = 'fade';
-      tokenCard.dataset.stage = 'token';
-      tokenCard.innerHTML = '<div class="reel-card"><h2>Token details</h2><dl class="token-facts"><dt>Name</dt><dd data-token-name>SuperIntelligence Elon</dd><dt>Ticker</dt><dd data-token-ticker>$SIELON</dd><dt>Network</dt><dd data-token-network>Ethereum mainnet</dd><dt>Contract</dt><dd><span class="contract-address" data-contract>To be announced</span></dd></dl></div>';
-      reel.append(tokenCard);
-      slideNodes.push(tokenCard);
-      const communityCard = document.createElement('figure');
-      communityCard.className = 'reel-slide';
-      communityCard.dataset.motion = 'settle';
-      communityCard.dataset.stage = 'community';
-      communityCard.innerHTML = '<div class="reel-card"><p class="title-small">SUPERINTELLIGENCE</p><p class="title-elon">ELON</p><p class="ticker">$SIELON</p><p>An independent Ethereum project inspired by this fictional partnership.</p><p>Join the community. Share a scene. Help shape the next chapter.</p></div>';
-      reel.append(communityCard);
-      slideNodes.push(communityCard);
     }
     const imageCount = storySlides.length;
     const pace = reduce.matches
@@ -232,9 +218,7 @@
     const marks = () => {
       const typeDur = Math.max(1, line.length * pace.char);
       const reelAt = pace.typeAt + typeDur + pace.gap;
-      const tokenAt = reelAt + imageCount * pace.slide;
-      const communityAt = tokenAt + pace.slide;
-      return { typeDur, reelAt, tokenAt, communityAt };
+      return { typeDur, reelAt };
     };
     const paintSlides = elapsed => {
       const span = pace.slide;
@@ -247,27 +231,24 @@
         slide.classList.toggle('is-enter', (active && local < exitAt) || last);
         slide.classList.toggle('is-exit', active && local >= exitAt && !last);
       });
-      const index = Math.max(0, Math.min(slideNodes.length - 1, Math.floor(elapsed / span)));
-      const stage = index >= imageCount + 1 ? 'community' : index >= imageCount ? 'token' : 'story';
       const local = elapsed < 0 ? 0 : (elapsed % span) / span;
-      setFlow(stage, local);
+      setFlow('story', local);
       return elapsed < slideNodes.length * span;
     };
-    const holdCommunity = () => {
+    const finishReel = () => {
       if (cinematicFrame) cancelAnimationFrame(cinematicFrame);
       cinematicFrame = 0;
       held = true;
-      cinematicDone = true;
-      reveal.classList.add('is-reel');
-      slideNodes.forEach((slide, index) => {
-        const last = index === slideNodes.length - 1;
-        slide.classList.toggle('is-enter', last);
-        slide.classList.toggle('is-exit', false);
-      });
-      setFlow('community', 1);
+      window.location.href = 'token.html';
     };
     const beginCinematic = () => {
       if (cinematic) return;
+      const wristDetail = document.getElementById('wrist-detail');
+      if (wristDetail && !wristDetail.hidden) {
+        wristDetail.hidden = true;
+        document.querySelector('[data-wrist-open]')?.setAttribute('aria-expanded', 'false');
+        document.dispatchEvent(new CustomEvent('sielon:field-open'));
+      }
       cinematic = true;
       cinematicDone = true;
       held = false;
@@ -287,7 +268,7 @@
         if (t < clock.reelAt) setFlow('story', unit(t / clock.reelAt) * 0.15);
         const running = t < clock.reelAt || paintSlides(t - clock.reelAt);
         if (running) cinematicFrame = requestAnimationFrame(tick);
-        else holdCommunity();
+        else finishReel();
       };
       cinematicFrame = requestAnimationFrame(tick);
     };
@@ -296,19 +277,18 @@
         beginCinematic();
         return;
       }
-      if (held) {
-        window.location.href = 'story.html#community';
-        return;
-      }
       const clock = marks();
       const t = performance.now() - startedAt;
-      const next = t < clock.tokenAt ? clock.tokenAt : t < clock.communityAt ? clock.communityAt : null;
-      if (next === null) {
-        holdCommunity();
-        window.location.href = 'story.html#community';
+      if (t < clock.reelAt) {
+        startedAt = performance.now() - clock.reelAt;
         return;
       }
-      startedAt = performance.now() - next;
+      const index = Math.floor((t - clock.reelAt) / pace.slide);
+      if (index >= imageCount - 1) {
+        window.location.href = 'token.html';
+        return;
+      }
+      startedAt = performance.now() - (clock.reelAt + (index + 1) * pace.slide);
     };
     document.querySelector('[data-rail] [data-step="home"]')?.addEventListener('click', event => {
       if (!cinematic && !held) return;
@@ -782,14 +762,21 @@
     const paintRail = () => {
       const storyStep = rail.querySelector('[data-step="story"]');
       const homePage = !!document.querySelector('[data-reveal]');
-      if (storyStep) storyStep.setAttribute('href', homePage ? (narrow.matches ? '#story' : 'story.html') : (narrow.matches ? '#story' : '#film'));
+      const file = location.pathname.split('/').pop() || 'index.html';
+      const onStory = file === 'story.html';
+      if (storyStep) {
+        if (onStory) storyStep.setAttribute('href', narrow.matches ? '#story' : '#film');
+        else storyStep.setAttribute('href', homePage && narrow.matches ? '#story' : 'story.html');
+      }
       const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const flow = document.documentElement.dataset.flow;
-      let active = homePage ? 'home' : 'story';
+      let active = homePage ? 'home' : file === 'token.html' ? 'token' : file === 'community.html' ? 'community' : 'story';
       let local = 0;
       if (flow === 'story' || flow === 'token' || flow === 'community') {
         active = flow;
         local = Number(document.documentElement.dataset.flowLocal) || 0;
+      } else if (file === 'token.html' || file === 'community.html') {
+        active = file === 'token.html' ? 'token' : 'community';
       } else if (homePage) {
         const reveal = document.querySelector('[data-reveal]');
         const cinematic = document.documentElement.classList.contains('is-cinematic') || reveal.classList.contains('is-reel');
@@ -841,13 +828,9 @@
     document.addEventListener('sielon:flow', paintRail);
     if (!document.querySelector('[data-reveal]')) {
       document.querySelector('[data-stage-skip]')?.addEventListener('click', () => {
-        const token = document.getElementById('token');
-        const community = document.getElementById('community');
-        const marker = window.scrollY + 120;
-        const tokenTop = token ? token.getBoundingClientRect().top + window.scrollY : Infinity;
-        const communityTop = community ? community.getBoundingClientRect().top + window.scrollY : Infinity;
-        const dest = marker < tokenTop - 8 ? token : marker < communityTop - 8 ? community : null;
-        if (dest) dest.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+        const pageFile = location.pathname.split('/').pop() || 'index.html';
+        if (pageFile === 'token.html') window.location.href = 'community.html';
+        else if (pageFile === 'story.html') window.location.href = 'token.html';
       });
     }
     paintRail();

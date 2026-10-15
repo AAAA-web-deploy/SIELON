@@ -74,7 +74,7 @@ async function mount(stage){
  const record={stage,host,engine:null,abort};records.set(stage,record);
  const turn=epoch;
  try{
-  const [{createSielonField},sources]=await Promise.all([import('./quantum-field.js?v=reel-v2'),fetch(new URL('./particle-sources.json',import.meta.url)).then(response=>{if(!response.ok)throw new Error('Portrait source configuration missing');return response.json();})]);
+  const [{createSielonField},sources]=await Promise.all([import('./quantum-field.js?v=flow-v1'),fetch(new URL('./particle-sources.json',import.meta.url)).then(response=>{if(!response.ok)throw new Error('Portrait source configuration missing');return response.json();})]);
   if(matchMedia('(max-width: 1023px)').matches){
    sources.human.url='assets/home-v2/human-portrait-v2-640.webp';
    sources.si.url='assets/home-v2/si-portrait-v2-640.webp';

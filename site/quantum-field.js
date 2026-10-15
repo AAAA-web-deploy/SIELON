@@ -22,16 +22,22 @@ void main(){
  if(uAssemble>.5){
   float emerge=clamp(uPair,0.,1.);
   float depart=clamp(uDepart,0.,1.);
-  flight=emerge*emerge*(3.-2.*emerge);
+  float gate=fract(sin(aSeed*127.1)*43758.5453);
+  float begin=gate*.5;
+  float span=mix(.4,.58,gate);
+  float local=clamp((emerge-begin)/span,0.,1.);
+  flight=local*local*(3.-2.*local);
   vec3 origin=aHuman;
-  origin.x*=.48;
-  origin.y=mix(aHuman.y,uFocusY,.22);
+  origin.x*=.92;
+  origin.y=mix(aHuman.y,uFocusY,.08);
   vec3 dest=aSI;
   dest.x+=uSpread;
   dest.z+=.28;
   float mid=sin(flight*3.14159265);
+  vec3 bow=vec3(sin(aSeed*6.2),cos(aSeed*4.4),sin(aSeed*8.8));
   p=mix(origin,dest,flight);
-  p+=vec3(sin(aSeed*22.+uTime*2.6),cos(aSeed*17.-uTime*2.1),sin(aSeed*31.))*mid*.62;
+  p+=bow*mid*(.85+gate*1.55);
+  p+=vec3(cos(aSeed*3.1+uTime*.28),sin(aSeed*2.4-uTime*.22),0.)*mid*.22;
   vColor=mix(vec3(.98,.76,.36),aSIColor,smoothstep(.58,.94,flight));
   if(depart>.001){
    float scatter=depart*depart*(3.-2.*depart);
@@ -59,7 +65,7 @@ void main(){
  }
  vec4 mv=modelViewMatrix*vec4(p,1.);
  float sizeCut=1.-uCollapse*edge*.5;
- float sizeBoost=uAssemble>.5?(uDepart>.001?1.+sin(clamp(uDepart,0.,1.)*3.14159265)*2.4:1.+sin(flight*3.14159265)*1.55):1.;
+ float sizeBoost=uAssemble>.5?(uDepart>.001?1.+sin(clamp(uDepart,0.,1.)*3.14159265)*.7:1.+sin(flight*3.14159265)*.28):1.;
  gl_PointSize=clamp(2.4*uPixelRatio*9./max(1.,-mv.z)*sizeCut*sizeBoost,1.,uDepart>.001?18.:9.);
  gl_Position=projectionMatrix*mv;
 }`;
@@ -336,7 +342,7 @@ export async function createSielonField(host,{sources,pointCount=18000,onAvailab
  function draw(dt){
   if(destroyed||lost)return;
   const state=timeline(progress);const blend=dt>0?1-Math.exp(-dt/.12):1;held+=(holdTarget-held)*blend;
-  const emerge=assemble?smooth(.05,.78,progress):0;
+  const emerge=assemble?smooth(.04,.98,progress):0;
   const depart=assemble?clamp(departAmt):0;
   const split=assemble?0:(progress<.24?held:0);const collapse=assemble?0:Math.max(state.collapse,progress>=.24&&progress<.58?held:0);const formed=assemble?emerge:Math.max(state.pair,split);
   const wristMix=assemble?0:wristMixFor(state,collapse);

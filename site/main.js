@@ -121,103 +121,215 @@
     const storySlides = [
       { motion: 'rise', src: 'assets/story-01-interview-1440.webp', fallback: 'assets/story-01-interview-1440.jpg', alt: 'Elon sits after the interview while a crew member turns off the studio light and a camera stops recording.', caption: 'The interview ends. The cameras switch off.' },
       { motion: 'left', src: 'assets/story-02-comparison-1440.webp', fallback: 'assets/story-02-comparison-1440.jpg', alt: 'A visual comparison: Elon watches an Elon Ma lookalike video on his phone, then looks up at a man whose face matches his almost exactly, only a few feet away.', caption: '' },
-      { motion: 'settle', src: 'assets/story-03-meeting-1440.webp', fallback: 'assets/story-03-meeting-1440.jpg', alt: 'Backstage, a surprised Elon faces an almost identical double wearing an SI shirt and Ethereum pendant.', caption: 'ELON: Okay… that’s strange.\nTHE MAN: The security team said the same thing.' },
-      { motion: 'rise', src: 'assets/story-04-breakfast-1440.webp', fallback: 'assets/story-04-breakfast-1440.jpg', alt: 'Both Elons hold matching white coffee mugs above identical breakfasts of steak and eggs.', caption: 'Asked what they want for breakfast, both answer together.\nELON + THE MAN: Steak, eggs, and coffee.' },
-      { motion: 'scale', src: 'assets/story-05-gaming-1440.webp', fallback: 'assets/story-05-gaming-1440.jpg', alt: 'Elon and his double smile at each other while holding game controllers in a backstage lounge.', caption: 'ELON: What do you do to clear your head?\nTHE MAN: Play a game. Diablo, for example.' },
-      { motion: 'right', src: 'assets/story-06-ideas-1440.webp', fallback: 'assets/story-06-ideas-1440.jpg', alt: 'The two Elons exchange ideas beside a small rocket model, with a robot prototype in the workshop behind them.', caption: 'Rockets, robots, the future. He understands—and brings ideas of his own.' },
-      { motion: 'still', src: 'assets/story-07-reveal-1440.webp', fallback: 'assets/story-07-reveal-1440.jpg', alt: 'The double opens a small panel on his wrist to reveal a delicate metal frame; Elon reacts in astonishment.', caption: 'THE MAN: I’m Robot-Elon. SuperIntelligence created me.' },
-      { motion: 'rise', src: 'assets/story-08-handshake-1440.webp', fallback: 'assets/story-08-handshake-1440.jpg', alt: 'Elon and SI-Elon shake hands warmly, with the robot double’s mechanical wrist visible beside their clasped hands.', caption: 'SI-ELON: I’d like to work with you.\nELON: Then let’s work together.' },
-      { motion: 'scale', src: 'assets/story-09-dance-1440.webp', fallback: 'assets/story-09-dance-1440.jpg', alt: 'The two Elons laugh and attempt a small awkward dance onstage while audience members hold up their phones.', caption: 'Two Elons walk onto the stage. SI-Elon tries a small dance move. Elon laughs and joins him.' },
+      { motion: 'shatter', src: 'assets/story-03-meeting-1440.webp', fallback: 'assets/story-03-meeting-1440.jpg', alt: 'Backstage, a surprised Elon faces an almost identical double wearing an SI shirt and Ethereum pendant.', caption: 'ELON: Okay… that’s strange.\nTHE MAN: The security team said the same thing.' },
+      { motion: 'settle', src: 'assets/story-04-breakfast-1440.webp', fallback: 'assets/story-04-breakfast-1440.jpg', alt: 'Both Elons hold matching white coffee mugs above identical breakfasts of steak and eggs.', caption: 'Asked what they want for breakfast, both answer together.\nELON + THE MAN: Steak, eggs, and coffee.' },
+      { motion: 'right', src: 'assets/story-05-gaming-1440.webp', fallback: 'assets/story-05-gaming-1440.jpg', alt: 'Elon and his double smile at each other while holding game controllers in a backstage lounge.', caption: 'ELON: What do you do to clear your head?\nTHE MAN: Play a game. Diablo, for example.' },
+      { motion: 'scale', src: 'assets/story-06-ideas-1440.webp', fallback: 'assets/story-06-ideas-1440.jpg', alt: 'The two Elons exchange ideas beside a small rocket model, with a robot prototype in the workshop behind them.', caption: 'Rockets, robots, the future. He understands—and brings ideas of his own.' },
+      { motion: 'shatter', src: 'assets/story-07-reveal-1440.webp', fallback: 'assets/story-07-reveal-1440.jpg', alt: 'The double opens a small panel on his wrist to reveal a delicate metal frame; Elon reacts in astonishment.', caption: 'THE MAN: I’m Robot-Elon. SuperIntelligence created me.' },
+      { motion: 'fade', src: 'assets/story-08-handshake-1440.webp', fallback: 'assets/story-08-handshake-1440.jpg', alt: 'Elon and SI-Elon shake hands warmly, with the robot double’s mechanical wrist visible beside their clasped hands.', caption: 'SI-ELON: I’d like to work with you.\nELON: Then let’s work together.' },
+      { motion: 'shatter', src: 'assets/story-09-dance-1440.webp', fallback: 'assets/story-09-dance-1440.jpg', alt: 'The two Elons laugh and attempt a small awkward dance onstage while audience members hold up their phones.', caption: 'Two Elons walk onto the stage. SI-Elon tries a small dance move. Elon laughs and joins him.' },
       { motion: 'fade', src: 'assets/story-10-workshop-1440.webp', fallback: 'assets/story-10-workshop-1440.jpg', alt: 'Elon and SI-Elon walk into the workshop together, exchanging a smile as SI-Elon delivers the closing joke.', caption: 'SI-ELON: SI will create our story too. Hopefully, it fixes my dancing.' }
     ];
     const slideNodes = [];
+    const appendCaption = (figure, caption) => {
+      if (!caption) return;
+      const block = document.createElement('figcaption');
+      caption.split('\n').forEach(text => {
+        const row = document.createElement('p');
+        row.textContent = text;
+        block.append(row);
+      });
+      figure.append(block);
+    };
+    const appendMosaic = (figure, src) => {
+      const mosaic = document.createElement('div');
+      mosaic.className = 'reel-mosaic';
+      mosaic.setAttribute('role', 'img');
+      const cols = 4;
+      const rows = 3;
+      for (let i = 0; i < cols * rows; i++) {
+        const tile = document.createElement('span');
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+        tile.style.setProperty('--i', String(i));
+        tile.style.setProperty('--cx', String((col + 0.5) / cols));
+        tile.style.setProperty('--cy', String((row + 0.5) / rows));
+        tile.style.backgroundImage = 'url("' + src + '")';
+        tile.style.backgroundSize = (cols * 100) + '% ' + (rows * 100) + '%';
+        tile.style.backgroundPosition = (cols === 1 ? 0 : (col / (cols - 1)) * 100) + '% ' + (rows === 1 ? 0 : (row / (rows - 1)) * 100) + '%';
+        mosaic.append(tile);
+      }
+      figure.append(mosaic);
+    };
     if (reel && !reel.childElementCount) {
       storySlides.forEach(item => {
         const figure = document.createElement('figure');
         figure.className = 'reel-slide';
         figure.dataset.motion = item.motion;
-        const image = document.createElement('img');
-        image.src = item.src;
-        image.alt = item.alt;
-        image.width = 1440;
-        image.height = 1080;
-        image.decoding = 'async';
-        image.addEventListener('error', () => { image.src = item.fallback; }, { once: true });
-        figure.append(image);
-        if (item.caption) {
-          const caption = document.createElement('figcaption');
-          item.caption.split('\n').forEach(text => {
-            const row = document.createElement('p');
-            row.textContent = text;
-            caption.append(row);
-          });
-          figure.append(caption);
+        figure.dataset.stage = 'story';
+        if (item.motion === 'shatter') {
+          appendMosaic(figure, item.src);
+          const image = document.createElement('img');
+          image.alt = item.alt;
+          image.hidden = true;
+          image.addEventListener('error', () => {
+            figure.querySelector('.reel-mosaic')?.remove();
+            appendMosaic(figure, item.fallback);
+          }, { once: true });
+          image.src = item.src;
+          figure.append(image);
+        } else {
+          const frame = document.createElement('div');
+          frame.className = 'reel-frame';
+          const image = document.createElement('img');
+          image.src = item.src;
+          image.alt = item.alt;
+          image.width = 1440;
+          image.height = 1080;
+          image.decoding = 'async';
+          image.addEventListener('error', () => { image.src = item.fallback; }, { once: true });
+          frame.append(image);
+          figure.append(frame);
         }
+        appendCaption(figure, item.caption);
         reel.append(figure);
         slideNodes.push(figure);
       });
+      const tokenCard = document.createElement('figure');
+      tokenCard.className = 'reel-slide';
+      tokenCard.dataset.motion = 'fade';
+      tokenCard.dataset.stage = 'token';
+      tokenCard.innerHTML = '<div class="reel-card"><h2>Token details</h2><dl class="token-facts"><dt>Name</dt><dd data-token-name>SuperIntelligence Elon</dd><dt>Ticker</dt><dd data-token-ticker>$SIELON</dd><dt>Network</dt><dd data-token-network>Ethereum mainnet</dd><dt>Contract</dt><dd><span class="contract-address" data-contract>To be announced</span></dd></dl></div>';
+      reel.append(tokenCard);
+      slideNodes.push(tokenCard);
+      const communityCard = document.createElement('figure');
+      communityCard.className = 'reel-slide';
+      communityCard.dataset.motion = 'settle';
+      communityCard.dataset.stage = 'community';
+      communityCard.innerHTML = '<div class="reel-card"><p class="title-small">SUPERINTELLIGENCE</p><p class="title-elon">ELON</p><p class="ticker">$SIELON</p><p>An independent Ethereum project inspired by this fictional partnership.</p><p>Join the community. Share a scene. Help shape the next chapter.</p></div>';
+      reel.append(communityCard);
+      slideNodes.push(communityCard);
     }
+    const imageCount = storySlides.length;
+    const pace = reduce.matches
+      ? { depart: 320, veilAt: 180, veil: 220, typeAt: 460, char: 1, gap: 180, slide: 1800 }
+      : { depart: 2400, veilAt: 1800, veil: 900, typeAt: 3600, char: 100, gap: 900, slide: 5600 };
     let cinematic = false;
     let cinematicDone = false;
     let cinematicFrame = 0;
+    let startedAt = 0;
+    let held = false;
     const pushDepart = depart => {
       reveal.dataset.cinematic = '1';
       reveal.dataset.cinematicDepart = depart.toFixed(4);
       document.dispatchEvent(new CustomEvent('sielon:cinematic', { detail: { depart } }));
     };
+    const setFlow = (stage, local) => {
+      document.documentElement.dataset.flow = stage;
+      document.documentElement.dataset.flowLocal = unit(local).toFixed(4);
+      document.dispatchEvent(new CustomEvent('sielon:flow'));
+    };
+    const marks = () => {
+      const typeDur = Math.max(1, line.length * pace.char);
+      const reelAt = pace.typeAt + typeDur + pace.gap;
+      const tokenAt = reelAt + imageCount * pace.slide;
+      const communityAt = tokenAt + pace.slide;
+      return { typeDur, reelAt, tokenAt, communityAt };
+    };
     const paintSlides = elapsed => {
-      const span = reduce.matches ? 2200 : 4200;
-      const exitAt = span * 0.74;
+      const span = pace.slide;
+      const exitAt = span * 0.78;
       reveal.classList.add('is-reel');
       slideNodes.forEach((slide, index) => {
         const local = elapsed - index * span;
         const active = local >= 0 && local < span;
-        const last = index === slideNodes.length - 1 && local >= 0 && local < span + 700;
+        const last = index === slideNodes.length - 1 && local >= 0;
         slide.classList.toggle('is-enter', (active && local < exitAt) || last);
         slide.classList.toggle('is-exit', active && local >= exitAt && !last);
       });
-      return elapsed < slideNodes.length * span + 500;
+      const index = Math.max(0, Math.min(slideNodes.length - 1, Math.floor(elapsed / span)));
+      const stage = index >= imageCount + 1 ? 'community' : index >= imageCount ? 'token' : 'story';
+      const local = elapsed < 0 ? 0 : (elapsed % span) / span;
+      setFlow(stage, local);
+      return elapsed < slideNodes.length * span;
     };
-    const finishCinematic = () => {
+    const holdCommunity = () => {
       if (cinematicFrame) cancelAnimationFrame(cinematicFrame);
       cinematicFrame = 0;
-      cinematic = false;
+      held = true;
       cinematicDone = true;
-      document.documentElement.classList.remove('is-cinematic', 'is-encounter');
-      reveal.classList.remove('is-reel');
-      reveal.dataset.cinematic = '0';
-      paintReveal(1, 0, 0, 0);
-      pushDepart(0);
-      const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 68;
-      const root = document.documentElement;
-      root.style.scrollBehavior = 'auto';
-      window.scrollTo(0, Math.max(0, reveal.offsetTop + reveal.offsetHeight - header));
+      reveal.classList.add('is-reel');
+      slideNodes.forEach((slide, index) => {
+        const last = index === slideNodes.length - 1;
+        slide.classList.toggle('is-enter', last);
+        slide.classList.toggle('is-exit', false);
+      });
+      setFlow('community', 1);
     };
     const beginCinematic = () => {
       if (cinematic) return;
       cinematic = true;
       cinematicDone = true;
+      held = false;
       paintReveal(1, 0, 0, 0);
       document.documentElement.classList.add('is-cinematic');
-      const startedAt = performance.now();
-      const charMs = reduce.matches ? 1 : 46;
-      const typeStart = reduce.matches ? 460 : 2280;
-      const typeDur = Math.max(1, line.length * charMs);
-      const reelStart = typeStart + typeDur + (reduce.matches ? 200 : 700);
+      setFlow('story', 0);
+      startedAt = performance.now();
       const tick = now => {
+        if (held) return;
+        const clock = marks();
         const t = now - startedAt;
-        const depart = smooth(unit(t / (reduce.matches ? 320 : 1800)));
-        const veil = smooth(unit((t - (reduce.matches ? 220 : 1300)) / (reduce.matches ? 240 : 720)));
-        const type = t <= typeStart ? 0 : unit((t - typeStart) / typeDur);
+        const depart = smooth(unit(t / pace.depart));
+        const veil = smooth(unit((t - pace.veilAt) / pace.veil));
+        const type = t <= pace.typeAt ? 0 : unit((t - pace.typeAt) / clock.typeDur);
         paintReveal(1, depart, veil, type);
         pushDepart(depart);
-        const running = t < reelStart || paintSlides(t - reelStart);
+        if (t < clock.reelAt) setFlow('story', unit(t / clock.reelAt) * 0.15);
+        const running = t < clock.reelAt || paintSlides(t - clock.reelAt);
         if (running) cinematicFrame = requestAnimationFrame(tick);
-        else finishCinematic();
+        else holdCommunity();
       };
       cinematicFrame = requestAnimationFrame(tick);
     };
+    const skipStage = () => {
+      if (!cinematic) {
+        beginCinematic();
+        return;
+      }
+      if (held) {
+        window.location.href = 'story.html#community';
+        return;
+      }
+      const clock = marks();
+      const t = performance.now() - startedAt;
+      const next = t < clock.tokenAt ? clock.tokenAt : t < clock.communityAt ? clock.communityAt : null;
+      if (next === null) {
+        holdCommunity();
+        window.location.href = 'story.html#community';
+        return;
+      }
+      startedAt = performance.now() - next;
+    };
+    document.querySelector('[data-rail] [data-step="home"]')?.addEventListener('click', event => {
+      if (!cinematic && !held) return;
+      event.preventDefault();
+      if (cinematicFrame) cancelAnimationFrame(cinematicFrame);
+      cinematicFrame = 0;
+      cinematic = false;
+      held = false;
+      delete document.documentElement.dataset.flow;
+      delete document.documentElement.dataset.flowLocal;
+      document.documentElement.classList.remove('is-cinematic', 'is-encounter');
+      reveal.classList.remove('is-reel', 'is-card', 'is-typed', 'is-departing');
+      reveal.dataset.cinematic = '0';
+      paintReveal(0, 0, 0, 0);
+      pushDepart(0);
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      document.dispatchEvent(new CustomEvent('sielon:flow'));
+    });
     reveal.querySelector('[data-opening-next]')?.addEventListener('click', beginCinematic);
+    document.querySelector('[data-stage-skip]')?.addEventListener('click', skipStage);
     const measureReveal = () => {
       if (cinematic) return;
       if (reduce.matches) {
@@ -672,9 +784,13 @@
       const homePage = !!document.querySelector('[data-reveal]');
       if (storyStep) storyStep.setAttribute('href', homePage ? (narrow.matches ? '#story' : 'story.html') : (narrow.matches ? '#story' : '#film'));
       const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const flow = document.documentElement.dataset.flow;
       let active = homePage ? 'home' : 'story';
       let local = 0;
-      if (homePage) {
+      if (flow === 'story' || flow === 'token' || flow === 'community') {
+        active = flow;
+        local = Number(document.documentElement.dataset.flowLocal) || 0;
+      } else if (homePage) {
         const reveal = document.querySelector('[data-reveal]');
         const cinematic = document.documentElement.classList.contains('is-cinematic') || reveal.classList.contains('is-reel');
         const storyTop = sectionTop('story');
@@ -722,6 +838,18 @@
     addEventListener('scroll', () => requestAnimationFrame(paintRail), { passive: true });
     addEventListener('resize', paintRail);
     document.addEventListener('sielon:cinematic', paintRail);
+    document.addEventListener('sielon:flow', paintRail);
+    if (!document.querySelector('[data-reveal]')) {
+      document.querySelector('[data-stage-skip]')?.addEventListener('click', () => {
+        const token = document.getElementById('token');
+        const community = document.getElementById('community');
+        const marker = window.scrollY + 120;
+        const tokenTop = token ? token.getBoundingClientRect().top + window.scrollY : Infinity;
+        const communityTop = community ? community.getBoundingClientRect().top + window.scrollY : Infinity;
+        const dest = marker < tokenTop - 8 ? token : marker < communityTop - 8 ? community : null;
+        if (dest) dest.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+      });
+    }
     paintRail();
   }
   addEventListener('scroll', requestPaint, { passive: true });

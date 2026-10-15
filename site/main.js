@@ -250,7 +250,10 @@
     };
     let holdTimer = 0;
     let bottomTimer = 0;
+    let progressionStopped = false;
     let tick = () => {};
+    const continueNote = document.querySelector('[data-continue-note]');
+    const hideContinueNote = () => { if (continueNote) continueNote.hidden = true; };
     const holdThen = action => {
       if (holdTimer) return;
       holdTimer = window.setTimeout(() => {
@@ -270,6 +273,7 @@
     };
     const beginCinematic = () => {
       if (cinematic) return;
+      hideContinueNote();
       const wristDetail = document.getElementById('wrist-detail');
       if (wristDetail && !wristDetail.hidden) {
         wristDetail.hidden = true;
@@ -301,6 +305,7 @@
     };
     const skipStage = () => {
       if (holdTimer) return;
+      hideContinueNote();
       if (!cinematic) {
         holdThen(beginCinematic);
         return;
@@ -339,6 +344,8 @@
       held = false;
       delete document.documentElement.dataset.flow;
       delete document.documentElement.dataset.flowLocal;
+      progressionStopped = false;
+      hideContinueNote();
       document.documentElement.classList.remove('is-cinematic', 'is-encounter');
       reveal.classList.remove('is-reel', 'is-card', 'is-typed', 'is-departing');
       reveal.dataset.cinematic = '0';
@@ -350,6 +357,15 @@
     });
     reveal.querySelector('[data-opening-next]')?.addEventListener('click', beginCinematic);
     document.querySelector('[data-stage-skip]')?.addEventListener('click', skipStage);
+    continueNote?.querySelector('[data-continue-yes]')?.addEventListener('click', () => {
+      hideContinueNote();
+      beginCinematic();
+    });
+    continueNote?.querySelector('[data-continue-no]')?.addEventListener('click', () => {
+      progressionStopped = true;
+      hideContinueNote();
+      if (bottomTimer) { clearTimeout(bottomTimer); bottomTimer = 0; }
+    });
     const measureReveal = () => {
       if (cinematic) return;
       if (reduce.matches) {
@@ -366,14 +382,10 @@
       const scrolled = header - rect.top;
       const phase = mapOpening(scrolled, travel, window.innerWidth, window.innerHeight, header);
       if (phase.scene < 0.9) cinematicDone = false;
-      if (!cinematicDone && phase.scene >= 0.98 && phase.after > 0.08) {
-        if (!bottomTimer) {
-          bottomTimer = window.setTimeout(() => {
-            bottomTimer = 0;
-            beginCinematic();
-          }, 2000);
-        }
-        return;
+      const atEnd = !progressionStopped && !cinematicDone && phase.scene >= 0.98 && phase.after > 0.08;
+      if (continueNote) {
+        if (atEnd) continueNote.hidden = false;
+        else if (phase.scene < 0.9) hideContinueNote();
       }
       if (phase.scene < 0.9 && bottomTimer) { clearTimeout(bottomTimer); bottomTimer = 0; }
       paintReveal(phase.scene, 0, 0, 0);

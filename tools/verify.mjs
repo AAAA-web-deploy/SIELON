@@ -42,7 +42,7 @@ const home=fs.readFileSync(path.join(root,'site/index.html'),'utf8');
 const story=fs.readFileSync(path.join(root,'site/story.html'),'utf8');
 check(home.includes('data-field-stage')&&home.includes('href="story.html"'),'Desktop home opening missing.');
 check(home.includes('canonical" href="https://sielon.world/"'),'Home canonical missing.');
-check(home.includes('Inspect wrist')&&home.includes('data-field-mode="wrist"'),'Wrist control missing from the headline.');
+check(!home.includes('Inspect wrist')&&!home.includes('data-wrist-open'),'Inspect wrist button remains.');
 check(!story.includes('data-wrist-open')&&!story.includes('id="token"')&&!story.includes('id="community"'),'Story page still contains wrist, token, or community.');
 check(story.includes('Which Elon is real?'),'Desktop story sequence missing.');
 check(story.includes('canonical" href="https://sielon.world/story.html"'),'Story canonical missing.');

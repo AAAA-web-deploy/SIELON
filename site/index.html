@@ -121,7 +121,6 @@
           </div>
           <p class="sr-only">Fictional portrait of Elon in the workshop. Scrolling brings his identical SI double into the same frame.</p>
           <div class="opening-controls">
-            <button class="button" type="button" data-wrist-open hidden aria-expanded="false" aria-controls="wrist-detail">Inspect wrist</button>
             <a class="button button-primary desktop-only" href="story.html">Start the Story <span aria-hidden="true">→</span></a>
             <a class="button button-primary phone-only" href="#story">Start the Story <span aria-hidden="true">→</span></a>
             <a class="button" data-hero-social="telegram" hidden>Telegram</a>
@@ -299,18 +298,6 @@
     <div class="story-fade" aria-hidden="true"></div>
     </div>
   </main>
-  <div id="wrist-detail" class="wrist-detail wrist-detail--float" data-field-stage data-field-mode="wrist" hidden tabindex="-1">
-    <div class="wrist-bar"><p>Mechanical wrist</p><button type="button" class="dialog-close" data-wrist-close>Close</button></div>
-    <div class="wrist-stage">
-      <div class="wrist-pair" aria-hidden="true">
-        <img src="assets/home-v2/human-portrait-v2.png" alt="">
-        <img src="assets/home-v2/si-portrait-v2.png" alt="">
-      </div>
-      <div data-particle-host></div>
-      <p class="wrist-fallback">Elon and SI-Elon. The open wrist is the mechanical reveal.</p>
-    </div>
-    <button class="button hold-button" type="button" data-field-hold hidden><span data-hold-label>Hold to gather</span><span class="hold-hint">Release to return.</span></button>
-  </div>
   <div class="continue-note" data-continue-note hidden role="dialog" aria-labelledby="continue-note-title">
     <p id="continue-note-title">Continue viewing?</p>
     <div class="continue-note__actions">
